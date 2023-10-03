@@ -3,6 +3,8 @@
 
 #include "Entity.h"
 #include "Point.h"
+#include "Physics.h"
+#include "Animation.h"
 #include "SDL/include/SDL.h"
 
 struct SDL_Texture;
@@ -31,6 +33,18 @@ public:
 	SDL_Texture* texture = NULL;
 	PhysBody* pbody;
 	int pickCoinFxId;
+
+	Animation* currentAnim;
+	Animation idleAnim, jumpAnim, walkAnim, crouchAnim, crouchWalkAnim, fallAnim, wallAnim;
+
+	bool isJumping = false;
+	bool isCrouching = false;
+	bool isWalking = false;
+	bool ground = true;
+	bool isFacingRight = true;
+	int jumpCount = 0;
+	bool wall = false;
+	float previousY = 0.0f;
 };
 
 #endif // __PLAYER_H__

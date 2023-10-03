@@ -323,4 +323,8 @@ const char* App::GetOrganization() const
 	return organization.GetString();
 }
 
+float App::GetDT()
+{
+	return dt;
+}
 
