@@ -108,7 +108,6 @@ bool Player::Update(float dt)
 		{
 			vel = b2Vec2(0, -speed * dt);
 			currentAnim = &wallAnim;
-
 		}
     }
     if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
@@ -117,7 +116,6 @@ bool Player::Update(float dt)
 		{
 			vel = b2Vec2(0, speed * dt);
 			currentAnim = &wallAnim;
-			
 		}
     }
 
@@ -174,7 +172,6 @@ bool Player::Update(float dt)
 			isJumping = true;
 			pbody->body->ApplyLinearImpulse({ 0, -10.0f }, pbody->body->GetWorldCenter(), true);
 			jumpCount = 1;
-			
 		}
 		else if (jumpCount == 1)
 		{
@@ -199,10 +196,22 @@ bool Player::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN) {
 
 		Uint32 currentTime = SDL_GetTicks();
-		if ((currentTime - lastKeyPressTime) <= 15*dt)
+		if ((currentTime - lastKeyPressTime) <= 15 * dt)
 		{
 			//DASHEAR
 			printf("DASH \n");
+			pbody->body->ApplyLinearImpulse({ -10.0f, 0 }, pbody->body->GetWorldCenter(), true);
+		}
+		lastKeyPressTime = currentTime;
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN) {
+		Uint32 currentTime = SDL_GetTicks();
+		if ((currentTime - lastKeyPressTime) <= 15 * dt)
+		{
+			//DASHEAR
+			printf("DASH \n");
+			pbody->body->ApplyLinearImpulse({ 10.0f, 0 }, pbody->body->GetWorldCenter(), true);
 		}
 		lastKeyPressTime = currentTime;
 	}
