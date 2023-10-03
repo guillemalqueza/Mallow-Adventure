@@ -8,6 +8,7 @@
 #include "Log.h"
 #include "Point.h"
 #include "Physics.h"
+Uint32 lastKeyPressTime = 0;
 
 Player::Player() : Entity(EntityType::PLAYER)
 {
@@ -193,16 +194,18 @@ bool Player::Update(float dt)
 			jumpCount = 0;
 		}
     }
-	printf("\r jumpcount: %d ground=%d", jumpCount,ground);
 	
-	//if (isJumping)
-	//{
-	//	dashTimer--;
-	//	if (!alreadyDashed && app->input->GetKey(SDL_SCANCODE_A) && dashTimer <=0)
-	//	{
-	//		pbody->body->ApplyLinearImpulse({ -10.0f, 0.0f }, pbody->body->GetWorldCenter(), true);
-	//	}
-	//}
+	
+	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN) {
+
+		Uint32 currentTime = SDL_GetTicks();
+		if ((currentTime - lastKeyPressTime) <= 15*dt)
+		{
+			//DASHEAR
+			printf("DASH \n");
+		}
+		lastKeyPressTime = currentTime;
+	}
 
     if (isJumping && currentAnim->HasFinished() || app->input->GetKey(SDL_SCANCODE_S)== KEY_REPEAT)
     {
@@ -236,6 +239,7 @@ bool Player::Update(float dt)
     if(isFacingRight) app->render->DrawTexture(texture, position.x, position.y, &rect);
 	else app->render->DrawTexture(texture, position.x, position.y, &rect, SDL_FLIP_HORIZONTAL);
     currentAnim->Update();
+	//printf("\r jumpcount: %d ground=%d", jumpCount, ground);
     return true;
 }
 
