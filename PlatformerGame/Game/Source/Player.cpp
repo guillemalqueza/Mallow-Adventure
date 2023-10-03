@@ -193,7 +193,7 @@ bool Player::Update(float dt)
         isJumping = false;
     }
 
-	if (position.y != previousY && !isJumping)
+	if (position.y != previousY && !isJumping && !wall)
 	{
 		ground = false;
 		currentAnim = &fallAnim;
