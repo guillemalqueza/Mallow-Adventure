@@ -45,6 +45,7 @@ public:
 	int jumpCount = 0;
 	bool wall = false;
 	float previousY = 0.0f;
+	bool hasJumped = false;
 };
 
 #endif // __PLAYER_H__

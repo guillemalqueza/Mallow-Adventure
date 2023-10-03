@@ -107,6 +107,7 @@ bool Player::Update(float dt)
 		{
 			vel = b2Vec2(0, -speed * dt);
 			currentAnim = &wallAnim;
+
 		}
     }
     if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
@@ -115,6 +116,7 @@ bool Player::Update(float dt)
 		{
 			vel = b2Vec2(0, speed * dt);
 			currentAnim = &wallAnim;
+			
 		}
     }
 
@@ -153,22 +155,37 @@ bool Player::Update(float dt)
 
     if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
     {
-		if (!isJumping)
+	
+		if (!isJumping && !hasJumped)
 		{
 			currentAnim->Reset();
 			currentAnim = &jumpAnim;
 			isJumping = true;
-			pbody->body->ApplyLinearImpulse({ 0, -4.0f }, pbody->body->GetWorldCenter(), true);
+			pbody->body->ApplyLinearImpulse({ 0, -10.0f }, pbody->body->GetWorldCenter(), true);
 			jumpCount = 1;
 		}
 		else if (jumpCount == 1)
 		{
-			pbody->body->ApplyLinearImpulse({ 0, -4.0f }, pbody->body->GetWorldCenter(), true);
+			pbody->body->ApplyLinearImpulse({ 0, -10.0f }, pbody->body->GetWorldCenter(), true);
+			currentAnim->Reset();
+			currentAnim = &jumpAnim;
+			jumpCount = 0;
+			hasJumped = true;
+			
+		}
+		if (!ground && isJumping)
+		{
+			currentAnim->Reset();
+			currentAnim = &jumpAnim;
+			isJumping = true;
+			pbody->body->ApplyLinearImpulse({ 0, -10.0f }, pbody->body->GetWorldCenter(), true);
 			jumpCount = 0;
 		}
     }
+	printf("\r jumpcount: %d ground=%d", jumpCount,ground);
+	
 
-    if (isJumping && currentAnim->HasFinished())
+    if (isJumping && currentAnim->HasFinished() || app->input->GetKey(SDL_SCANCODE_S)== KEY_REPEAT)
     {
         currentAnim->ResetLoopCount();
         currentAnim->Reset();
@@ -176,7 +193,7 @@ bool Player::Update(float dt)
         isJumping = false;
     }
 
-	if (position.y > previousY && !isJumping)
+	if (position.y != previousY && !isJumping)
 	{
 		ground = false;
 		currentAnim = &fallAnim;
@@ -184,6 +201,7 @@ bool Player::Update(float dt)
 	else
 	{
 		ground = true;
+		//jumpCount = 0;
 	}
 
 	previousY = position.y;
@@ -224,6 +242,8 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		LOG("Collision PLATFORM");
 		ground = true;
 		wall = false;
+		jumpCount = 0;
+		hasJumped = false;
 		break;
 	case ColliderType::UNKNOWN:
 		LOG("Collision UNKNOWN");
