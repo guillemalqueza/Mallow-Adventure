@@ -46,6 +46,9 @@ public:
 	bool wall = false;
 	float previousY = 0.0f;
 	bool hasJumped = false;
+	bool isRunning = false;
+	/*bool alreadyDashed = false;
+	float dashTimer = 30;*/
 };
 
 #endif // __PLAYER_H__

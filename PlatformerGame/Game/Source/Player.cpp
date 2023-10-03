@@ -57,7 +57,7 @@ bool Player::Start() {
 	walkAnim.PushBack({ 500,2176,100,64 });
 	walkAnim.PushBack({ 600,2176,100,64 });
 	walkAnim.loop = true;
-	walkAnim.speed = 0.2f;
+	walkAnim.speed = speed;
 
 	crouchAnim.PushBack({ 0,256,100,64 });
 	crouchAnim.PushBack({ 100,256,100,64 });
@@ -153,6 +153,16 @@ bool Player::Update(float dt)
 
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE) isWalking = false;
 
+	if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT) {
+		isRunning = true;
+		speed = 0.5f;
+	}
+	else
+	{
+		isRunning = false;
+		speed = 0.2f;
+	}
+
     if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
     {
 	
@@ -163,6 +173,7 @@ bool Player::Update(float dt)
 			isJumping = true;
 			pbody->body->ApplyLinearImpulse({ 0, -10.0f }, pbody->body->GetWorldCenter(), true);
 			jumpCount = 1;
+			
 		}
 		else if (jumpCount == 1)
 		{
@@ -184,6 +195,14 @@ bool Player::Update(float dt)
     }
 	printf("\r jumpcount: %d ground=%d", jumpCount,ground);
 	
+	//if (isJumping)
+	//{
+	//	dashTimer--;
+	//	if (!alreadyDashed && app->input->GetKey(SDL_SCANCODE_A) && dashTimer <=0)
+	//	{
+	//		pbody->body->ApplyLinearImpulse({ -10.0f, 0.0f }, pbody->body->GetWorldCenter(), true);
+	//	}
+	//}
 
     if (isJumping && currentAnim->HasFinished() || app->input->GetKey(SDL_SCANCODE_S)== KEY_REPEAT)
     {
