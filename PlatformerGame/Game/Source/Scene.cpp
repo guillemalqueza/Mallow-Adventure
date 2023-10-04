@@ -110,7 +110,7 @@ bool Scene::Update(float dt)
 	//app->render->camera.x = -player->position.x + (windowW / 2);
 	//app->render->camera.y = -player->position.y + (windowH / 2);
 
-	printf("\r player.x: %d player.y: %d camera.x: %d camera.y: %d", player->position.x, player->position.y, app->render->camera.x, app->render->camera.y);
+	//printf("\r player.x: %d player.y: %d camera.x: %d camera.y: %d", player->position.x, player->position.y, app->render->camera.x, app->render->camera.y);
 
 	// Renders the image in the center of the screen 
 	//app->render->DrawTexture(img, (int)textPosX, (int)textPosY);
@@ -118,7 +118,7 @@ bool Scene::Update(float dt)
 	return true;
 }
 
-// Called each loop iteration{{{{
+// Called each loop iteration
 bool Scene::PostUpdate()
 {
 	bool ret = true;

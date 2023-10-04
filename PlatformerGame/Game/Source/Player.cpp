@@ -103,6 +103,17 @@ bool Player::Update(float dt)
 
     b2Vec2 vel = b2Vec2(0, -GRAVITY_Y);
 
+	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_S) == KEY_IDLE && wall)
+	{
+		pbody->body->SetGravityScale(0.0f);
+		vel = b2Vec2(0, 0);
+		currentAnim = &wallAnim;
+	}
+	else if (!wall)
+	{
+		pbody->body->SetGravityScale(1.0f);
+	}
+
     if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
     {
 		if (wall)
@@ -222,7 +233,7 @@ bool Player::Update(float dt)
 
 	
 
-    if (isJumping && currentAnim->HasFinished() || app->input->GetKey(SDL_SCANCODE_S)== KEY_REPEAT)
+    if (isJumping && currentAnim->HasFinished() || ( app->input->GetKey(SDL_SCANCODE_S)== KEY_REPEAT && !wall))
     {
         currentAnim->ResetLoopCount();
         currentAnim->Reset();
@@ -235,10 +246,10 @@ bool Player::Update(float dt)
 		ground = false;
 		currentAnim = &fallAnim;
 	}
-	else if (position.y > previousY && wall)
-	{
-		currentAnim = &fallAnim;
-	}
+	//else if (position.y > previousY && wall)
+	//{
+	//	currentAnim = &fallAnim;
+	//}
 	else
 	{
 		ground = true;
@@ -262,7 +273,7 @@ bool Player::Update(float dt)
     if(isFacingRight) app->render->DrawTexture(texture, position.x, position.y, &rect);
 	else app->render->DrawTexture(texture, position.x, position.y, &rect, SDL_FLIP_HORIZONTAL);
     currentAnim->Update();
-	printf("\r jumpcount: %d ground=%d, isdashing=%d", jumpCount, ground,isDashing);
+	//printf("\r jumpcount: %d ground=%d, isdashing=%d", jumpCount, ground,isDashing);
     return true;
 }
 
