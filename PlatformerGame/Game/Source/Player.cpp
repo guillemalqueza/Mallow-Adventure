@@ -150,7 +150,11 @@ bool Player::Update(float dt)
 		isFacingRight = true;
     }
 
-	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE) isWalking = false;
+	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE)
+	{
+		isWalking = false;
+		isDashing = false;
+	}
 
 	if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT) {
 		isRunning = true;
@@ -164,7 +168,6 @@ bool Player::Update(float dt)
 
     if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
     {
-	
 		if (!isJumping && !hasJumped)
 		{
 			currentAnim->Reset();
@@ -190,8 +193,7 @@ bool Player::Update(float dt)
 			pbody->body->ApplyLinearImpulse({ 0, -10.0f }, pbody->body->GetWorldCenter(), true);
 			jumpCount = 0;
 		}
-    }
-	
+    }	
 	
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN) {
 
@@ -199,8 +201,9 @@ bool Player::Update(float dt)
 		if ((currentTime - lastKeyPressTime) <= 15 * dt)
 		{
 			//DASHEAR
-			printf("DASH \n");
-			pbody->body->ApplyLinearImpulse({ -10.0f, 0 }, pbody->body->GetWorldCenter(), true);
+			//printf("DASH \n");
+			isDashing = true;
+			pbody->body->ApplyLinearImpulse({ -20.0f, 0 }, pbody->body->GetWorldCenter(), true);
 		}
 		lastKeyPressTime = currentTime;
 	}
@@ -209,12 +212,14 @@ bool Player::Update(float dt)
 		Uint32 currentTime = SDL_GetTicks();
 		if ((currentTime - lastKeyPressTime) <= 15 * dt)
 		{
-			//DASHEAR
-			printf("DASH \n");
-			pbody->body->ApplyLinearImpulse({ 10.0f, 0 }, pbody->body->GetWorldCenter(), true);
+			//DASHEAR;
+			isDashing = true;
+			pbody->body->ApplyLinearImpulse({ 20.0f, 0 }, pbody->body->GetWorldCenter(), true);
 		}
 		lastKeyPressTime = currentTime;
 	}
+
+	
 
     if (isJumping && currentAnim->HasFinished() || app->input->GetKey(SDL_SCANCODE_S)== KEY_REPEAT)
     {
@@ -224,7 +229,7 @@ bool Player::Update(float dt)
         isJumping = false;
     }
 
-	if (position.y != previousY && !isJumping && !wall)
+	if (position.y != previousY && !isJumping && !wall && !isDashing)
 	{
 		ground = false;
 		currentAnim = &fallAnim;
@@ -240,6 +245,10 @@ bool Player::Update(float dt)
 	if(!ground) currentAnim = &fallAnim;
 
 	if (!isJumping) pbody->body->SetLinearVelocity(vel);
+	else if(!isDashing)
+	{
+		pbody->body->SetLinearVelocityX(vel.x);
+	}
 
     position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 50;
     position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 32;
@@ -248,7 +257,7 @@ bool Player::Update(float dt)
     if(isFacingRight) app->render->DrawTexture(texture, position.x, position.y, &rect);
 	else app->render->DrawTexture(texture, position.x, position.y, &rect, SDL_FLIP_HORIZONTAL);
     currentAnim->Update();
-	//printf("\r jumpcount: %d ground=%d", jumpCount, ground);
+	printf("\r jumpcount: %d ground=%d, isdashing=%d", jumpCount, ground,isDashing);
     return true;
 }
 

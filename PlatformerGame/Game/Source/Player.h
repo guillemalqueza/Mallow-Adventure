@@ -47,6 +47,8 @@ public:
 	float previousY = 0.0f;
 	bool hasJumped = false;
 	bool isRunning = false;
+	bool isDashing = false;
+	bool canDash = true;
 
 
 };
