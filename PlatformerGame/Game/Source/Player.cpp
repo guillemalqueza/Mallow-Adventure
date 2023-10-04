@@ -8,7 +8,8 @@
 #include "Log.h"
 #include "Point.h"
 #include "Physics.h"
-Uint32 lastKeyPressTime = 0;
+Uint32 lastKeyPressTimeA = 0;
+Uint32 lastKeyPressTimeD = 0;
 
 Player::Player() : Entity(EntityType::PLAYER)
 {
@@ -198,25 +199,25 @@ bool Player::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN) {
 
 		Uint32 currentTime = SDL_GetTicks();
-		if ((currentTime - lastKeyPressTime) <= 15 * dt)
+		if ((currentTime - lastKeyPressTimeA) <= 15 * dt)
 		{
 			//DASHEAR
 			//printf("DASH \n");
 			isDashing = true;
 			pbody->body->ApplyLinearImpulse({ -20.0f, 0 }, pbody->body->GetWorldCenter(), true);
 		}
-		lastKeyPressTime = currentTime;
+		lastKeyPressTimeA = currentTime;
 	}
 
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN) {
 		Uint32 currentTime = SDL_GetTicks();
-		if ((currentTime - lastKeyPressTime) <= 15 * dt)
+		if ((currentTime - lastKeyPressTimeD) <= 15 * dt)
 		{
 			//DASHEAR;
 			isDashing = true;
 			pbody->body->ApplyLinearImpulse({ 20.0f, 0 }, pbody->body->GetWorldCenter(), true);
 		}
-		lastKeyPressTime = currentTime;
+		lastKeyPressTimeD = currentTime;
 	}
 
 	
