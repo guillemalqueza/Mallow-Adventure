@@ -229,6 +229,10 @@ bool Player::Update(float dt)
 		ground = false;
 		currentAnim = &fallAnim;
 	}
+	else if (position.y > previousY && wall)
+	{
+		currentAnim = &fallAnim;
+	}
 	else
 	{
 		ground = true;

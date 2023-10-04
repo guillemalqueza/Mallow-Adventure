@@ -68,6 +68,7 @@ bool Scene::Start()
 		app->map->mapData.tileHeight,
 		app->map->mapData.tilesets.Count());
 
+
 	return true;
 }
 
@@ -94,13 +95,30 @@ bool Scene::Update(float dt)
 	if(app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		app->render->camera.x += (int)ceil(camSpeed * dt);
 
+
+	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+	{
+		if (player->position.x > 400 && app->render->camera.x < 0) app->render->camera.x += player->speed * dt;
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+	{
+		if (player->position.x > 400) app->render->camera.x -= player->speed * dt;
+	}	
+
+
+	//app->render->camera.x = -player->position.x + (windowW / 2);
+	//app->render->camera.y = -player->position.y + (windowH / 2);
+
+	printf("\r player.x: %d player.y: %d camera.x: %d camera.y: %d", player->position.x, player->position.y, app->render->camera.x, app->render->camera.y);
+
 	// Renders the image in the center of the screen 
 	//app->render->DrawTexture(img, (int)textPosX, (int)textPosY);
 
 	return true;
 }
 
-// Called each loop iteration
+// Called each loop iteration{{{{
 bool Scene::PostUpdate()
 {
 	bool ret = true;
