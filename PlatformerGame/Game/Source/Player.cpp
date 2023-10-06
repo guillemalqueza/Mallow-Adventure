@@ -189,16 +189,15 @@ bool Player::Update(float dt)
 			hasJumped = true;
 			pbody->body->SetLinearVelocity({ pbody->body->GetLinearVelocity().x, -10.0f });
 			jumpCount = 1;
-			printf("Salto1");
 		}
 		else if (jumpCount == 1 && hasJumped)
 		{
 			currentAnim->Reset();
 			currentAnim = &jumpAnim;
-			jumpCount = 2;
+			isJumping = true;
 			pbody->body->SetLinearVelocity({ pbody->body->GetLinearVelocity().x, -10.0f });
-			printf("Salto2");
-			
+			jumpCount = 2;
+
 		}
 		else if (!ground && !isJumping && !hasJumped && jumpCount == 0)
 		{
@@ -207,8 +206,8 @@ bool Player::Update(float dt)
 			isJumping = true;
 			pbody->body->SetLinearVelocity({ pbody->body->GetLinearVelocity().x, -10.0f });
 			jumpCount = 2;
-			printf("Salto3");
 		}
+
     }	
 	
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN) {
@@ -252,7 +251,7 @@ bool Player::Update(float dt)
 		if (pbody->body->GetLinearVelocity().y > 0)
 		{
 			currentAnim = &fallAnim;
-			printf("Falling");
+		/*	printf("Falling");*/
 		}
 	}
 	//else if (position.y > previousY && wall)
@@ -280,7 +279,7 @@ bool Player::Update(float dt)
     if(isFacingRight) app->render->DrawTexture(texture, position.x, position.y, &rect);
 	else app->render->DrawTexture(texture, position.x, position.y, &rect, SDL_FLIP_HORIZONTAL);
     currentAnim->Update();
-	printf("\r jumpcount: %d	ground: %d	isJumping: %d	hadJumped: %d", jumpCount, ground,isJumping,hasJumped);
+	printf("\r jumpcount: %d	ground: %d	isJumping: %d	hadJumped: %d	wall: %d", jumpCount, ground,isJumping,hasJumped,wall);
     return true;
 }
 
