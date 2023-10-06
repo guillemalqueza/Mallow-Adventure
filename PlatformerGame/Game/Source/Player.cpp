@@ -103,7 +103,7 @@ bool Player::Update(float dt)
 
     b2Vec2 vel = b2Vec2(0, -GRAVITY_Y);
 
-	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_S) == KEY_IDLE && wall)
+	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_S) == KEY_IDLE && wall && !ground)
 	{
 		pbody->body->SetGravityScale(0.0f);
 		pbody->body->SetLinearVelocity({ pbody->body->GetLinearVelocity().x, 0 });
@@ -119,6 +119,7 @@ bool Player::Update(float dt)
     {
 		if (wall)
 		{
+			ground = false;
 			vel = b2Vec2(0, -speed * dt);
 			currentAnim = &wallAnim;
 		}
@@ -127,6 +128,7 @@ bool Player::Update(float dt)
     {
 		if (wall)
 		{
+			ground = false;
 			vel = b2Vec2(0, speed * dt);
 			currentAnim = &wallAnim;
 		}
@@ -142,24 +144,32 @@ bool Player::Update(float dt)
     if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
     {
         vel = b2Vec2(-speed * dt, -GRAVITY_Y);
-		if (!isJumping)
+		if (!isJumping && !wall)
 		{
 			if (isCrouching) currentAnim = &crouchWalkAnim;
 			else currentAnim = &walkAnim;
 		}
 		isWalking = true;
+		if (currentAnim == &wallAnim && !ground && isFacingRight)
+		{
+			wall = false;
+		}
 		isFacingRight = false;
     }
 
     if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
     {
         vel = b2Vec2(speed * dt, -GRAVITY_Y);
-		if (!isJumping)
+		if (!isJumping && !wall)
 		{
 			if (isCrouching) currentAnim = &crouchWalkAnim;
 			else currentAnim = &walkAnim;
 		}
 		isWalking = true;
+		if (currentAnim == &wallAnim && !ground && !isFacingRight)
+		{
+			wall = false;
+		}
 		isFacingRight = true;
     }
 
@@ -258,7 +268,7 @@ bool Player::Update(float dt)
 	//{
 	//	currentAnim = &fallAnim;
 	//}
-	else
+	else if(!wall)
 	{
 		ground = true;
 		//jumpCount = 0;
@@ -297,17 +307,16 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		LOG("Collision ITEM");
 		app->audio->PlayFx(pickCoinFxId);
 		break;
-	case ColliderType::WALL:
-		LOG("Collision WALL");
-		wall = true;
-		break;
 	case ColliderType::PLATFORM:
 		LOG("Collision PLATFORM");
 		ground = true;
-		wall = false;
 		jumpCount = 0;
 		hasJumped = false;
-		isJumping=false;
+		isJumping = false;
+		break;
+	case ColliderType::WALL:
+		LOG("Collision WALL");
+		wall = true;
 		break;
 	case ColliderType::UNKNOWN:
 		LOG("Collision UNKNOWN");
