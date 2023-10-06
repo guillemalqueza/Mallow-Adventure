@@ -106,6 +106,7 @@ bool Player::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_S) == KEY_IDLE && wall)
 	{
 		pbody->body->SetGravityScale(0.0f);
+		pbody->body->SetLinearVelocity({ pbody->body->GetLinearVelocity().x, 0 });
 		vel = b2Vec2(0, 0);
 		currentAnim = &wallAnim;
 	}
@@ -179,31 +180,34 @@ bool Player::Update(float dt)
 	}
 
     if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-    {
-		if (!isJumping && !hasJumped)
+	{
+		if (!isJumping && !hasJumped && ground && jumpCount == 0)
 		{
 			currentAnim->Reset();
 			currentAnim = &jumpAnim;
 			isJumping = true;
+			hasJumped = true;
 			pbody->body->SetLinearVelocity({ pbody->body->GetLinearVelocity().x, -10.0f });
 			jumpCount = 1;
+			printf("Salto1");
 		}
-		else if (jumpCount == 1)
+		else if (jumpCount == 1 && hasJumped)
 		{
-			pbody->body->SetLinearVelocity({ pbody->body->GetLinearVelocity().x, -10.0f });
 			currentAnim->Reset();
 			currentAnim = &jumpAnim;
-			jumpCount = 0;
-			hasJumped = true;
+			jumpCount = 2;
+			pbody->body->SetLinearVelocity({ pbody->body->GetLinearVelocity().x, -10.0f });
+			printf("Salto2");
 			
 		}
-		if (!ground && isJumping)
+		else if (!ground && !isJumping && !hasJumped && jumpCount == 0)
 		{
 			currentAnim->Reset();
 			currentAnim = &jumpAnim;
 			isJumping = true;
 			pbody->body->SetLinearVelocity({ pbody->body->GetLinearVelocity().x, -10.0f });
-			jumpCount = 0;
+			jumpCount = 2;
+			printf("Salto3");
 		}
     }	
 	
@@ -241,10 +245,15 @@ bool Player::Update(float dt)
         isJumping = false;
     }
 
-	if (position.y != previousY && !isJumping && !wall && !isDashing)
+	if (position.y != previousY && !wall && !isDashing)
 	{
 		ground = false;
-		currentAnim = &fallAnim;
+		
+		if (pbody->body->GetLinearVelocity().y > 0)
+		{
+			currentAnim = &fallAnim;
+			printf("Falling");
+		}
 	}
 	//else if (position.y > previousY && wall)
 	//{
@@ -257,8 +266,6 @@ bool Player::Update(float dt)
 	}
 
 	previousY = position.y;
-
-	if(!ground) currentAnim = &fallAnim;
 
 	if (!isJumping) pbody->body->SetLinearVelocity(vel);
 	else if(!isDashing)
@@ -273,7 +280,7 @@ bool Player::Update(float dt)
     if(isFacingRight) app->render->DrawTexture(texture, position.x, position.y, &rect);
 	else app->render->DrawTexture(texture, position.x, position.y, &rect, SDL_FLIP_HORIZONTAL);
     currentAnim->Update();
-	//printf("\r jumpcount: %d ground=%d, isdashing=%d", jumpCount, ground,isDashing);
+	printf("\r jumpcount: %d	ground: %d	isJumping: %d	hadJumped: %d", jumpCount, ground,isJumping,hasJumped);
     return true;
 }
 
@@ -301,6 +308,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		wall = false;
 		jumpCount = 0;
 		hasJumped = false;
+		isJumping=false;
 		break;
 	case ColliderType::UNKNOWN:
 		LOG("Collision UNKNOWN");
