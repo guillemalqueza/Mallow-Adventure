@@ -185,12 +185,12 @@ bool Player::Update(float dt)
 			currentAnim->Reset();
 			currentAnim = &jumpAnim;
 			isJumping = true;
-			pbody->body->ApplyLinearImpulse({ 0, -10.0f }, pbody->body->GetWorldCenter(), true);
+			pbody->body->SetLinearVelocity({ pbody->body->GetLinearVelocity().x, -10.0f });
 			jumpCount = 1;
 		}
 		else if (jumpCount == 1)
 		{
-			pbody->body->ApplyLinearImpulse({ 0, -10.0f }, pbody->body->GetWorldCenter(), true);
+			pbody->body->SetLinearVelocity({ pbody->body->GetLinearVelocity().x, -10.0f });
 			currentAnim->Reset();
 			currentAnim = &jumpAnim;
 			jumpCount = 0;
@@ -202,7 +202,7 @@ bool Player::Update(float dt)
 			currentAnim->Reset();
 			currentAnim = &jumpAnim;
 			isJumping = true;
-			pbody->body->ApplyLinearImpulse({ 0, -10.0f }, pbody->body->GetWorldCenter(), true);
+			pbody->body->SetLinearVelocity({ pbody->body->GetLinearVelocity().x, -10.0f });
 			jumpCount = 0;
 		}
     }	
