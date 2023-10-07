@@ -23,6 +23,7 @@
     <ClCompile Include="Source\Map.cpp" />
     <ClCompile Include="Source\Physics.cpp" />
     <ClCompile Include="Source\Jumper.cpp" />
+    <ClCompile Include="Source\CrumblingPlatform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -70,6 +71,7 @@
     <ClInclude Include="Source\Physics.h" />
     <ClInclude Include="Source\Animation.h" />
     <ClInclude Include="Source\Jumper.h" />
+    <ClInclude Include="Source\CrumblingPlatform.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">

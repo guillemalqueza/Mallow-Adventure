@@ -92,6 +92,9 @@ Entity* EntityManager::CreateEntity(EntityType type)
 	case EntityType::JUMPER:
 		entity = new Jumper();
 		break;
+	case EntityType::CRUMBLING_PLATFORM:
+		entity = new CrumblingPlatform();
+		break;
 	default:
 		break;
 	}

@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "Item.h"
 #include "Jumper.h"
+#include "CrumblingPlatform.h"
 
 struct SDL_Texture;
 
@@ -34,13 +35,13 @@ public:
 
 	// Called before quitting
 	bool CleanUp();
-
+	Player* player;
 private:
 	SDL_Texture* img;
 	float textPosX, textPosY = 0;
 	uint texW, texH;
 	uint windowW, windowH;
-	Player* player;
+
 
 };
 

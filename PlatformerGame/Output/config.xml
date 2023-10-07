@@ -29,6 +29,7 @@
     <item x="200" y="672" texturepath="Assets/Textures/goldCoin.png"/>
     <item x="500" y="672" texturepath="Assets/Textures/goldCoin.png"/>
     <jumper x="160" y="690" texturepath="Assets/Textures/jumper.png"/>
+    <crumblingPlatform x="600" y="400" texturepath="Assets/Textures/crumblingPlatform.png"/>
   </scene>
 
   <map>

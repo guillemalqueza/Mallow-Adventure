@@ -43,6 +43,11 @@ bool Scene::Awake(pugi::xml_node& config)
 		jumper->parameters = config.child("jumper");
 	}
 
+	if (config.child("crumblingPlatform")) {
+		CrumblingPlatform* crumblingPlatform = (CrumblingPlatform*)app->entityManager->CreateEntity(EntityType::CRUMBLING_PLATFORM);
+		crumblingPlatform->parameters = config.child("crumblingPlatform");
+	}
+
 	return ret;
 }
 
