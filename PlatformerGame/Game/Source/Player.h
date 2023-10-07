@@ -49,7 +49,7 @@ public:
 	bool isRunning = false;
 	bool isDashing = false;
 	bool canDash = true;
-
+	bool jumper = false;
 
 };
 

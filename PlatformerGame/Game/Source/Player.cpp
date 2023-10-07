@@ -88,6 +88,8 @@ bool Player::Start() {
 
 	currentAnim = &idleAnim;
 
+	jumper = false;
+
 	pbody = app->physics->CreateCircle(position.x + 50, position.y, 32, bodyType::DYNAMIC);
 	pbody->listener = this;
 	pbody->ctype = ColliderType::PLAYER;
@@ -276,6 +278,15 @@ bool Player::Update(float dt)
 
 	previousY = position.y;
 
+	if (jumper)
+	{
+		isJumping = true;
+		currentAnim->Reset();
+		currentAnim = &jumpAnim;
+		pbody->body->ApplyLinearImpulse({ 0, -15.0f }, pbody->body->GetWorldCenter(), true);
+		jumper = false;
+	}
+
 	if (!isJumping) pbody->body->SetLinearVelocity(vel);
 	else if(!isDashing)
 	{
@@ -317,6 +328,10 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 	case ColliderType::WALL:
 		LOG("Collision WALL");
 		wall = true;
+		break;
+	case ColliderType::JUMP:
+		LOG("Collision JUMP");
+		jumper = true;
 		break;
 	case ColliderType::UNKNOWN:
 		LOG("Collision UNKNOWN");
