@@ -193,8 +193,8 @@ bool Map::Load()
     PhysBody* c5 = app->physics->CreateRectangle(0, 500, 100, 420, STATIC);
     c5->ctype = ColliderType::WALL;
 
-    PhysBody* c6 = app->physics->CreateRectangle(180, 710, 30, 30, STATIC);
-    c6->ctype = ColliderType::JUMP;
+    //PhysBody* c6 = app->physics->CreateRectangle(180, 710, 30, 30, STATIC);
+    //c6->ctype = ColliderType::JUMP;
     
     if(ret == true)
     {

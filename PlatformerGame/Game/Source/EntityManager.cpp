@@ -3,6 +3,8 @@
 #include "App.h"
 #include "Textures.h"
 #include "Scene.h"
+#include "Item.h"
+#include "Jumper.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -86,6 +88,9 @@ Entity* EntityManager::CreateEntity(EntityType type)
 		break;
 	case EntityType::ITEM:
 		entity = new Item();
+		break;
+	case EntityType::JUMPER:
+		entity = new Jumper();
 		break;
 	default:
 		break;

@@ -246,6 +246,14 @@ bool Player::Update(float dt)
 		lastKeyPressTimeD = currentTime;
 	}
 
+	if (jumper)
+	{
+		isJumping = true;
+		currentAnim->Reset();
+		currentAnim = &jumpAnim;
+		pbody->body->ApplyLinearImpulse({ 0, -15.0f }, pbody->body->GetWorldCenter(), true);
+		jumper = false;
+	}
 	
 
     if (isJumping && currentAnim->HasFinished() || ( app->input->GetKey(SDL_SCANCODE_S)== KEY_REPEAT && !wall))
@@ -277,15 +285,6 @@ bool Player::Update(float dt)
 	}
 
 	previousY = position.y;
-
-	if (jumper)
-	{
-		isJumping = true;
-		currentAnim->Reset();
-		currentAnim = &jumpAnim;
-		pbody->body->ApplyLinearImpulse({ 0, -15.0f }, pbody->body->GetWorldCenter(), true);
-		jumper = false;
-	}
 
 	if (!isJumping) pbody->body->SetLinearVelocity(vel);
 	else if(!isDashing)
