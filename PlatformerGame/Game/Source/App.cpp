@@ -58,7 +58,7 @@ App::~App()
 	// Release modules
 	ListItem<Module*>* item = modules.end;
 
-	while(item != NULL)
+	while (item != NULL)
 	{
 		RELEASE(item->data);
 		item = item->prev;
@@ -80,15 +80,16 @@ bool App::Awake()
 
 	bool ret = LoadConfig();
 
-	if(ret == true)
+	if (ret == true)
 	{
-		title = configNode.child("app").child("title").child_value(); 
-		win->SetTitle(title.GetString());
+		gameTitle = configNode.child("app").child("title").child_value();
+		win->SetTitle(gameTitle.GetString());
+		maxFrameDuration = configFile.child("config").child("app").child("maxFrameDuration").attribute("value").as_int();
 
 		ListItem<Module*>* item;
 		item = modules.start;
 
-		while(item != NULL && ret == true)
+		while (item != NULL && ret == true)
 		{
 			// If the section with the module name exists in config.xml, fill the pointer with the valid xml_node
 			// that can be used to read all variables for that module.
@@ -113,7 +114,7 @@ bool App::Start()
 	ListItem<Module*>* item;
 	item = modules.start;
 
-	while(item != NULL && ret == true)
+	while (item != NULL && ret == true)
 	{
 		ret = item->data->Start();
 		item = item->next;
@@ -130,16 +131,16 @@ bool App::Update()
 	bool ret = true;
 	PrepareUpdate();
 
-	if(input->GetWindowEvent(WE_QUIT) == true)
+	if (input->GetWindowEvent(WE_QUIT) == true)
 		ret = false;
 
-	if(ret == true)
+	if (ret == true)
 		ret = PreUpdate();
 
-	if(ret == true)
+	if (ret == true)
 		ret = DoUpdate();
 
-	if(ret == true)
+	if (ret == true)
 		ret = PostUpdate();
 
 	FinishUpdate();
@@ -175,7 +176,7 @@ void App::FinishUpdate()
 	// This is a good place to call Load / Save functions
 	double currentDt = frameTime.ReadMs();
 	if (maxFrameDuration > 0 && currentDt < maxFrameDuration) {
-		uint32 delay = (uint32) (maxFrameDuration - currentDt);
+		uint32 delay = (uint32)(maxFrameDuration - currentDt);
 
 		PerfTimer delayTimer = PerfTimer();
 		SDL_Delay(delay);
@@ -187,9 +188,9 @@ void App::FinishUpdate()
 
 	// Amount of time since game start (use a low resolution timer)
 	secondsSinceStartup = startupTime.ReadSec();
-	
+
 	// Amount of ms took the last update (dt)
-	dt = (float) frameTime.ReadMs();
+	dt = (float)frameTime.ReadMs();
 
 	// Amount of frames during the last second
 	lastSecFrameCount++;
@@ -198,15 +199,15 @@ void App::FinishUpdate()
 	if (lastSecFrameTime.ReadMs() > 1000) {
 		lastSecFrameTime.Start();
 		averageFps = (averageFps + lastSecFrameCount) / 2;
-		framesPerSecond = lastSecFrameCount; 
+		framesPerSecond = lastSecFrameCount;
 		lastSecFrameCount = 0;
 	}
 
 
 	// Shows the time measurements in the window title
 	static char title[256];
-	sprintf_s(title, 256, "Av.FPS: %.2f Last sec frames: %i Last dt: %.3f Time since startup: %I32u Frame Count: %I64u ",
-		averageFps, framesPerSecond, dt, secondsSinceStartup, frameCount);
+	sprintf_s(title, 256, "%s: Av.FPS: %.2f Last sec frames: %i Last dt: %.3f Time since startup: %I32u Frame Count: %I64u ",
+		gameTitle.GetString(), averageFps, framesPerSecond, dt, secondsSinceStartup, frameCount);
 
 	app->win->SetTitle(title);
 }
@@ -219,11 +220,11 @@ bool App::PreUpdate()
 	ListItem<Module*>* item;
 	Module* pModule = NULL;
 
-	for(item = modules.start; item != NULL && ret == true; item = item->next)
+	for (item = modules.start; item != NULL && ret == true; item = item->next)
 	{
 		pModule = item->data;
 
-		if(pModule->active == false) {
+		if (pModule->active == false) {
 			continue;
 		}
 
@@ -241,11 +242,11 @@ bool App::DoUpdate()
 	item = modules.start;
 	Module* pModule = NULL;
 
-	for(item = modules.start; item != NULL && ret == true; item = item->next)
+	for (item = modules.start; item != NULL && ret == true; item = item->next)
 	{
 		pModule = item->data;
 
-		if(pModule->active == false) {
+		if (pModule->active == false) {
 			continue;
 		}
 
@@ -262,11 +263,11 @@ bool App::PostUpdate()
 	ListItem<Module*>* item;
 	Module* pModule = NULL;
 
-	for(item = modules.start; item != NULL && ret == true; item = item->next)
+	for (item = modules.start; item != NULL && ret == true; item = item->next)
 	{
 		pModule = item->data;
 
-		if(pModule->active == false) {
+		if (pModule->active == false) {
 			continue;
 		}
 
@@ -285,7 +286,7 @@ bool App::CleanUp()
 	ListItem<Module*>* item;
 	item = modules.end;
 
-	while(item != NULL && ret == true)
+	while (item != NULL && ret == true)
 	{
 		ret = item->data->CleanUp();
 		item = item->prev;
@@ -305,7 +306,7 @@ int App::GetArgc() const
 // ---------------------------------------
 const char* App::GetArgv(int index) const
 {
-	if(index < argc)
+	if (index < argc)
 		return args[index];
 	else
 		return NULL;
@@ -314,7 +315,7 @@ const char* App::GetArgv(int index) const
 // ---------------------------------------
 const char* App::GetTitle() const
 {
-	return title.GetString();
+	return gameTitle.GetString();
 }
 
 // ---------------------------------------

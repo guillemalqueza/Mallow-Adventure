@@ -109,6 +109,8 @@ public:
     // Called before render is available
     bool Awake(pugi::xml_node& conf);
 
+	bool Start();
+
 	// Called each loop iteration
 	bool Update(float dt);
 
@@ -116,7 +118,7 @@ public:
     bool CleanUp();
 
     // Load new map
-    bool Load();
+	bool Load(SString mapFileName);
 
 	iPoint MapToWorld(int x, int y) const;
 	iPoint Map::WorldToMap(int x, int y);
@@ -133,12 +135,12 @@ private:
 public: 
 
 	MapData mapData;
+	SString name;
+	SString path;
 
 private:
 
-    SString mapFileName;
-	SString mapFolder;
-    bool mapLoaded;
+	bool mapLoaded;
 };
 
 #endif // __MAP_H__

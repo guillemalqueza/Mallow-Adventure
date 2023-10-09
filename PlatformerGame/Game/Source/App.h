@@ -89,10 +89,10 @@ private:
 
 	int argc;
 	char** args;
-	SString title;
+	SString gameTitle;
 	SString organization;
 
-	List<Module *> modules;
+	List<Module*> modules;
 
 	// xml_document to store the config file and
 	// xml_node(s) to read specific branches of the xml
@@ -102,7 +102,7 @@ private:
 	uint frames;
 	float dt;
 
-    // required variables are provided:
+	// required variables are provided:
 	Timer startupTime;
 	PerfTimer frameTime;
 	PerfTimer lastSecFrameTime;
