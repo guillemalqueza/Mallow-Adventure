@@ -182,17 +182,19 @@ bool Map::Load(SString mapFileName)
     {
         ret = LoadAllLayers(mapFileXML.child("map"));
     }
+
+    CreateColliders();
     
     // NOTE: Later you have to create a function here to load and create the colliders from the map
 
-    PhysBody* c1 = app->physics->CreateRectangle(224 + 128, 543 + 32, 256, 64, STATIC);
-    c1->ctype = ColliderType::PLATFORM;
+    //PhysBody* c1 = app->physics->CreateRectangle(224 + 128, 543 + 32, 256, 64, STATIC);
+    //c1->ctype = ColliderType::PLATFORM;
 
-    PhysBody* c2 = app->physics->CreateRectangle(352 + 64, 384 + 32, 128, 64, STATIC);
-    c2->ctype = ColliderType::PLATFORM;
+    //PhysBody* c2 = app->physics->CreateRectangle(352 + 64, 384 + 32, 128, 64, STATIC);
+    //c2->ctype = ColliderType::PLATFORM;
 
-    PhysBody* c3 = app->physics->CreateRectangle(256, 704 + 32, 576, 64, STATIC);
-    c3->ctype = ColliderType::PLATFORM;
+    //PhysBody* c3 = app->physics->CreateRectangle(256, 704 + 32, 576, 64, STATIC);
+    //c3->ctype = ColliderType::PLATFORM;
 
     //PhysBody* c4 = app->physics->CreateRectangleSensor(0,500, 140, 420, STATIC);
     //c4->ctype = ColliderType::WALL;
@@ -346,6 +348,46 @@ bool Map::LoadProperties(pugi::xml_node& node, Properties& properties)
         p->value = propertieNode.attribute("value").as_bool(); // (!!) I'm assuming that all values are bool !!
 
         properties.list.Add(p);
+    }
+
+    return ret;
+}
+
+bool Map::CreateColliders()
+{
+    ListItem<MapLayer*>* mapLayerItem;
+    mapLayerItem = mapData.maplayers.start;
+
+    bool ret = false;
+
+    while (mapLayerItem != NULL) {
+
+        if (mapLayerItem->data->name == "Collisions")
+        {
+            for (int x = 0; x < mapLayerItem->data->width; x++)
+            {
+                for (int y = 0; y < mapLayerItem->data->height; y++)
+                {
+                    if (mapLayerItem->data->Get(x, y) != 0)
+                    {
+                        iPoint pos = MapToWorld(x, y);
+
+                        PhysBody* c1 = app->physics->CreateRectangle(pos.x + (mapData.tileWidth / 2), pos.y + (mapData.tileHeight / 2), mapData.tileWidth, mapData.tileHeight, STATIC);
+
+                        switch (mapLayerItem->data->Get(x, y))
+                        {
+                            case 1489:
+                                c1->ctype = ColliderType::PLATFORM;
+                                ret = true;
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+        mapLayerItem = mapLayerItem->next;
     }
 
     return ret;
