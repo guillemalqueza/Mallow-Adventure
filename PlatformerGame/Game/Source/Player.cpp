@@ -300,6 +300,7 @@ bool Player::Update(float dt)
 	else app->render->DrawTexture(texture, position.x, position.y, &rect, SDL_FLIP_HORIZONTAL);
     currentAnim->Update();
 	printf("\r jumpcount: %d	ground: %d	isJumping: %d	hadJumped: %d	wall: %d", jumpCount, ground,isJumping,hasJumped,wall);
+	//printf("\r playerx %d playery %d", position.x, position.y);
     return true;
 }
 
@@ -324,7 +325,11 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		hasJumped = false;
 		isJumping = false;
 		break;
-	case ColliderType::WALL:
+	case ColliderType::L_WALL:
+		LOG("Collision WALL");
+		wall = true;
+		break;
+	case ColliderType::R_WALL:
 		LOG("Collision WALL");
 		wall = true;
 		break;

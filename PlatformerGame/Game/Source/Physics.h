@@ -27,7 +27,8 @@ enum class ColliderType {
 	PLAYER, 
 	ITEM,
 	PLATFORM,
-	WALL,
+	L_WALL,
+	R_WALL,
 	JUMP,
 	UNKNOWN
 	// ..

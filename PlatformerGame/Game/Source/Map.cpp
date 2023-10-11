@@ -383,9 +383,14 @@ bool Map::CreateColliders()
                             break;
                         case 1490:
 							c1 = app->physics->CreateRectangle(pos.x + (mapData.tileWidth / 4), pos.y + (mapData.tileHeight / 2), mapData.tileWidth / 2, mapData.tileHeight, STATIC);
-							c1->ctype = ColliderType::WALL;
+							c1->ctype = ColliderType::L_WALL;
 							ret = true;
 							break;
+                        case 1491:
+                            c1 = app->physics->CreateRectangle(pos.x + 24, pos.y + (mapData.tileHeight / 2), mapData.tileWidth / 2, mapData.tileHeight, STATIC);
+                            c1->ctype = ColliderType::R_WALL;
+                            ret = true;
+                            break;
                         default:
                             break;
                         }
