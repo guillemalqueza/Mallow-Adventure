@@ -199,8 +199,8 @@ bool Map::Load(SString mapFileName)
     //PhysBody* c4 = app->physics->CreateRectangleSensor(0,500, 140, 420, STATIC);
     //c4->ctype = ColliderType::WALL;
 
-    PhysBody* c5 = app->physics->CreateRectangle(0, 500, 100, 420, STATIC);
-    c5->ctype = ColliderType::WALL;
+    //PhysBody* c5 = app->physics->CreateRectangle(0, 500, 100, 420, STATIC);
+    //c5->ctype = ColliderType::WALL;
 
     //PhysBody* c6 = app->physics->CreateRectangle(180, 710, 30, 30, STATIC);
     //c6->ctype = ColliderType::JUMP;
@@ -372,16 +372,22 @@ bool Map::CreateColliders()
                     {
                         iPoint pos = MapToWorld(x, y);
 
-                        PhysBody* c1 = app->physics->CreateRectangle(pos.x + (mapData.tileWidth / 2), pos.y + (mapData.tileHeight / 2), mapData.tileWidth, mapData.tileHeight, STATIC);
+                        PhysBody* c1 = nullptr;
 
                         switch (mapLayerItem->data->Get(x, y))
                         {
-                            case 1489:
-                                c1->ctype = ColliderType::PLATFORM;
-                                ret = true;
-                                break;
-                            default:
-                                break;
+                        case 1489:
+                            c1 = app->physics->CreateRectangle(pos.x + (mapData.tileWidth / 2), pos.y + (mapData.tileHeight / 2), mapData.tileWidth, mapData.tileHeight, STATIC);
+                            c1->ctype = ColliderType::PLATFORM;
+                            ret = true;
+                            break;
+                        case 1490:
+							c1 = app->physics->CreateRectangle(pos.x + (mapData.tileWidth / 4), pos.y + (mapData.tileHeight / 2), mapData.tileWidth / 2, mapData.tileHeight, STATIC);
+							c1->ctype = ColliderType::WALL;
+							ret = true;
+							break;
+                        default:
+                            break;
                         }
                     }
                 }
