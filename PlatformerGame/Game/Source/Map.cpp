@@ -376,19 +376,24 @@ bool Map::CreateColliders()
 
                         switch (mapLayerItem->data->Get(x, y))
                         {
-                        case 1489:
+                        case 1441:
                             c1 = app->physics->CreateRectangle(pos.x + (mapData.tileWidth / 2), pos.y + (mapData.tileHeight / 2), mapData.tileWidth, mapData.tileHeight, STATIC);
                             c1->ctype = ColliderType::PLATFORM;
                             ret = true;
                             break;
-                        case 1490:
+                        case 1442:
 							c1 = app->physics->CreateRectangle(pos.x + (mapData.tileWidth / 4), pos.y + (mapData.tileHeight / 2), mapData.tileWidth / 2, mapData.tileHeight, STATIC);
 							c1->ctype = ColliderType::L_WALL;
 							ret = true;
 							break;
-                        case 1491:
+                        case 1443:
                             c1 = app->physics->CreateRectangle(pos.x + 24, pos.y + (mapData.tileHeight / 2), mapData.tileWidth / 2, mapData.tileHeight, STATIC);
                             c1->ctype = ColliderType::R_WALL;
+                            ret = true;
+                            break;
+                        case 1445:
+                            c1 = app->physics->CreateRectangleSensor(pos.x + (mapData.tileWidth / 2), pos.y + (mapData.tileHeight / 2), mapData.tileWidth, mapData.tileHeight, STATIC);
+                            c1->ctype = ColliderType::SPIKE;
                             ret = true;
                             break;
                         default:

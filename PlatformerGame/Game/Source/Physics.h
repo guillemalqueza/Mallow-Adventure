@@ -29,6 +29,7 @@ enum class ColliderType {
 	PLATFORM,
 	L_WALL,
 	R_WALL,
+	SPIKE,
 	JUMP,
 	UNKNOWN
 	// ..

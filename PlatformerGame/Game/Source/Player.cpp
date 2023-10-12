@@ -326,12 +326,15 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		isJumping = false;
 		break;
 	case ColliderType::L_WALL:
-		LOG("Collision WALL");
+		LOG("Collision L_WALL");
 		wall = true;
 		break;
 	case ColliderType::R_WALL:
-		LOG("Collision WALL");
+		LOG("Collision R_WALL");
 		wall = true;
+		break;
+	case ColliderType::SPIKE:
+		LOG("Collision SPIKE");
 		break;
 	case ColliderType::JUMP:
 		LOG("Collision JUMP");
