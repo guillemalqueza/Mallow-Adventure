@@ -110,25 +110,35 @@ bool Scene::Update(float dt)
 	if(app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		app->render->camera.x += (int)ceil(camSpeed * dt);
 
+	playerX = player->position.x;
+	playerY = player->position.y;
 
-	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-	{
-		if (player->position.x > 400 && app->render->camera.x < 0) app->render->camera.x += player->speed * dt;
+	cameraX = playerX - (windowW / 2);
+	cameraY = playerY - (windowH / 2);
+
+	if (cameraX < 0) {
+		cameraX = 0;
+	}
+	else if (cameraX + windowW > levelWidth) {
+		cameraX = levelWidth - windowW;
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-	{
-		if (player->position.x > 400) app->render->camera.x -= player->speed * dt;
-	}	
+	if (cameraY < 0) {
+		cameraY = 0;
+	}
+	else if (cameraY + windowH > levelHeight) {
+		cameraY = levelHeight - windowH;
+	}
 
-
-	//app->render->camera.x = -player->position.x + (windowW / 2);
-	//app->render->camera.y = -player->position.y + (windowH / 2);
-
-	//printf("\r player.x: %d player.y: %d camera.x: %d camera.y: %d", player->position.x, player->position.y, app->render->camera.x, app->render->camera.y);
-
-	// Renders the image in the center of the screen 
-	//app->render->DrawTexture(img, (int)textPosX, (int)textPosY);
+	if (cameraInitialized) {
+		app->render->camera.x += (-cameraX - app->render->camera.x) * cameraSmoothingFactor;
+		app->render->camera.y += (-cameraY - app->render->camera.y) * cameraSmoothingFactor;
+	}
+	else {
+		app->render->camera.x = -cameraX;
+		app->render->camera.y = -cameraY;
+		cameraInitialized = true;
+	}
 
 	return true;
 }

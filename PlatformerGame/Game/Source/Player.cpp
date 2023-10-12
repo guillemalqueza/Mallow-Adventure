@@ -299,7 +299,7 @@ bool Player::Update(float dt)
     if(isFacingRight) app->render->DrawTexture(texture, position.x, position.y, &rect);
 	else app->render->DrawTexture(texture, position.x, position.y, &rect, SDL_FLIP_HORIZONTAL);
     currentAnim->Update();
-	printf("\r jumpcount: %d	ground: %d	isJumping: %d	hadJumped: %d	wall: %d", jumpCount, ground,isJumping,hasJumped,wall);
+	//printf("\r jumpcount: %d	ground: %d	isJumping: %d	hadJumped: %d	wall: %d", jumpCount, ground,isJumping,hasJumped,wall);
 	//printf("\r playerx %d playery %d", position.x, position.y);
     return true;
 }

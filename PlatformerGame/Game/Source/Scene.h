@@ -42,6 +42,12 @@ private:
 	uint texW, texH;
 	uint windowW, windowH;
 
+	float cameraSmoothingFactor = 0.1;
+	bool cameraInitialized = false;
+	int levelWidth = 107 * 32;
+	int levelHeight = 50 * 32;
+
+	int playerX, playerY, cameraX, cameraY;
 
 };
 
