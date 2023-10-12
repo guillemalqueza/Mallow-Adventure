@@ -25,7 +25,7 @@
     <map path="Assets/Maps/" name="MapTemplate.tmx"/>
     <player x="400" y="991" texturepath="Assets/Textures/player1.png"/>
     <item x="256" y="950" texturepath="Assets/Textures/key.png"/>
-    <jumper x="160" y="1000" texturepath="Assets/Textures/jumper.png"/>
+    <jumper x="160" y="1019" texturepath="Assets/Textures/jumper.png"/>
     <crumblingPlatform x="600" y="850" texturepath="Assets/Textures/crumblingPlatform.png"/>
   </scene>
   
