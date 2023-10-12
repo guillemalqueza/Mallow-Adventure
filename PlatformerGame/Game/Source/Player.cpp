@@ -103,7 +103,7 @@ bool Player::Update(float dt)
 {
     if (!isJumping) currentAnim = &idleAnim;
 
-    b2Vec2 vel = b2Vec2(0, -GRAVITY_Y);
+	b2Vec2 vel = pbody->body->GetLinearVelocity();
 
 	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_S) == KEY_IDLE && wall && !ground)
 	{
@@ -145,7 +145,7 @@ bool Player::Update(float dt)
 
     if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
     {
-        vel = b2Vec2(-speed * dt, -GRAVITY_Y);
+		if (!isDashing) vel.x = -speed * dt;
 		if (!isJumping && !wall)
 		{
 			if (isCrouching) currentAnim = &crouchWalkAnim;
@@ -161,7 +161,7 @@ bool Player::Update(float dt)
 
     if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
     {
-        vel = b2Vec2(speed * dt, -GRAVITY_Y);
+		if (!isDashing) vel.x = speed * dt;
 		if (!isJumping && !wall)
 		{
 			if (isCrouching) currentAnim = &crouchWalkAnim;
@@ -175,10 +175,10 @@ bool Player::Update(float dt)
 		isFacingRight = true;
     }
 
-	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE)
+	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE && !isDashing)
 	{
 		isWalking = false;
-		isDashing = false;
+		vel.x = 0;
 	}
 
 	if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT) {
@@ -199,7 +199,8 @@ bool Player::Update(float dt)
 			currentAnim = &jumpAnim;
 			isJumping = true;
 			hasJumped = true;
-			pbody->body->SetLinearVelocity({ pbody->body->GetLinearVelocity().x, -10.0f });
+			vel = b2Vec2(vel.x, -10.0f);
+			pbody->body->SetLinearVelocity(vel);
 			jumpCount = 1;
 		}
 		else if (jumpCount == 1 && hasJumped)
@@ -207,7 +208,8 @@ bool Player::Update(float dt)
 			currentAnim->Reset();
 			currentAnim = &jumpAnim;
 			isJumping = true;
-			pbody->body->SetLinearVelocity({ pbody->body->GetLinearVelocity().x, -10.0f });
+			vel = b2Vec2(vel.x, -10.0f);
+			pbody->body->SetLinearVelocity(vel);
 			jumpCount = 2;
 
 		}
@@ -216,34 +218,26 @@ bool Player::Update(float dt)
 			currentAnim->Reset();
 			currentAnim = &jumpAnim;
 			isJumping = true;
-			pbody->body->SetLinearVelocity({ pbody->body->GetLinearVelocity().x, -10.0f });
+			vel = b2Vec2(vel.x, -10.0f);
+			pbody->body->SetLinearVelocity(vel);
 			jumpCount = 2;
 		}
 
     }	
 	
-	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN) {
-
-		Uint32 currentTime = SDL_GetTicks();
-		if ((currentTime - lastKeyPressTimeA) <= 15 * dt)
-		{
-			//DASHEAR
-			//printf("DASH \n");
-			isDashing = true;
-			pbody->body->ApplyLinearImpulse({ -20.0f, 0 }, pbody->body->GetWorldCenter(), true);
-		}
-		lastKeyPressTimeA = currentTime;
+	if (app->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN && !isDashing && !ground && dashCount == 0) {
+		isDashing = true;
+		dashTimer = 0.0f;
+		vel.x += (isFacingRight ? dashVelocityX: -dashVelocityX);
+		vel.y += dashVelocityY;
+		dashCount = 1;
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN) {
-		Uint32 currentTime = SDL_GetTicks();
-		if ((currentTime - lastKeyPressTimeD) <= 15 * dt)
-		{
-			//DASHEAR;
-			isDashing = true;
-			pbody->body->ApplyLinearImpulse({ 20.0f, 0 }, pbody->body->GetWorldCenter(), true);
+	if (isDashing) {
+		dashTimer += 0.1f;
+		if (dashTimer >= dashDuration) {
+			isDashing = false;
 		}
-		lastKeyPressTimeD = currentTime;
 	}
 
 	if (jumper)
@@ -251,7 +245,8 @@ bool Player::Update(float dt)
 		isJumping = true;
 		currentAnim->Reset();
 		currentAnim = &jumpAnim;
-		pbody->body->ApplyLinearImpulse({ 0, -15.0f }, pbody->body->GetWorldCenter(), true);
+		vel = b2Vec2(vel.x, -1.0f * dt);
+		pbody->body->SetLinearVelocity(vel);
 		jumper = false;
 	}
 	
@@ -264,7 +259,7 @@ bool Player::Update(float dt)
         isJumping = false;
     }
 
-	if (position.y != previousY && !wall && !isDashing)
+	if (position.y != previousY && !wall)
 	{
 		ground = false;
 		
@@ -286,11 +281,8 @@ bool Player::Update(float dt)
 
 	previousY = position.y;
 
-	if (!isJumping) pbody->body->SetLinearVelocity(vel);
-	else if(!isDashing)
-	{
-		pbody->body->SetLinearVelocityX(vel.x);
-	}
+	if (!isJumping && !wall && !isDashing) vel.y = -GRAVITY_Y;
+	pbody->body->SetLinearVelocity(vel);
 
     position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 50;
     position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 32;
@@ -322,6 +314,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		LOG("Collision PLATFORM");
 		ground = true;
 		jumpCount = 0;
+		dashCount = 0;
 		hasJumped = false;
 		isJumping = false;
 		break;

@@ -43,6 +43,7 @@ public:
 	bool ground = true;
 	bool isFacingRight = true;
 	int jumpCount = 0;
+	int dashCount = 0;
 	bool wall = false;
 	float previousY = 0.0f;
 	bool hasJumped = false;
@@ -50,6 +51,15 @@ public:
 	bool isDashing = false;
 	bool canDash = true;
 	bool jumper = false;
+
+	bool lastKeyPressA = false;
+	bool lastKeyPressD = false;
+
+	float dashDuration = 2.0f;
+	float dashVelocityX = 12.0f;
+	float dashVelocityY = -4.0f;
+	float dashTimer = 0.0f;
+
 
 };
 
