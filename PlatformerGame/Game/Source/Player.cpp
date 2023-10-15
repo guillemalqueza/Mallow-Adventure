@@ -8,8 +8,6 @@
 #include "Log.h"
 #include "Point.h"
 #include "Physics.h"
-Uint32 lastKeyPressTimeA = 0;
-Uint32 lastKeyPressTimeD = 0;
 
 Player::Player() : Entity(EntityType::PLAYER)
 {
@@ -86,6 +84,15 @@ bool Player::Start() {
 	wallAnim.loop = true;
 	wallAnim.speed = 0.1f;
 
+
+	deadAnim.PushBack({ 0,768,100,64 });
+	deadAnim.PushBack({ 100,768,100,64 });
+	deadAnim.PushBack({ 200,768,100,64 });
+	deadAnim.PushBack({ 300,768,100,64 });
+	deadAnim.PushBack({ 400,768,100,64 });
+	deadAnim.loop = false;
+	deadAnim.speed = 0.1f;
+
 	currentAnim = &idleAnim;
 
 	jumper = false;
@@ -101,198 +108,215 @@ bool Player::Start() {
 
 bool Player::Update(float dt)
 {
-    if (!isJumping) currentAnim = &idleAnim;
-
-	b2Vec2 vel = pbody->body->GetLinearVelocity();
-
-	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_S) == KEY_IDLE && wall && !ground)
+	if (!isDead)
 	{
-		pbody->body->SetGravityScale(0.0f);
-		pbody->body->SetLinearVelocity({ pbody->body->GetLinearVelocity().x, 0 });
-		vel = b2Vec2(0, 0);
-		currentAnim = &wallAnim;
-	}
-	else if (!wall)
-	{
-		pbody->body->SetGravityScale(1.0f);
-	}
+		if (!isJumping) currentAnim = &idleAnim;
 
-    if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
-    {
-		if (wall)
+		b2Vec2 vel = pbody->body->GetLinearVelocity();
+
+		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_S) == KEY_IDLE && wall && !ground)
 		{
-			ground = false;
-			vel = b2Vec2(0, -speed * dt);
+			pbody->body->SetGravityScale(0.0f);
+			pbody->body->SetLinearVelocity({ pbody->body->GetLinearVelocity().x, 0 });
+			vel = b2Vec2(0, 0);
 			currentAnim = &wallAnim;
 		}
-    }
-    if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-    {
-		if (wall)
+		else if (!wall)
+		{
+			pbody->body->SetGravityScale(1.0f);
+		}
+
+		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+		{
+			if (wall)
+			{
+				ground = false;
+				vel = b2Vec2(0, -speed * dt);
+				currentAnim = &wallAnim;
+			}
+		}
+		if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+		{
+			if (wall)
+			{
+				ground = false;
+				vel = b2Vec2(0, speed * dt);
+				currentAnim = &wallAnim;
+			}
+		}
+
+		if (app->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT)
+		{
+			isCrouching = true;
+			if (!isWalking) currentAnim = &crouchAnim;
+		}
+		else isCrouching = false;
+
+		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+		{
+			if (!isDashing) vel.x = -speed * dt;
+			if (!isJumping && !wall)
+			{
+				if (isCrouching) currentAnim = &crouchWalkAnim;
+				else currentAnim = &walkAnim;
+			}
+			isWalking = true;
+			if (currentAnim == &wallAnim && !ground && isFacingRight)
+			{
+				wall = false;
+			}
+			isFacingRight = false;
+		}
+
+		if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+		{
+			if (!isDashing) vel.x = speed * dt;
+			if (!isJumping && !wall)
+			{
+				if (isCrouching) currentAnim = &crouchWalkAnim;
+				else currentAnim = &walkAnim;
+			}
+			isWalking = true;
+			if (currentAnim == &wallAnim && !ground && !isFacingRight)
+			{
+				wall = false;
+			}
+			isFacingRight = true;
+		}
+
+		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE && !isDashing)
+		{
+			isWalking = false;
+			vel.x = 0;
+		}
+
+		if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT) {
+			isRunning = true;
+			speed = 0.5f;
+		}
+		else
+		{
+			isRunning = false;
+			speed = 0.2f;
+		}
+
+		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+		{
+			if (!isJumping && !hasJumped && ground && jumpCount == 0)
+			{
+				currentAnim->Reset();
+				currentAnim = &jumpAnim;
+				isJumping = true;
+				hasJumped = true;
+				vel = b2Vec2(vel.x, -10.0f);
+				pbody->body->SetLinearVelocity(vel);
+				jumpCount = 1;
+			}
+			else if (jumpCount == 1 && hasJumped)
+			{
+				currentAnim->Reset();
+				currentAnim = &jumpAnim;
+				isJumping = true;
+				vel = b2Vec2(vel.x, -10.0f);
+				pbody->body->SetLinearVelocity(vel);
+				jumpCount = 2;
+
+			}
+			else if (!ground && !isJumping && !hasJumped && jumpCount == 0)
+			{
+				currentAnim->Reset();
+				currentAnim = &jumpAnim;
+				isJumping = true;
+				vel = b2Vec2(vel.x, -10.0f);
+				pbody->body->SetLinearVelocity(vel);
+				jumpCount = 2;
+			}
+
+		}
+
+		if (app->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN && !isDashing && !ground && dashCount == 0) {
+			isDashing = true;
+			dashTimer = 0.0f;
+			vel.x += (isFacingRight ? dashVelocityX : -dashVelocityX);
+			vel.y += dashVelocityY;
+			dashCount = 1;
+		}
+
+		if (isDashing) {
+			dashTimer += 0.1f;
+			if (dashTimer >= dashDuration) {
+				isDashing = false;
+			}
+		}
+
+		if (jumper)
+		{
+			isJumping = true;
+			currentAnim->Reset();
+			currentAnim = &jumpAnim;
+			vel = b2Vec2(vel.x, -1.0f * dt);
+			pbody->body->SetLinearVelocity(vel);
+			jumper = false;
+		}
+
+
+		if (isJumping && currentAnim->HasFinished() || (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && !wall))
+		{
+			currentAnim->ResetLoopCount();
+			currentAnim->Reset();
+			currentAnim = &idleAnim;
+			isJumping = false;
+		}
+
+		if (position.y != previousY && !wall)
 		{
 			ground = false;
-			vel = b2Vec2(0, speed * dt);
-			currentAnim = &wallAnim;
+
+			if (pbody->body->GetLinearVelocity().y > 0)
+			{
+				currentAnim = &fallAnim;
+				/*	printf("Falling");*/
+			}
 		}
-    }
-
-	if (app->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT)
-	{
-		isCrouching = true;
-		if (!isWalking) currentAnim = &crouchAnim;
-	}
-	else isCrouching = false;
-
-    if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-    {
-		if (!isDashing) vel.x = -speed * dt;
-		if (!isJumping && !wall)
+		//else if (position.y > previousY && wall)
+		//{
+		//	currentAnim = &fallAnim;
+		//}
+		else if (!wall)
 		{
-			if (isCrouching) currentAnim = &crouchWalkAnim;
-			else currentAnim = &walkAnim;
+			ground = true;
+			//jumpCount = 0;
 		}
-		isWalking = true;
-		if (currentAnim == &wallAnim && !ground && isFacingRight)
-		{
-			wall = false;
-		}
-		isFacingRight = false;
-    }
 
-    if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-    {
-		if (!isDashing) vel.x = speed * dt;
-		if (!isJumping && !wall)
-		{
-			if (isCrouching) currentAnim = &crouchWalkAnim;
-			else currentAnim = &walkAnim;
-		}
-		isWalking = true;
-		if (currentAnim == &wallAnim && !ground && !isFacingRight)
-		{
-			wall = false;
-		}
-		isFacingRight = true;
-    }
+		previousY = position.y;
 
-	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE && !isDashing)
-	{
-		isWalking = false;
-		vel.x = 0;
-	}
+		if (!isJumping && !wall && !isDashing) vel.y = -GRAVITY_Y;
+		pbody->body->SetLinearVelocity(vel);
 
-	if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT) {
-		isRunning = true;
-		speed = 0.5f;
+		position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 50;
+		position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 32;
 	}
 	else
 	{
-		isRunning = false;
-		speed = 0.2f;
-	}
-
-    if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-	{
-		if (!isJumping && !hasJumped && ground && jumpCount == 0)
+		pbody->body->SetLinearVelocity({0, 0});
+		if (currentAnim!= &deadAnim)
 		{
 			currentAnim->Reset();
-			currentAnim = &jumpAnim;
-			isJumping = true;
-			hasJumped = true;
-			vel = b2Vec2(vel.x, -10.0f);
-			pbody->body->SetLinearVelocity(vel);
-			jumpCount = 1;
 		}
-		else if (jumpCount == 1 && hasJumped)
+		currentAnim = &deadAnim;
+		if (currentAnim->HasFinished())
 		{
-			currentAnim->Reset();
-			currentAnim = &jumpAnim;
-			isJumping = true;
-			vel = b2Vec2(vel.x, -10.0f);
-			pbody->body->SetLinearVelocity(vel);
-			jumpCount = 2;
-
-		}
-		else if (!ground && !isJumping && !hasJumped && jumpCount == 0)
-		{
-			currentAnim->Reset();
-			currentAnim = &jumpAnim;
-			isJumping = true;
-			vel = b2Vec2(vel.x, -10.0f);
-			pbody->body->SetLinearVelocity(vel);
-			jumpCount = 2;
-		}
-
-    }	
-	
-	if (app->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN && !isDashing && !ground && dashCount == 0) {
-		isDashing = true;
-		dashTimer = 0.0f;
-		vel.x += (isFacingRight ? dashVelocityX: -dashVelocityX);
-		vel.y += dashVelocityY;
-		dashCount = 1;
-	}
-
-	if (isDashing) {
-		dashTimer += 0.1f;
-		if (dashTimer >= dashDuration) {
-			isDashing = false;
+			pbody->body->SetTransform({ PIXEL_TO_METERS(447), PIXEL_TO_METERS(991)}, 0);
+			isDead = false;
 		}
 	}
-
-	if (jumper)
-	{
-		isJumping = true;
-		currentAnim->Reset();
-		currentAnim = &jumpAnim;
-		vel = b2Vec2(vel.x, -1.0f * dt);
-		pbody->body->SetLinearVelocity(vel);
-		jumper = false;
-	}
-	
-
-    if (isJumping && currentAnim->HasFinished() || ( app->input->GetKey(SDL_SCANCODE_S)== KEY_REPEAT && !wall))
-    {
-        currentAnim->ResetLoopCount();
-        currentAnim->Reset();
-        currentAnim = &idleAnim;
-        isJumping = false;
-    }
-
-	if (position.y != previousY && !wall)
-	{
-		ground = false;
-		
-		if (pbody->body->GetLinearVelocity().y > 0)
-		{
-			currentAnim = &fallAnim;
-		/*	printf("Falling");*/
-		}
-	}
-	//else if (position.y > previousY && wall)
-	//{
-	//	currentAnim = &fallAnim;
-	//}
-	else if(!wall)
-	{
-		ground = true;
-		//jumpCount = 0;
-	}
-
-	previousY = position.y;
-
-	if (!isJumping && !wall && !isDashing) vel.y = -GRAVITY_Y;
-	pbody->body->SetLinearVelocity(vel);
-
-    position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 50;
-    position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 32;
 
     SDL_Rect rect = currentAnim->GetCurrentFrame();
     if(isFacingRight) app->render->DrawTexture(texture, position.x, position.y, &rect);
 	else app->render->DrawTexture(texture, position.x, position.y, &rect, SDL_FLIP_HORIZONTAL);
     currentAnim->Update();
 	//printf("\r jumpcount: %d	ground: %d	isJumping: %d	hadJumped: %d	wall: %d", jumpCount, ground,isJumping,hasJumped,wall);
-	//printf("\r playerx %d playery %d", position.x, position.y);
+	printf("\r pbody.x %d pbody.y %d", METERS_TO_PIXELS(pbody->body->GetTransform().p.x), METERS_TO_PIXELS(pbody->body->GetTransform().p.y));
     return true;
 }
 
@@ -328,6 +352,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		break;
 	case ColliderType::SPIKE:
 		LOG("Collision SPIKE");
+		isDead = true;
 		break;
 	case ColliderType::JUMP:
 		LOG("Collision JUMP");

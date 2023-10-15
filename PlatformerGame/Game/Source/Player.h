@@ -35,7 +35,7 @@ public:
 	int pickCoinFxId;
 
 	Animation* currentAnim;
-	Animation idleAnim, jumpAnim, walkAnim, crouchAnim, crouchWalkAnim, fallAnim, wallAnim;
+	Animation idleAnim, jumpAnim, walkAnim, crouchAnim, crouchWalkAnim, fallAnim, wallAnim, deadAnim;
 
 	bool isJumping = false;
 	bool isCrouching = false;
@@ -51,6 +51,7 @@ public:
 	bool isDashing = false;
 	bool canDash = true;
 	bool jumper = false;
+	bool isDead = false;
 
 	bool lastKeyPressA = false;
 	bool lastKeyPressD = false;
