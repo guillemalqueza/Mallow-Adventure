@@ -30,21 +30,21 @@ bool Jumper::Start() {
 
 	//initilize textures
 	texture = app->tex->Load(texturePath);
-	pbody = app->physics->CreateRectangle(position.x, position.y, 32, 10, bodyType::STATIC);
+	pbody = app->physics->CreateRectangle(position.x, position.y, 48, 10, bodyType::STATIC);
 	pbody->ctype = ColliderType::JUMP;
 	pbody->listener = this;
 
-	idleAnim.PushBack({ 0,0,32,32 });
+	idleAnim.PushBack({ 0,0,64,64 });
 	idleAnim.loop = false;
 	idleAnim.speed = 0.1f;
 
-	jumpAnim.PushBack({ 0,0,32,32 });
-	jumpAnim.PushBack({ 32,0,32,32 });
-	jumpAnim.PushBack({ 64,0,32,32 });
-	jumpAnim.PushBack({ 96,0,32,32 });
-	jumpAnim.PushBack({ 128,0,32,32 });
-	jumpAnim.PushBack({ 160,0,32,32 });
-	jumpAnim.PushBack({ 0,0,32,32 });
+	jumpAnim.PushBack({ 0,0,64,64 });
+	jumpAnim.PushBack({ 64,0,64,64 });
+	jumpAnim.PushBack({ 128,0,64,64 });
+	jumpAnim.PushBack({ 192,0,64,64 });
+	jumpAnim.PushBack({ 256,0,64,64 });
+	jumpAnim.PushBack({ 320,0,64,64 });
+	jumpAnim.PushBack({ 0,0,64,64 });
 	jumpAnim.loop = false;
 	jumpAnim.speed = 0.25f;
 
@@ -56,8 +56,8 @@ bool Jumper::Start() {
 bool Jumper::Update(float dt)
 {
 	// L07 DONE 4: Add a physics to an item - update the position of the object from the physics.  
-	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 15;
-	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 27;
+	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 31;
+	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 57;
 
 	if (isActivated)
 	{
