@@ -114,7 +114,7 @@ bool Player::Update(float dt)
 
 		b2Vec2 vel = pbody->body->GetLinearVelocity();
 
-		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_S) == KEY_IDLE && wall && !ground)
+		if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_IDLE && wall && !ground)
 		{
 			pbody->body->SetGravityScale(0.0f);
 			pbody->body->SetLinearVelocity({ pbody->body->GetLinearVelocity().x, 0 });
@@ -126,8 +126,12 @@ bool Player::Update(float dt)
 			pbody->body->SetGravityScale(1.0f);
 		}
 
-		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+		if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_IDLE) isFacingUp = false;
+
+		if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 		{
+			isFacingUp = true;
+
 			if (wall)
 			{
 				ground = false;
@@ -135,7 +139,7 @@ bool Player::Update(float dt)
 				currentAnim = &wallAnim;
 			}
 		}
-		if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+		if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 		{
 			if (wall)
 			{
@@ -152,7 +156,7 @@ bool Player::Update(float dt)
 		}
 		else isCrouching = false;
 
-		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+		if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 		{
 			if (!isDashing) vel.x = -speed * dt;
 			if (!isJumping && !wall)
@@ -168,7 +172,7 @@ bool Player::Update(float dt)
 			isFacingRight = false;
 		}
 
-		if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+		if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		{
 			if (!isDashing) vel.x = speed * dt;
 			if (!isJumping && !wall)
@@ -184,7 +188,7 @@ bool Player::Update(float dt)
 			isFacingRight = true;
 		}
 
-		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_D) == KEY_IDLE && !isDashing)
+		if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_IDLE && !isDashing)
 		{
 			isWalking = false;
 			vel.x = 0;
@@ -234,11 +238,20 @@ bool Player::Update(float dt)
 
 		}
 
-		if (app->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN && !isDashing && !ground && dashCount == 0) {
+		if (app->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN && !isDashing && !ground && dashCount == 0) {
 			isDashing = true;
 			dashTimer = 0.0f;
-			vel.x += (isFacingRight ? dashVelocityX : -dashVelocityX);
-			vel.y += dashVelocityY;
+
+			if (isFacingUp && !isWalking)
+			{
+				vel.y += (isFacingUp ? dashVelocityY : 0.0f);
+			}
+			else
+			{
+				vel.x += (isFacingRight ? dashVelocityX : -dashVelocityX);
+				vel.y += (isFacingUp ? dashVelocityY : 0.0f);
+			}
+
 			dashCount = 1;
 		}
 
@@ -260,7 +273,7 @@ bool Player::Update(float dt)
 		}
 
 
-		if (isJumping && currentAnim->HasFinished() || (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && !wall))
+		if (isJumping && currentAnim->HasFinished() || (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT && !wall))
 		{
 			currentAnim->ResetLoopCount();
 			currentAnim->Reset();

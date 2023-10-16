@@ -42,6 +42,7 @@ public:
 	bool isWalking = false;
 	bool ground = true;
 	bool isFacingRight = true;
+	bool isFacingUp = false;
 	int jumpCount = 0;
 	int dashCount = 0;
 	bool wall = false;
