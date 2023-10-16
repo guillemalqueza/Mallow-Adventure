@@ -396,6 +396,11 @@ bool Map::CreateColliders()
                             c1->ctype = ColliderType::SPIKE;
                             ret = true;
                             break;
+                        case 1447:
+                            c1 = app->physics->CreateRectangleSensor(pos.x + (mapData.tileWidth / 2), pos.y + (mapData.tileHeight / 2), mapData.tileWidth, mapData.tileHeight, STATIC);
+                            c1->ctype = ColliderType::CAMERA;
+                            ret = true;
+                            break;
                         default:
                             break;
                         }

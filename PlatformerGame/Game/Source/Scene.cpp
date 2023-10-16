@@ -17,8 +17,8 @@ Scene::Scene() : Module()
 	// ground
 	bg.x = 0;
 	bg.y = 0;
-	bg.w = 512;
-	bg.h = 512;
+	bg.w = 1680;
+	bg.h = 1050;
 }
 
 // Destructor
@@ -115,12 +115,34 @@ bool Scene::Update(float dt)
 
 	if(app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		app->render->camera.x += (int)ceil(camSpeed * dt);*/
-	app->render->DrawTexture(backgroundTexture, 0, 0, &bg, SDL_FLIP_NONE, 0.5f); // sky
-	playerX = player->position.x;
-	playerY = player->position.y - 300;
 
-	cameraX = playerX - (windowW / 2);
-	cameraY = playerY - (windowH / 2);
+	app->render->DrawTexture(backgroundTexture, 0, 0, &bg, SDL_FLIP_NONE, 0.0f); // sky
+
+	playerX = player->position.x;
+	playerY = player->position.y;
+
+	if (playerX >= 1600) cameraIdx = 1;
+
+	//if (cameraInitialized) {
+	//	app->render->camera.x += (-cameraX - app->render->camera.x) * cameraSmoothingFactor;
+	//	app->render->camera.y += (-cameraY - app->render->camera.y) * cameraSmoothingFactor;
+	//}
+	//else {
+	//	app->render->camera.x = -cameraX;
+	//	app->render->camera.y = -cameraY;
+	//	cameraInitialized = true;
+	//}
+
+	if (cameraIdx == 0)
+	{
+		cameraX = 400 - (windowW / 2);
+		cameraY = 659 - (windowH / 2);
+	}
+	else if (cameraIdx == 1)
+	{
+		cameraX = 2400 - (windowW / 2);
+		cameraY = 179 - (windowH / 2);
+	}
 
 	if (cameraX < 0) {
 		cameraX = 0;
@@ -136,20 +158,13 @@ bool Scene::Update(float dt)
 		cameraY = levelHeight - windowH;
 	}
 
-	//if (cameraInitialized) {
-	//	app->render->camera.x += (-cameraX - app->render->camera.x) * cameraSmoothingFactor;
-	//	app->render->camera.y += (-cameraY - app->render->camera.y) * cameraSmoothingFactor;
-	//}
-	//else {
-	//	app->render->camera.x = -cameraX;
-	//	app->render->camera.y = -cameraY;
-	//	cameraInitialized = true;
-	//}
-
-	if (!cameraInitialized) {
-		app->render->camera.x = -cameraX;
-		app->render->camera.y = -cameraY;
-		cameraInitialized = true;
+	if (cameraInitialized) {
+		app->render->camera.x += (-cameraX - app->render->camera.x) * cameraSmoothingFactor;
+		app->render->camera.y += (-cameraY - app->render->camera.y) * cameraSmoothingFactor;
+		
+		if (fabs(app->render->camera.x - (-cameraX)) < 1.0f && fabs(app->render->camera.y - (-cameraY)) < 1.0f) {
+			cameraInitialized = false;
+		}
 	}
 
 	return true;
