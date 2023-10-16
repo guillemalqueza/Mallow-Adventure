@@ -13,6 +13,12 @@
 Scene::Scene() : Module()
 {
 	name.Create("scene");
+
+	// ground
+	bg.x = 0;
+	bg.y = 0;
+	bg.w = 512;
+	bg.h = 512;
 }
 
 // Destructor
@@ -61,7 +67,7 @@ bool Scene::Awake(pugi::xml_node& config)
 bool Scene::Start()
 {
 	// NOTE: We have to avoid the use of paths in the code, we will move it later to a config file
-	//img = app->tex->Load("Assets/Textures/test.png");
+	backgroundTexture = app->tex->Load("Assets/Maps/background.png");
 	
 	//Music is commented so that you can add your own music
 	//app->audio->PlayMusic("Assets/Audio/Music/music_spy.ogg");
@@ -70,7 +76,7 @@ bool Scene::Start()
 	app->win->GetWindowSize(windowW, windowH);
 
 	//Get the size of the texture
-	app->tex->GetSize(img, texW, texH);
+	app->tex->GetSize(backgroundTexture, texW, texH);
 
 	textPosX = (float)windowW / 2 - (float)texW / 2;
 	textPosY = (float)windowH / 2 - (float)texH / 2;
@@ -109,9 +115,9 @@ bool Scene::Update(float dt)
 
 	if(app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		app->render->camera.x += (int)ceil(camSpeed * dt);*/
-
+	app->render->DrawTexture(backgroundTexture, 0, 0, &bg, SDL_FLIP_NONE, 0.5f); // sky
 	playerX = player->position.x;
-	playerY = player->position.y;
+	playerY = player->position.y - 300;
 
 	cameraX = playerX - (windowW / 2);
 	cameraY = playerY - (windowH / 2);
@@ -130,11 +136,17 @@ bool Scene::Update(float dt)
 		cameraY = levelHeight - windowH;
 	}
 
-	if (cameraInitialized) {
-		app->render->camera.x += (-cameraX - app->render->camera.x) * cameraSmoothingFactor;
-		app->render->camera.y += (-cameraY - app->render->camera.y) * cameraSmoothingFactor;
-	}
-	else {
+	//if (cameraInitialized) {
+	//	app->render->camera.x += (-cameraX - app->render->camera.x) * cameraSmoothingFactor;
+	//	app->render->camera.y += (-cameraY - app->render->camera.y) * cameraSmoothingFactor;
+	//}
+	//else {
+	//	app->render->camera.x = -cameraX;
+	//	app->render->camera.y = -cameraY;
+	//	cameraInitialized = true;
+	//}
+
+	if (!cameraInitialized) {
 		app->render->camera.x = -cameraX;
 		app->render->camera.y = -cameraY;
 		cameraInitialized = true;

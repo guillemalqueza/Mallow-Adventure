@@ -37,7 +37,8 @@ public:
 	bool CleanUp();
 	Player* player;
 private:
-	SDL_Texture* img;
+	SDL_Texture* backgroundTexture;
+	SDL_Rect bg;
 	float textPosX, textPosY = 0;
 	uint texW, texH;
 	uint windowW, windowH;

@@ -329,7 +329,7 @@ bool Player::Update(float dt)
 	else app->render->DrawTexture(texture, position.x, position.y, &rect, SDL_FLIP_HORIZONTAL);
     currentAnim->Update();
 	//printf("\r jumpcount: %d	ground: %d	isJumping: %d	hadJumped: %d	wall: %d", jumpCount, ground,isJumping,hasJumped,wall);
-	printf("\r pbody.x %d pbody.y %d", METERS_TO_PIXELS(pbody->body->GetTransform().p.x), METERS_TO_PIXELS(pbody->body->GetTransform().p.y));
+	printf("\r playerX: %d playerY: %d", position.x, position.y );
     return true;
 }
 
