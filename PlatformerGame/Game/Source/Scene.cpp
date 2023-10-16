@@ -54,6 +54,11 @@ bool Scene::Awake(pugi::xml_node& config)
 		crumblingPlatform->parameters = config.child("crumblingPlatform");
 	}
 
+	if (config.child("lockDoor")) {
+		LockDoor* lockDoor = (LockDoor*)app->entityManager->CreateEntity(EntityType::LOCK_DOOR);
+		lockDoor->parameters = config.child("lockDoor");
+	}
+
 	if (config.child("map")) {
 		//Get the map name from the config file and assigns the value in the module
 		app->map->name = config.child("map").attribute("name").as_string();

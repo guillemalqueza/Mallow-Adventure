@@ -32,6 +32,7 @@ enum class ColliderType {
 	SPIKE,
 	JUMP,
 	CAMERA,
+	DOOR,
 	UNKNOWN
 	// ..
 };

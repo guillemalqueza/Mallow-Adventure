@@ -6,6 +6,7 @@
 #include "Item.h"
 #include "Jumper.h"
 #include "CrumblingPlatform.h"
+#include "LockDoor.h"
 
 struct SDL_Texture;
 

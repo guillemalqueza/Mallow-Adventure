@@ -61,7 +61,8 @@ public:
 	float dashVelocityX = 12.0f;
 	float dashVelocityY = -4.0f;
 	float dashTimer = 0.0f;
-
+	
+	int keys = 0;
 
 };
 

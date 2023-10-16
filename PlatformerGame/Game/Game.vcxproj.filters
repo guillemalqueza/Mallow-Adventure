@@ -24,6 +24,7 @@
     <ClCompile Include="Source\Physics.cpp" />
     <ClCompile Include="Source\Jumper.cpp" />
     <ClCompile Include="Source\CrumblingPlatform.cpp" />
+    <ClCompile Include="Source\LockDoor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -72,6 +73,7 @@
     <ClInclude Include="Source\Animation.h" />
     <ClInclude Include="Source\Jumper.h" />
     <ClInclude Include="Source\CrumblingPlatform.h" />
+    <ClInclude Include="Source\LockDoor.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">
