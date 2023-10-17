@@ -31,6 +31,8 @@ enum class ColliderType {
 	R_WALL,
 	SPIKE,
 	JUMP,
+	CAMERA,
+	DOOR,
 	UNKNOWN
 	// ..
 };

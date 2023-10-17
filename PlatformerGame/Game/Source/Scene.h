@@ -6,6 +6,7 @@
 #include "Item.h"
 #include "Jumper.h"
 #include "CrumblingPlatform.h"
+#include "LockDoor.h"
 
 struct SDL_Texture;
 
@@ -35,20 +36,23 @@ public:
 
 	// Called before quitting
 	bool CleanUp();
-	Player* player;
+	Player* player;	
+	int cameraIdx = 0;
+	bool cameraInitialized = true;
+
 private:
-	SDL_Texture* img;
+	SDL_Texture* backgroundTexture;
+	SDL_Rect bg;
 	float textPosX, textPosY = 0;
 	uint texW, texH;
 	uint windowW, windowH;
 
-	float cameraSmoothingFactor = 0.1;
-	bool cameraInitialized = false;
+	float cameraSmoothingFactor = 0.04f;
+
 	int levelWidth = 107 * 32;
 	int levelHeight = 50 * 32;
 
 	int playerX, playerY, cameraX, cameraY;
-
 };
 
 #endif // __SCENE_H__

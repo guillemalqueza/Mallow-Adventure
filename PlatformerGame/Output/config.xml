@@ -9,7 +9,7 @@
   </renderer>
 
   <window>
-    <resolution width="1024" height="768" scale="1"/>
+    <resolution width="1680" height="1050" scale="1"/>
     <fullscreen value="false"/>
     <borderless value="false"/>
     <resizable value="false"/>
@@ -23,10 +23,11 @@
 
   <scene>
     <map path="Assets/Maps/" name="MapTemplate.tmx"/>
-    <player x="400" y="991" texturepath="Assets/Textures/player1.png"/>
+    <player x="400" y="991" texturepath="Assets/Textures/player.png"/>
     <item x="256" y="950" texturepath="Assets/Textures/key.png"/>
     <jumper x="160" y="1019" texturepath="Assets/Textures/jumper.png"/>
     <crumblingPlatform x="600" y="850" texturepath="Assets/Textures/crumblingPlatform.png"/>
+    <lockDoor x="3200" y="190" texturepath="Assets/Textures/lockDoor.png"/>
   </scene>
   
 </config>

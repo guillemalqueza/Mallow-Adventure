@@ -5,6 +5,8 @@
 #include "Scene.h"
 #include "Item.h"
 #include "Jumper.h"
+#include "CrumblingPlatform.h"
+#include "LockDoor.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -94,6 +96,9 @@ Entity* EntityManager::CreateEntity(EntityType type)
 		break;
 	case EntityType::CRUMBLING_PLATFORM:
 		entity = new CrumblingPlatform();
+		break;
+	case EntityType::LOCK_DOOR:
+		entity = new LockDoor();
 		break;
 	default:
 		break;

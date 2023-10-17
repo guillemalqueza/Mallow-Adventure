@@ -13,6 +13,12 @@
 Scene::Scene() : Module()
 {
 	name.Create("scene");
+
+	// ground
+	bg.x = 0;
+	bg.y = 0;
+	bg.w = 1680;
+	bg.h = 1050;
 }
 
 // Destructor
@@ -48,6 +54,11 @@ bool Scene::Awake(pugi::xml_node& config)
 		crumblingPlatform->parameters = config.child("crumblingPlatform");
 	}
 
+	if (config.child("lockDoor")) {
+		LockDoor* lockDoor = (LockDoor*)app->entityManager->CreateEntity(EntityType::LOCK_DOOR);
+		lockDoor->parameters = config.child("lockDoor");
+	}
+
 	if (config.child("map")) {
 		//Get the map name from the config file and assigns the value in the module
 		app->map->name = config.child("map").attribute("name").as_string();
@@ -61,7 +72,7 @@ bool Scene::Awake(pugi::xml_node& config)
 bool Scene::Start()
 {
 	// NOTE: We have to avoid the use of paths in the code, we will move it later to a config file
-	//img = app->tex->Load("Assets/Textures/test.png");
+	backgroundTexture = app->tex->Load("Assets/Maps/background.png");
 	
 	//Music is commented so that you can add your own music
 	//app->audio->PlayMusic("Assets/Audio/Music/music_spy.ogg");
@@ -70,7 +81,7 @@ bool Scene::Start()
 	app->win->GetWindowSize(windowW, windowH);
 
 	//Get the size of the texture
-	app->tex->GetSize(img, texW, texH);
+	app->tex->GetSize(backgroundTexture, texW, texH);
 
 	textPosX = (float)windowW / 2 - (float)texW / 2;
 	textPosY = (float)windowH / 2 - (float)texH / 2;
@@ -110,11 +121,33 @@ bool Scene::Update(float dt)
 	if(app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		app->render->camera.x += (int)ceil(camSpeed * dt);*/
 
+	app->render->DrawTexture(backgroundTexture, 0, 0, &bg, SDL_FLIP_NONE, 0.0f); // sky
+
 	playerX = player->position.x;
 	playerY = player->position.y;
 
-	cameraX = playerX - (windowW / 2);
-	cameraY = playerY - (windowH / 2);
+	if (playerX >= 1600) cameraIdx = 1;
+
+	//if (cameraInitialized) {
+	//	app->render->camera.x += (-cameraX - app->render->camera.x) * cameraSmoothingFactor;
+	//	app->render->camera.y += (-cameraY - app->render->camera.y) * cameraSmoothingFactor;
+	//}
+	//else {
+	//	app->render->camera.x = -cameraX;
+	//	app->render->camera.y = -cameraY;
+	//	cameraInitialized = true;
+	//}
+
+	if (cameraIdx == 0)
+	{
+		cameraX = 400 - (windowW / 2);
+		cameraY = 659 - (windowH / 2);
+	}
+	else if (cameraIdx == 1)
+	{
+		cameraX = 2400 - (windowW / 2);
+		cameraY = 179 - (windowH / 2);
+	}
 
 	if (cameraX < 0) {
 		cameraX = 0;
@@ -133,11 +166,10 @@ bool Scene::Update(float dt)
 	if (cameraInitialized) {
 		app->render->camera.x += (-cameraX - app->render->camera.x) * cameraSmoothingFactor;
 		app->render->camera.y += (-cameraY - app->render->camera.y) * cameraSmoothingFactor;
-	}
-	else {
-		app->render->camera.x = -cameraX;
-		app->render->camera.y = -cameraY;
-		cameraInitialized = true;
+		
+		if (fabs(app->render->camera.x - (-cameraX)) < 1.0f && fabs(app->render->camera.y - (-cameraY)) < 1.0f) {
+			cameraInitialized = false;
+		}
 	}
 
 	return true;
