@@ -24,10 +24,11 @@
   <scene>
     <map path="Assets/Maps/" name="MapTemplate.tmx"/>
     <player x="400" y="991" texturepath="Assets/Textures/player.png"/>
-    <item x="256" y="950" texturepath="Assets/Textures/key.png"/>
+    <item x="704" y="632" texturepath="Assets/Textures/key.png"/>
     <jumper x="160" y="1019" texturepath="Assets/Textures/jumper.png"/>
     <crumblingPlatform x="600" y="850" texturepath="Assets/Textures/crumblingPlatform.png"/>
     <lockDoor x="3200" y="190" texturepath="Assets/Textures/lockDoor.png"/>
   </scene>
   
 </config>
+
