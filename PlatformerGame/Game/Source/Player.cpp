@@ -321,6 +321,8 @@ bool Player::Update(float dt)
 		{
 			pbody->body->SetTransform({ PIXEL_TO_METERS(447), PIXEL_TO_METERS(991)}, 0);
 			isDead = false;
+			app->scene->cameraIdx = 0;
+			app->scene->cameraInitialized = true;
 		}
 	}
 

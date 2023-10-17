@@ -126,8 +126,6 @@ bool Scene::Update(float dt)
 	playerX = player->position.x;
 	playerY = player->position.y;
 
-	if (playerX >= 1600) cameraIdx = 1;
-
 	//if (cameraInitialized) {
 	//	app->render->camera.x += (-cameraX - app->render->camera.x) * cameraSmoothingFactor;
 	//	app->render->camera.y += (-cameraY - app->render->camera.y) * cameraSmoothingFactor;
@@ -145,7 +143,7 @@ bool Scene::Update(float dt)
 	}
 	else if (cameraIdx == 1)
 	{
-		cameraX = 2400 - (windowW / 2);
+		cameraX = 2500 - (windowW / 2);
 		cameraY = 179 - (windowH / 2);
 	}
 
