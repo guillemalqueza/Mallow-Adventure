@@ -94,7 +94,7 @@ bool Scene::Start()
 		app->map->mapData.tilesets.Count());
 
 	app->render->camera.x = 0;
-	app->render->camera.y = -400;
+	app->render->camera.y = -110;
 	return true;
 }
 
@@ -107,34 +107,10 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
-	float camSpeed = 1; 
-
-	/*if(app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-		app->render->camera.y -= (int)ceil(camSpeed * dt);
-
-	if(app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-		app->render->camera.y += (int)ceil(camSpeed * dt);
-
-	if(app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-		app->render->camera.x -= (int)ceil(camSpeed * dt);
-
-	if(app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-		app->render->camera.x += (int)ceil(camSpeed * dt);*/
-
-	app->render->DrawTexture(backgroundTexture, 0, 0, &bg, SDL_FLIP_NONE, 0.0f); // sky
+	app->render->DrawTexture(backgroundTexture, 0, 0, &bg, SDL_FLIP_NONE, 0.0f);
 
 	playerX = player->position.x;
 	playerY = player->position.y;
-
-	//if (cameraInitialized) {
-	//	app->render->camera.x += (-cameraX - app->render->camera.x) * cameraSmoothingFactor;
-	//	app->render->camera.y += (-cameraY - app->render->camera.y) * cameraSmoothingFactor;
-	//}
-	//else {
-	//	app->render->camera.x = -cameraX;
-	//	app->render->camera.y = -cameraY;
-	//	cameraInitialized = true;
-	//}
 
 	if (cameraIdx == 0)
 	{
@@ -143,7 +119,7 @@ bool Scene::Update(float dt)
 	}
 	else if (cameraIdx == 1)
 	{
-		cameraX = 2500 - (windowW / 2);
+		cameraX = 2460 - (windowW / 2);
 		cameraY = 179 - (windowH / 2);
 	}
 
@@ -161,14 +137,52 @@ bool Scene::Update(float dt)
 		cameraY = levelHeight - windowH;
 	}
 
-	if (cameraInitialized) {
+	if (app->input->GetKey(SDL_SCANCODE_T) == KEY_DOWN)
+	{
+		shakingCameraX = true;
+		shakeDuration = 20.0f;
+		shakeIntensity = 5.0f;
+		shakeTimer = shakeDuration;
+		cameraInitialized = false;
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_Y) == KEY_DOWN)
+	{
+		shakingCameraY = true;
+		shakeDuration = 20.0f;
+		shakeIntensity = 5.0f;
+		shakeTimer = shakeDuration;
+		cameraInitialized = false;
+	}
+
+	if (shakingCameraX)
+	{
+		if (shakeTimer > 0)
+		{
+			float offsetX = sin(shakeTimer * 20.0f) * shakeIntensity;
+			app->render->camera.x += static_cast<int>(offsetX);
+			shakeTimer -= 1.0f;
+		}
+		else shakingCameraX = false;
+	}
+	else if (shakingCameraY)
+	{
+		if (shakeTimer > 0)
+		{
+			float offsetY = sin(shakeTimer * 20.0f) * shakeIntensity;
+			app->render->camera.y += static_cast<int>(offsetY);
+			shakeTimer -= 1.0f;
+		}
+		else shakingCameraY = false;
+	}
+	else cameraInitialized = true;
+	
+	if (cameraInitialized)
+	{
 		app->render->camera.x += (-cameraX - app->render->camera.x) * cameraSmoothingFactor;
 		app->render->camera.y += (-cameraY - app->render->camera.y) * cameraSmoothingFactor;
-		
-		if (fabs(app->render->camera.x - (-cameraX)) < 1.0f && fabs(app->render->camera.y - (-cameraY)) < 1.0f) {
-			cameraInitialized = false;
-		}
 	}
+	
 
 	return true;
 }

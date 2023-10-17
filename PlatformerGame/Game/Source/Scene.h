@@ -47,6 +47,12 @@ private:
 	uint texW, texH;
 	uint windowW, windowH;
 
+	bool shakingCameraX = false;
+	bool shakingCameraY = false;
+	float shakeDuration;
+	float shakeIntensity;
+	float shakeTimer;
+
 	float cameraSmoothingFactor = 0.04f;
 
 	int levelWidth = 107 * 32;
