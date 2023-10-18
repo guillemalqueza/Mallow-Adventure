@@ -66,14 +66,15 @@ bool Item::Update(float dt)
 		if (followTimer < 10.0f)
 		{
 			iPoint playerPosition = app->scene->player->position;
-
-			position.x = static_cast<int>(position.x + (playerPosition.x - position.x) * 0.1f);
-			position.y = static_cast<int>(position.y + (playerPosition.y - position.y) * 0.1f);
+			acceleration += 0.1f;
+			position.x = static_cast<int>(position.x + (playerPosition.x - position.x) * 0.01f * acceleration);
+			position.y = static_cast<int>(position.y + (playerPosition.y - position.y) * 0.01f * acceleration);
 			app->render->DrawTexture(texture, position.x, position.y, &currentAnim->GetCurrentFrame());
 		}
 		else
 		{
 			app->entityManager->DestroyEntity(this);
+			app->physics->world->DestroyBody(pbody->body);
 		}
 	}
 	else
@@ -100,7 +101,6 @@ void Item::OnCollision(PhysBody* physA, PhysBody* physB)
 	case ColliderType::PLAYER:
 		LOG("Collision PLAYER");
 		pbody->body->SetActive(false);
-		app->physics->world->DestroyBody(pbody->body);
 		isPicked = true;
 		break;
 	}
