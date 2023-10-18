@@ -28,7 +28,7 @@ public:
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 
 public:
-	float speed = 0.2f;
+	float speed = 0.4f;
 	const char* texturePath;
 	SDL_Texture* texture = NULL;
 	PhysBody* pbody;
@@ -59,7 +59,7 @@ public:
 
 	float dashDuration = 2.0f;
 	float dashVelocityX = 12.0f;
-	float dashVelocityY = -4.0f;
+	float dashVelocityY = -6.0f;
 	float dashTimer = 0.0f;
 	
 	int keys = 0;

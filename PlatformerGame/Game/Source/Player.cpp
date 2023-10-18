@@ -57,7 +57,7 @@ bool Player::Start() {
 	walkAnim.PushBack({ 500,2176,100,64 });
 	walkAnim.PushBack({ 600,2176,100,64 });
 	walkAnim.loop = true;
-	walkAnim.speed = speed;
+	walkAnim.speed = 0.2f;
 
 	crouchAnim.PushBack({ 0,256,100,64 });
 	crouchAnim.PushBack({ 100,256,100,64 });
@@ -212,37 +212,38 @@ bool Player::Update(float dt)
 				currentAnim = &jumpAnim;
 				isJumping = true;
 				hasJumped = true;
-				vel = b2Vec2(vel.x, -10.0f);
+				vel = b2Vec2(vel.x, -9.0f);
 				pbody->body->SetLinearVelocity(vel);
 				jumpCount = 1;
 			}
-			else if (jumpCount == 1 && hasJumped)
+			else if (jumpCount == 1 && hasJumped && dashCount == 0)
 			{
 				currentAnim->Reset();
 				currentAnim = &jumpAnim;
 				isJumping = true;
-				vel = b2Vec2(vel.x, -10.0f);
+				vel = b2Vec2(vel.x, -9.0f);
 				pbody->body->SetLinearVelocity(vel);
 				jumpCount = 2;
-
+				dashCount = 1;
 			}
-			else if (!ground && !isJumping && !hasJumped && jumpCount == 0)
+			else if (!ground && !isJumping && !hasJumped && jumpCount == 0 && dashCount == 0)
 			{
 				currentAnim->Reset();
 				currentAnim = &jumpAnim;
 				isJumping = true;
-				vel = b2Vec2(vel.x, -10.0f);
+				vel = b2Vec2(vel.x, -9.0f);
 				pbody->body->SetLinearVelocity(vel);
 				jumpCount = 2;
+				dashCount = 1;
 			}
 
 		}
 
-		if (app->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN && !isDashing && !ground && dashCount == 0) {
+		if (app->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN && !ground && !isDashing && dashCount == 0) {
 			isDashing = true;
 			dashTimer = 0.0f;
 
-			if (isFacingUp && !isWalking)
+			if (isFacingUp)
 			{
 				vel.y += (isFacingUp ? dashVelocityY : 0.0f);
 			}
