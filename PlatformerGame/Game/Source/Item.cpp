@@ -50,7 +50,7 @@ bool Item::Start() {
 	idleAnim.PushBack({ 416,0,32,32 });
 	idleAnim.loop = true;
 	idleAnim.speed = 0.1f;
-
+	followTimer = 0.0f;
 	currentAnim = &idleAnim;
 	return true;
 }
@@ -58,16 +58,30 @@ bool Item::Start() {
 bool Item::Update(float dt)
 {
 	currentAnim = &idleAnim;
-	// L07 DONE 4: Add a physics to an item - update the position of the object from the physics.  
-	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 16;
-	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 16;
-
-	app->render->DrawTexture(texture, position.x, position.y, &currentAnim->GetCurrentFrame());
 
 	if (isPicked)
 	{
-		app->entityManager->DestroyEntity(this);
-		app->physics->world->DestroyBody(pbody->body);
+		followTimer += 0.1f;
+
+		if (followTimer < 10.0f)
+		{
+			iPoint playerPosition = app->scene->player->position;
+
+			position.x = static_cast<int>(position.x + (playerPosition.x - position.x) * 0.1f);
+			position.y = static_cast<int>(position.y + (playerPosition.y - position.y) * 0.1f);
+			app->render->DrawTexture(texture, position.x, position.y, &currentAnim->GetCurrentFrame());
+		}
+		else
+		{
+			app->entityManager->DestroyEntity(this);
+		}
+	}
+	else
+	{
+		position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 16;
+		position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 16;
+
+		app->render->DrawTexture(texture, position.x, position.y, &currentAnim->GetCurrentFrame());
 	}
 
 	currentAnim->Update();
@@ -86,6 +100,7 @@ void Item::OnCollision(PhysBody* physA, PhysBody* physB)
 	case ColliderType::PLAYER:
 		LOG("Collision PLAYER");
 		pbody->body->SetActive(false);
+		app->physics->world->DestroyBody(pbody->body);
 		isPicked = true;
 		break;
 	}

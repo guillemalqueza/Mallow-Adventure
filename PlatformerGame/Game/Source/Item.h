@@ -28,6 +28,8 @@ public:
 public:
 
 	bool isPicked = false;
+	bool isFollowingPlayer = false;
+	float followTimer = 0.0f;
 
 private:
 
