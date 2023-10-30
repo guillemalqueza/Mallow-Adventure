@@ -32,6 +32,15 @@ bool Player::Start() {
 	//initilize textures
 	texture = app->tex->Load(texturePath);
 
+	//idleAnim.LoadAnimations("idleAnim");
+	//jumpAnim.LoadAnimations("jumpAnim");
+	//walkAnim.LoadAnimations("walkAnim");
+	//crouchAnim.LoadAnimations("crouchAnim");
+	//crouchWalkAnim.LoadAnimations("crouchWalkAnim");
+	//fallAnim.LoadAnimations("fallAnim");
+	//wallAnim.LoadAnimations("wallAnim");
+	//deadAnim.LoadAnimations("deadAnim");
+
 	idleAnim.PushBack({ 0,1216,100,64 });
 	idleAnim.PushBack({ 100,1216,100,64 });
 	idleAnim.PushBack({ 200,1216,100,64 });

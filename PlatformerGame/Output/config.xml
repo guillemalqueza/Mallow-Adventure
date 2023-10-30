@@ -30,5 +30,66 @@
     <lockDoor x="3200" y="190" texturepath="Assets/Textures/lockDoor.png"/>
   </scene>
   
+  <animations>
+    <idleAnim loop="true" speed="0.1f">
+      <animation x="0" y="1216" w="100" h="64"/>
+      <animation x="100" y="1216" w="100" h="64"/>
+      <animation x="200" y="1216" w="100" h="64"/>
+      <animation x="300" y="1216" w="100" h="64"/>
+    </idleAnim>
+    
+    <jumpAnim loop="false" speed="0.2f">
+      <animation x="0" y="1344" w="100" h="64"/>
+      <animation x="100" y="1344" w="100" h="64"/>
+      <animation x="200" y="1344" w="100" h="64"/>
+      <animation x="300" y="1344" w="100" h="64"/>
+      <animation x="400" y="1344" w="100" h="64"/>
+      <animation x="500" y="1344" w="100" h="64"/>
+      <animation x="0" y="1344" w="100" h="64"/>
+    </jumpAnim>
+    
+    <walkAnim loop="true" speed="0.2f">
+      <animation x="0" y="2176" w="100" h="64"/>
+      <animation x="100" y="2176" w="100" h="64"/>
+      <animation x="200" y="2176" w="100" h="64"/>
+      <animation x="300" y="2176" w="100" h="64"/>
+      <animation x="400" y="2176" w="100" h="64"/>
+      <animation x="500" y="2176" w="100" h="64"/>
+      <animation x="600" y="2176" w="100" h="64"/>
+    </walkAnim>
+    
+    <crouchAnim loop="true" speed="0.1f">
+      <animation x="0" y="256" w="100" h="64"/>
+      <animation x="100" y="256" w="100" h="64"/>
+      <animation x="200" y="256" w="100" h="64"/>
+    </crouchAnim>
+    
+    <crouchWalkAnim loop="true" speed="0.1f">
+      <animation x="0" y="512" w="100" h="64"/>
+      <animation x="100" y="512" w="100" h="64"/>
+      <animation x="200" y="512" w="100" h="64"/>
+      <animation x="300" y="512" w="100" h="64"/>
+    </crouchWalkAnim>
+    
+    <fallAnim loop="true" speed="0.1f">
+      <animation x="0" y="896" w="100" h="64"/>
+      <animation x="100" y="896" w="100" h="64"/>
+      <animation x="200" y="896" w="100" h="64"/>
+    </fallAnim>
+    
+    <wallAnim loop="true" speed="0.1f">
+      <animation x="0" y="1024" w="100" h="64"/>
+      <animation x="100" y="1024" w="100" h="64"/>
+      <animation x="200" y="1024" w="100" h="64"/>
+    </wallAnim>
+    
+    <deadAnim loop="false" speed="0.1f">
+      <animation x="0" y="768" w="100" h="64"/>
+      <animation x="100" y="768" w="100" h="64"/>
+      <animation x="200" y="768" w="100" h="64"/>
+      <animation x="300" y="768" w="100" h="64"/>
+      <animation x="400" y="768" w="100" h="64"/>
+    </deadAnim>
+  </animations>
 </config>
 
