@@ -203,11 +203,15 @@ void App::FinishUpdate()
 		lastSecFrameCount = 0;
 	}
 
+	vsync = app->render->vsync ? "on" : "off";
 
 	// Shows the time measurements in the window title
 	static char title[256];
-	sprintf_s(title, 256, "%s: Av.FPS: %.2f Last sec frames: %i Last dt: %.3f Time since startup: %I32u Frame Count: %I64u ",
-		gameTitle.GetString(), averageFps, framesPerSecond, dt, secondsSinceStartup, frameCount);
+	/*sprintf_s(title, 256, "%s: Av.FPS: %.2f Last sec frames: %i Last dt: %.3f Time since startup: %I32u Frame Count: %I64u ",
+		gameTitle.GetString(), averageFps, framesPerSecond, dt, secondsSinceStartup, frameCount);*/
+
+	sprintf_s(title, 256, "%s: FPS: %.2f / Avg.FPS: %.2f / Last-frame MS: %.0f / Vsync: %s ",
+		gameTitle.GetString(), currentFps, averageFps, dt, vsync);
 
 	app->win->SetTitle(title);
 }

@@ -45,7 +45,7 @@ bool Player::Start() {
 
 	jumper = false;
 
-	pbody = app->physics->CreateCircle(position.x + 50, position.y, 32, bodyType::DYNAMIC);
+	pbody = app->physics->CreateCircle(position.x + 50, position.y, 22, bodyType::DYNAMIC);
 	pbody->listener = this;
 	pbody->ctype = ColliderType::PLAYER;
 
@@ -256,7 +256,7 @@ bool Player::Update(float dt)
 		pbody->body->SetLinearVelocity(vel);
 
 		position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 50;
-		position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 32;
+		position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 42;
 	}
 	else
 	{
