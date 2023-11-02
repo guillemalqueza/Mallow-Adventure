@@ -34,30 +34,16 @@ bool Item::Start() {
 	pbody->ctype = ColliderType::ITEM;
 	pbody->listener = this;
 
-	idleAnim.PushBack({ 0,0,32,32 });
-	idleAnim.PushBack({ 32,0,32,32 });
-	idleAnim.PushBack({ 64,0,32,32 });
-	idleAnim.PushBack({ 96,0,32,32 });
-	idleAnim.PushBack({ 128,0,32,32 });
-	idleAnim.PushBack({ 160,0,32,32 });
-	idleAnim.PushBack({ 192,0,32,32 });
-	idleAnim.PushBack({ 224,0,32,32 });
-	idleAnim.PushBack({ 256,0,32,32 });
-	idleAnim.PushBack({ 288,0,32,32 });
-	idleAnim.PushBack({ 320,0,32,32 });
-	idleAnim.PushBack({ 352,0,32,32 });
-	idleAnim.PushBack({ 384,0,32,32 });
-	idleAnim.PushBack({ 416,0,32,32 });
-	idleAnim.loop = true;
-	idleAnim.speed = 0.1f;
+	keyIdleAnim.LoadAnimations("keyIdleAnim");
+
 	followTimer = 0.0f;
-	currentAnim = &idleAnim;
+	currentAnim = &keyIdleAnim;
 	return true;
 }
 
 bool Item::Update(float dt)
 {
-	currentAnim = &idleAnim;
+	currentAnim = &keyIdleAnim;
 
 	if (isPicked)
 	{

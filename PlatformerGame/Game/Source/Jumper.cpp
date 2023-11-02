@@ -34,21 +34,10 @@ bool Jumper::Start() {
 	pbody->ctype = ColliderType::JUMP;
 	pbody->listener = this;
 
-	idleAnim.PushBack({ 0,0,64,64 });
-	idleAnim.loop = false;
-	idleAnim.speed = 0.1f;
+	jumperIdleAnim.LoadAnimations("jumperIdleAnim");
+	jumperAnim.LoadAnimations("jumperAnim");
 
-	jumpAnim.PushBack({ 0,0,64,64 });
-	jumpAnim.PushBack({ 64,0,64,64 });
-	jumpAnim.PushBack({ 128,0,64,64 });
-	jumpAnim.PushBack({ 192,0,64,64 });
-	jumpAnim.PushBack({ 256,0,64,64 });
-	jumpAnim.PushBack({ 320,0,64,64 });
-	jumpAnim.PushBack({ 0,0,64,64 });
-	jumpAnim.loop = false;
-	jumpAnim.speed = 0.25f;
-
-	currentAnim = &idleAnim;
+	currentAnim = &jumperIdleAnim;
 
 	return true;
 }
@@ -62,7 +51,7 @@ bool Jumper::Update(float dt)
 	if (isActivated)
 	{
 		currentAnim->Reset();
-		currentAnim = &jumpAnim;
+		currentAnim = &jumperAnim;
 		isActivated = false;
 	}
 

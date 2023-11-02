@@ -32,75 +32,14 @@ bool Player::Start() {
 	//initilize textures
 	texture = app->tex->Load(texturePath);
 
-	//idleAnim.LoadAnimations("idleAnim");
-	//jumpAnim.LoadAnimations("jumpAnim");
-	//walkAnim.LoadAnimations("walkAnim");
-	//crouchAnim.LoadAnimations("crouchAnim");
-	//crouchWalkAnim.LoadAnimations("crouchWalkAnim");
-	//fallAnim.LoadAnimations("fallAnim");
-	//wallAnim.LoadAnimations("wallAnim");
-	//deadAnim.LoadAnimations("deadAnim");
-
-	idleAnim.PushBack({ 0,1216,100,64 });
-	idleAnim.PushBack({ 100,1216,100,64 });
-	idleAnim.PushBack({ 200,1216,100,64 });
-	idleAnim.PushBack({ 300,1216,100,64 });
-	idleAnim.loop = true;
-	idleAnim.speed = 0.1f;
-
-	jumpAnim.PushBack({ 0,1344,100,64 });
-	jumpAnim.PushBack({ 100,1344,100,64 });
-	jumpAnim.PushBack({ 200,1344,100,64 });
-	jumpAnim.PushBack({ 300,1344,100,64 });
-	jumpAnim.PushBack({ 400,1344,100,64 });
-	jumpAnim.PushBack({ 500,1344,100,64 });
-	jumpAnim.PushBack({ 0,1344,100,64 });
-	jumpAnim.loop = false;
-	jumpAnim.speed = 0.2f;
-
-	walkAnim.PushBack({ 0,2176,100,64 });
-	walkAnim.PushBack({ 100,2176,100,64 });
-	walkAnim.PushBack({ 200,2176,100,64 });
-	walkAnim.PushBack({ 300,2176,100,64 });
-	walkAnim.PushBack({ 400,2176,100,64 });
-	walkAnim.PushBack({ 500,2176,100,64 });
-	walkAnim.PushBack({ 600,2176,100,64 });
-	walkAnim.loop = true;
-	walkAnim.speed = 0.2f;
-
-	crouchAnim.PushBack({ 0,256,100,64 });
-	crouchAnim.PushBack({ 100,256,100,64 });
-	crouchAnim.PushBack({ 200,256,100,64 });
-	crouchAnim.loop = true;
-	crouchAnim.speed = 0.1f;
-
-	crouchWalkAnim.PushBack({ 0,512,100,64 });
-	crouchWalkAnim.PushBack({ 100,512,100,64 });
-	crouchWalkAnim.PushBack({ 200,512,100,64 });
-	crouchWalkAnim.PushBack({ 300,512,100,64 });
-	crouchWalkAnim.loop = true;
-	crouchWalkAnim.speed = 0.1f;
-
-	fallAnim.PushBack({ 0,896,100,64 });
-	fallAnim.PushBack({ 100,896,100,64 });
-	fallAnim.PushBack({ 200,896,100,64 });
-	fallAnim.loop = true;
-	fallAnim.speed = 0.1f;
-
-	wallAnim.PushBack({ 0,1024,100,64 });
-	wallAnim.PushBack({ 100,1024,100,64 });
-	wallAnim.PushBack({ 200,1024,100,64 });
-	wallAnim.loop = true;
-	wallAnim.speed = 0.1f;
-
-
-	deadAnim.PushBack({ 0,768,100,64 });
-	deadAnim.PushBack({ 100,768,100,64 });
-	deadAnim.PushBack({ 200,768,100,64 });
-	deadAnim.PushBack({ 300,768,100,64 });
-	deadAnim.PushBack({ 400,768,100,64 });
-	deadAnim.loop = false;
-	deadAnim.speed = 0.1f;
+	idleAnim.LoadAnimations("idleAnim");
+	jumpAnim.LoadAnimations("jumpAnim");
+	walkAnim.LoadAnimations("walkAnim");
+	crouchAnim.LoadAnimations("crouchAnim");
+	crouchWalkAnim.LoadAnimations("crouchWalkAnim");
+	fallAnim.LoadAnimations("fallAnim");
+	wallAnim.LoadAnimations("wallAnim");
+	deadAnim.LoadAnimations("deadAnim");
 
 	currentAnim = &idleAnim;
 

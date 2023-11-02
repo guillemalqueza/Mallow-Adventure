@@ -32,7 +32,7 @@ public:
 private:
 
 	Animation* currentAnim;
-	Animation idleAnim, jumpAnim;
+	Animation jumperIdleAnim, jumperAnim;
 
 	SDL_Texture* texture;
 	const char* texturePath;

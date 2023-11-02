@@ -40,7 +40,7 @@ private:
 	bool isTimerStarted = false;
 
 	Animation* currentAnim;
-	Animation idleAnim, openAnim;
+	Animation doorIdleAnim, doorOpenAnim;
 };
 
 #endif // __LOCKDOOR_H__

@@ -34,16 +34,10 @@ bool CrumblingPlatform::Start() {
 	pbody->ctype = ColliderType::PLATFORM;
 	pbody->listener = this;
 
-	idleAnim.PushBack({ 0,0,32,32 });
-	idleAnim.loop = false;
-	idleAnim.speed = 0.1f;
+	platformIdleAnim.LoadAnimations("platformIdleAnim");
+	platformBreakingAnim.LoadAnimations("platformBreakingAnim");
 
-	breakingAnim.PushBack({ 0,0,32,32 });
-	breakingAnim.PushBack({ 32,0,32,32 });
-	breakingAnim.loop = true;
-	breakingAnim.speed = 0.1f;
-
-	currentAnim = &idleAnim;
+	currentAnim = &platformIdleAnim;
 
 	return true;
 }
@@ -58,7 +52,7 @@ bool CrumblingPlatform::Update(float dt)
 		timer.Start();
 		isActivated = false;
 		isTimerStarted = true;
-		currentAnim = &breakingAnim;
+		currentAnim = &platformBreakingAnim;
 	}
 
 	if (isTimerStarted)
@@ -74,7 +68,7 @@ bool CrumblingPlatform::Update(float dt)
 			pbody->body->SetActive(true);
 			isVisible = true;
 			isTimerStarted = false;
-			currentAnim = &idleAnim;
+			currentAnim = &platformIdleAnim;
 		}
 	}
 

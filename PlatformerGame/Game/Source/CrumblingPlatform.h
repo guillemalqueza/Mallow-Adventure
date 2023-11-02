@@ -40,7 +40,7 @@ private:
 	bool isTimerStarted = false;
 
 	Animation* currentAnim;
-	Animation idleAnim, breakingAnim;
+	Animation platformIdleAnim, platformBreakingAnim;
 };
 
 #endif // __CRUMBLINGPLATFORM_H__

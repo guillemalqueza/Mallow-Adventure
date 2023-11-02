@@ -39,7 +39,7 @@ private:
 	PhysBody* pbody;
 
 	Animation* currentAnim;
-	Animation idleAnim;
+	Animation keyIdleAnim;
 };
 
 #endif // __ITEM_H__

@@ -33,34 +33,11 @@ bool LockDoor::Start() {
 	pbody = app->physics->CreateRectangleSensor(position.x, position.y, 64, 64, bodyType::STATIC);
 	pbody->ctype = ColliderType::DOOR;
 	pbody->listener = this;
+	
+	doorIdleAnim.LoadAnimations("doorIdleAnim");
+	doorOpenAnim.LoadAnimations("doorOpenAnim");
 
-	idleAnim.PushBack({ 0,0,192,128 });
-	idleAnim.loop = false;
-	idleAnim.speed = 0.1f;
-
-	openAnim.PushBack({ 0,0,192,128 });
-	openAnim.PushBack({ 192,0,192,128 });
-	openAnim.PushBack({ 384,0,192,128 });
-	openAnim.PushBack({ 576,0,192,128 });
-	openAnim.PushBack({ 768,0,192,128 });
-	openAnim.PushBack({ 960,0,192,128 });
-	openAnim.PushBack({ 1152,0,192,128 });
-	openAnim.PushBack({ 1344,0,192,128 });
-	openAnim.PushBack({ 1536,0,192,128 });
-	openAnim.PushBack({ 0,128,192,128 });
-	openAnim.PushBack({ 192,128,192,128 });
-	openAnim.PushBack({ 384,128,192,128 });
-	openAnim.PushBack({ 576,128,192,128 });
-	openAnim.PushBack({ 768,128,192,128 });
-	openAnim.PushBack({ 960,128,192,128 });
-	openAnim.PushBack({ 1152,128,192,128 });
-	openAnim.PushBack({ 1344,128,192,128 });
-	openAnim.PushBack({ 1536,128,192,128 });
-	openAnim.PushBack({ 0,0,0,0 });
-	openAnim.loop = false;
-	openAnim.speed = 0.2f;
-
-	currentAnim = &idleAnim;
+	currentAnim = &doorIdleAnim;
 
 	return true;
 }
@@ -73,7 +50,7 @@ bool LockDoor::Update(float dt)
 	if (isActivated)
 	{
 		isActivated = false;
-		currentAnim = &openAnim;
+		currentAnim = &doorOpenAnim;
 	}
 
 	SDL_Rect rect = currentAnim->GetCurrentFrame();
