@@ -49,6 +49,8 @@ bool Player::Start() {
 	pbody->listener = this;
 	pbody->ctype = ColliderType::PLAYER;
 
+	initialTransform = pbody->body->GetTransform();
+
 	pickCoinFxId = app->audio->LoadFx("Assets/Audio/Fx/retro-video-game-coin-pickup-38299.ogg");
 
 	return true;
@@ -56,6 +58,8 @@ bool Player::Start() {
 
 bool Player::Update(float dt)
 {
+	if (app->input->GetKey(SDL_SCANCODE_F3)) SetToInitialPosition();
+
 	if (!isDead)
 	{
 		if (!isJumping) currentAnim = &idleAnim;
@@ -310,13 +314,7 @@ bool Player::Update(float dt)
 			currentAnim->Reset();
 		}
 		currentAnim = &deadAnim;
-		if (currentAnim->HasFinished())
-		{
-			pbody->body->SetTransform({ PIXEL_TO_METERS(447), PIXEL_TO_METERS(991)}, 0);
-			isDead = false;
-			app->scene->cameraIdx = 0;
-			app->scene->cameraInitialized = true;
-		}
+		if (currentAnim->HasFinished()) SetToInitialPosition();
 	}
 
     SDL_Rect rect = currentAnim->GetCurrentFrame();
@@ -387,4 +385,12 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		break;
 	}
 
+}
+
+void Player::SetToInitialPosition()
+{
+	pbody->body->SetTransform(b2Vec2(initialTransform.p.x, initialTransform.p.y), 0);
+	isDead = false;
+	app->scene->cameraIdx = 0;
+	app->scene->cameraInitialized = true;
 }

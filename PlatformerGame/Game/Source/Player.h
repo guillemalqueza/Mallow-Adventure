@@ -27,6 +27,8 @@ public:
 
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 
+	void SetToStartPosition();
+
 public:
 	float speed = 0.4f;
 	const char* texturePath;
@@ -64,6 +66,8 @@ public:
 	
 	int keys = 0;
 	bool godMode = false;
+
+	b2Transform initialTransform;
 
 };
 
