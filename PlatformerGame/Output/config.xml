@@ -1,7 +1,8 @@
 <config>
   <app>
     <title>Game Development</title>
-    <maxFrameDuration value="16"/>
+    <initialMaxFrameDuration value="16"/>
+	<capMaxFrameDuration value="32"/>
   </app>
 
   <renderer>

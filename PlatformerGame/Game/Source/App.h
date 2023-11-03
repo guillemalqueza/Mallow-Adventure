@@ -86,6 +86,8 @@ public:
 	Physics* physics;
 
 	uint32 maxFrameDuration = 16;
+	uint32 initialMaxFrameDuration = 16;
+	uint32 capMaxFrameDuration = 32;
 
 private:
 

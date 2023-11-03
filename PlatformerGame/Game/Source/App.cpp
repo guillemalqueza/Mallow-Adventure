@@ -84,7 +84,9 @@ bool App::Awake()
 	{
 		gameTitle = configNode.child("app").child("title").child_value();
 		win->SetTitle(gameTitle.GetString());
-		maxFrameDuration = configFile.child("config").child("app").child("maxFrameDuration").attribute("value").as_int();
+		initialMaxFrameDuration = configFile.child("config").child("app").child("initialMaxFrameDuration").attribute("value").as_int();
+		capMaxFrameDuration = configFile.child("config").child("app").child("capMaxFrameDuration").attribute("value").as_int();
+		maxFrameDuration = initialMaxFrameDuration;
 
 		ListItem<Module*>* item;
 		item = modules.start;
@@ -173,6 +175,11 @@ void App::PrepareUpdate()
 // ---------------------------------------------
 void App::FinishUpdate()
 {
+	if (input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
+	{
+		maxFrameDuration = (maxFrameDuration == initialMaxFrameDuration) ? capMaxFrameDuration : initialMaxFrameDuration;
+	}
+
 	// This is a good place to call Load / Save functions
 	double currentDt = frameTime.ReadMs();
 	if (maxFrameDuration > 0 && currentDt < maxFrameDuration) {

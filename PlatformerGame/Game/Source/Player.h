@@ -27,7 +27,7 @@ public:
 
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 
-	void SetToStartPosition();
+	void SetToInitialPosition();
 
 public:
 	float speed = 0.4f;
