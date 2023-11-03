@@ -36,6 +36,19 @@ public:
 
 	// Called before quitting
 	bool CleanUp();
+
+	void CreateEntities(pugi::xml_node& config, const char* nodeName, EntityType entityType);
+
+	void SetCameraPosition(int x, int y);
+
+	void ClampCamera();
+
+	void StartCameraShakeX(float duration, float intensity);
+
+	void StartCameraShakeY(float duration, float intensity);
+
+	void UpdateCameraShake();
+
 	Player* player;	
 	int cameraIdx = 0;
 	bool cameraInitialized = true;

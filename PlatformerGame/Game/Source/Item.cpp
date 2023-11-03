@@ -43,34 +43,12 @@ bool Item::Start() {
 
 bool Item::Update(float dt)
 {
-	currentAnim = &keyIdleAnim;
+	if (isPicked) OnPicked();
 
-	if (isPicked)
-	{
-		followTimer += 0.1f;
+	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 16;
+	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 16;
 
-		iPoint playerPosition = app->scene->player->position;
-		float distanceX = abs(playerPosition.x - position.x);
-		if (followTimer > 10.0f && distanceX <= 10.0f)
-		{
-			app->entityManager->DestroyEntity(this);
-			app->physics->world->DestroyBody(pbody->body);
-		}
-		else
-		{
-			acceleration += 0.2f;
-			position.x = static_cast<int>(position.x + (playerPosition.x - position.x) * 0.01f * acceleration);
-			position.y = static_cast<int>(position.y + (playerPosition.y - position.y) * 0.01f * acceleration);
-			app->render->DrawTexture(texture, position.x, position.y, &currentAnim->GetCurrentFrame());
-		}
-	}
-	else
-	{
-		position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 16;
-		position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 16;
-
-		app->render->DrawTexture(texture, position.x, position.y, &currentAnim->GetCurrentFrame());
-	}
+	app->render->DrawTexture(texture, position.x, position.y, &currentAnim->GetCurrentFrame());
 
 	currentAnim->Update();
 	return true;
@@ -90,5 +68,25 @@ void Item::OnCollision(PhysBody* physA, PhysBody* physB)
 		pbody->body->SetActive(false);
 		isPicked = true;
 		break;
+	}
+}
+
+void Item::OnPicked()
+{
+	followTimer += 0.1f;
+
+	iPoint playerPosition = app->scene->player->position;
+	float distanceX = abs(playerPosition.x - position.x);
+	if (followTimer > 10.0f && distanceX <= 10.0f)
+	{
+		app->entityManager->DestroyEntity(this);
+		app->physics->world->DestroyBody(pbody->body);
+	}
+	else
+	{
+		acceleration += 0.2f;
+		float bodyX = position.x + (playerPosition.x - position.x) * 0.01f * acceleration;
+        float bodyY = position.y + (playerPosition.y - position.y) * 0.01f * acceleration;
+		pbody->body->SetTransform(b2Vec2(PIXEL_TO_METERS(bodyX + 0.32f), PIXEL_TO_METERS(bodyY + 0.32f)), 0);
 	}
 }

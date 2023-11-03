@@ -32,14 +32,7 @@ bool Player::Start() {
 	//initilize textures
 	texture = app->tex->Load(texturePath);
 
-	idleAnim.LoadAnimations("idleAnim");
-	jumpAnim.LoadAnimations("jumpAnim");
-	walkAnim.LoadAnimations("walkAnim");
-	crouchAnim.LoadAnimations("crouchAnim");
-	crouchWalkAnim.LoadAnimations("crouchWalkAnim");
-	fallAnim.LoadAnimations("fallAnim");
-	wallAnim.LoadAnimations("wallAnim");
-	deadAnim.LoadAnimations("deadAnim");
+	LoadAnimations();
 
 	currentAnim = &idleAnim;
 
@@ -60,29 +53,13 @@ bool Player::Update(float dt)
 {
 	if (app->input->GetKey(SDL_SCANCODE_F3)) SetToInitialPosition();
 
+	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) ToggleGodMode();
+
 	if (!isDead)
 	{
 		if (!isJumping) currentAnim = &idleAnim;
 
 		b2Vec2 vel = pbody->body->GetLinearVelocity();
-
-		if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
-		{
-			godMode = !godMode;
-
-			if (godMode)
-			{
-				pbody->body->GetFixtureList()->SetSensor(true);
-				pbody->body->SetGravityScale(0.0f);
-				pbody->body->SetLinearVelocity({ 0, 0 });
-				currentAnim = &idleAnim;
-			}
-			else
-			{
-				pbody->body->GetFixtureList()->SetSensor(false);
-				pbody->body->SetGravityScale(1.0f);
-			}
-		}
 
 		if (!godMode)
 		{
@@ -393,4 +370,35 @@ void Player::SetToInitialPosition()
 	isDead = false;
 	app->scene->cameraIdx = 0;
 	app->scene->cameraInitialized = true;
+}
+
+void Player::LoadAnimations()
+{
+	idleAnim.LoadAnimations("idleAnim");
+	jumpAnim.LoadAnimations("jumpAnim");
+	walkAnim.LoadAnimations("walkAnim");
+	crouchAnim.LoadAnimations("crouchAnim");
+	crouchWalkAnim.LoadAnimations("crouchWalkAnim");
+	fallAnim.LoadAnimations("fallAnim");
+	wallAnim.LoadAnimations("wallAnim");
+	deadAnim.LoadAnimations("deadAnim");
+}
+
+void Player::ToggleGodMode()
+{
+	godMode = !godMode;
+
+	if (godMode)
+	{
+		pbody->body->GetFixtureList()->SetSensor(true);
+		pbody->body->SetGravityScale(0.0f);
+		pbody->body->SetLinearVelocity({ 0, 0 });
+		currentAnim = &idleAnim;
+	}
+	else
+	{
+		pbody->body->GetFixtureList()->SetSensor(false);
+		pbody->body->SetGravityScale(1.0f);
+	}
+
 }

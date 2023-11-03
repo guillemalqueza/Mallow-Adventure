@@ -25,6 +25,8 @@ public:
 
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 
+	void OnPicked();
+
 public:
 
 	bool isPicked = false;

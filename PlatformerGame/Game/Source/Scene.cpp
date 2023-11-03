@@ -33,31 +33,16 @@ bool Scene::Awake(pugi::xml_node& config)
 
 	// iterate all objects in the scene
 	// Check https://pugixml.org/docs/quickstart.html#access
-	for (pugi::xml_node itemNode = config.child("item"); itemNode; itemNode = itemNode.next_sibling("item"))
-	{
-		Item* item = (Item*)app->entityManager->CreateEntity(EntityType::ITEM);
-		item->parameters = itemNode;
-	}
-
-	if (config.child("lockDoor")) {
-		LockDoor* lockDoor = (LockDoor*)app->entityManager->CreateEntity(EntityType::LOCK_DOOR);
-		lockDoor->parameters = config.child("lockDoor");
-	}
 
 	if (config.child("player")) {
 		player = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER);
 		player->parameters = config.child("player");
 	}
 
-	if (config.child("jumper")) {
-		Jumper* jumper = (Jumper*)app->entityManager->CreateEntity(EntityType::JUMPER);
-		jumper->parameters = config.child("jumper");
-	}
-
-	if (config.child("crumblingPlatform")) {
-		CrumblingPlatform* crumblingPlatform = (CrumblingPlatform*)app->entityManager->CreateEntity(EntityType::CRUMBLING_PLATFORM);
-		crumblingPlatform->parameters = config.child("crumblingPlatform");
-	}
+	CreateEntities(config, "item", EntityType::ITEM);
+	CreateEntities(config, "lockDoor", EntityType::LOCK_DOOR);
+	CreateEntities(config, "jumper", EntityType::JUMPER);
+	CreateEntities(config, "crumblingPlatform", EntityType::CRUMBLING_PLATFORM);
 
 	if (config.child("map")) {
 		//Get the map name from the config file and assigns the value in the module
@@ -112,77 +97,22 @@ bool Scene::Update(float dt)
 	playerX = player->position.x;
 	playerY = player->position.y;
 
-	if (cameraIdx == 0)
-	{
-		cameraX = 56;
-		cameraY = 760 - (windowH / 2);
-	}
-	else if (cameraIdx == 1)
-	{
-		cameraX = 2460 - (windowW / 2);
-		cameraY = 575 - (windowH / 2);
-	}
+	if (cameraIdx == 0) SetCameraPosition(56, 760 - (windowH / 2));
+	else if (cameraIdx == 1) SetCameraPosition(2460 - (windowW / 2), 575 - (windowH / 2));
 
-	if (cameraX < 0) {
-		cameraX = 0;
-	}
-	else if (cameraX + windowW > levelWidth) {
-		cameraX = levelWidth - windowW;
-	}
+	ClampCamera();
 
-	if (cameraY < 0) {
-		cameraY = 0;
-	}
-	else if (cameraY + windowH > levelHeight) {
-		cameraY = levelHeight - windowH;
-	}
+	if (app->input->GetKey(SDL_SCANCODE_T) == KEY_DOWN) StartCameraShakeX(20.0f, 5.0f);
 
-	if (app->input->GetKey(SDL_SCANCODE_T) == KEY_DOWN)
-	{
-		shakingCameraX = true;
-		shakeDuration = 20.0f;
-		shakeIntensity = 5.0f;
-		shakeTimer = shakeDuration;
-		cameraInitialized = false;
-	}
+	if (app->input->GetKey(SDL_SCANCODE_Y) == KEY_DOWN) StartCameraShakeY(20.0f, 5.0f);
 
-	if (app->input->GetKey(SDL_SCANCODE_Y) == KEY_DOWN)
-	{
-		shakingCameraY = true;
-		shakeDuration = 20.0f;
-		shakeIntensity = 5.0f;
-		shakeTimer = shakeDuration;
-		cameraInitialized = false;
-	}
-
-	if (shakingCameraX)
-	{
-		if (shakeTimer > 0)
-		{
-			float offsetX = sin(shakeTimer * 20.0f) * shakeIntensity;
-			app->render->camera.x += static_cast<int>(offsetX);
-			shakeTimer -= 1.0f;
-		}
-		else shakingCameraX = false;
-	}
-	else if (shakingCameraY)
-	{
-		if (shakeTimer > 0)
-		{
-			float offsetY = sin(shakeTimer * 20.0f) * shakeIntensity;
-			app->render->camera.y += static_cast<int>(offsetY);
-			shakeTimer -= 1.0f;
-		}
-		else shakingCameraY = false;
-	}
-	else cameraInitialized = true;
+	UpdateCameraShake();
 	
 	if (cameraInitialized)
 	{
 		app->render->camera.x += (-cameraX - app->render->camera.x) * cameraSmoothingFactor;
 		app->render->camera.y += (-cameraY - app->render->camera.y) * cameraSmoothingFactor;
 	}
-	
 
 	return true;
 }
@@ -205,3 +135,69 @@ bool Scene::CleanUp()
 
 	return true;
 }
+
+void Scene::CreateEntities(pugi::xml_node& config, const char* nodeName, EntityType entityType)
+{
+	for (pugi::xml_node entityNode = config.child(nodeName); entityNode; entityNode = entityNode.next_sibling(nodeName))
+	{
+		Entity* entity = app->entityManager->CreateEntity(entityType);
+		entity->parameters = entityNode;
+	}
+}
+
+void Scene::SetCameraPosition(int x, int y)
+{
+	cameraX = x;
+	cameraY = y;
+}
+
+void Scene::ClampCamera()
+{
+	if (cameraX < 0) cameraX = 0;
+	else if (cameraX + windowW > levelWidth) cameraX = levelWidth - windowW;
+
+	if (cameraY < 0) cameraY = 0;
+	else if (cameraY + windowH > levelHeight) cameraY = levelHeight - windowH;
+}
+
+void Scene::StartCameraShakeX(float duration, float intensity)
+{
+	shakingCameraX = true;
+	shakeTimer = duration;
+	shakeIntensity = intensity;
+	cameraInitialized = false;
+}
+
+void Scene::StartCameraShakeY(float duration, float intensity)
+{
+	shakingCameraY = true;
+	shakeTimer = duration;
+	shakeIntensity = intensity;
+	cameraInitialized = false;
+}
+
+void Scene::UpdateCameraShake()
+{
+	if (shakingCameraX)
+	{
+		if (shakeTimer > 0)
+		{
+			float offsetX = sin(shakeTimer * 20.0f) * shakeIntensity;
+			app->render->camera.x += static_cast<int>(offsetX);
+			shakeTimer -= 1.0f;
+		}
+		else shakingCameraX = false;
+	}
+	else if (shakingCameraY)
+	{
+		if (shakeTimer > 0)
+		{
+			float offsetY = sin(shakeTimer * 20.0f) * shakeIntensity;
+			app->render->camera.y += static_cast<int>(offsetY);
+			shakeTimer -= 1.0f;
+		}
+		else shakingCameraY = false;
+	}
+	else cameraInitialized = true;
+}
+

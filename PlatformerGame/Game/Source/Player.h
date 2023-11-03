@@ -29,6 +29,10 @@ public:
 
 	void SetToInitialPosition();
 
+	void LoadAnimations();
+	
+	void ToggleGodMode();
+
 public:
 	float speed = 0.4f;
 	const char* texturePath;
