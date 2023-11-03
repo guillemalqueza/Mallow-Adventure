@@ -63,6 +63,7 @@ public:
 	float dashTimer = 0.0f;
 	
 	int keys = 0;
+	bool godMode = false;
 
 };
 
