@@ -93,8 +93,8 @@ bool Scene::Start()
 		app->map->mapData.tileHeight,
 		app->map->mapData.tilesets.Count());
 
-	app->render->camera.x = 0;
-	app->render->camera.y = 0;
+	app->render->camera.x = -32;
+	app->render->camera.y = -286;
 	return true;
 }
 

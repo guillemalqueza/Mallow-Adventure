@@ -49,18 +49,19 @@ bool Item::Update(float dt)
 	{
 		followTimer += 0.1f;
 
-		if (followTimer < 10.0f)
-		{
-			iPoint playerPosition = app->scene->player->position;
-			acceleration += 0.1f;
-			position.x = static_cast<int>(position.x + (playerPosition.x - position.x) * 0.01f * acceleration);
-			position.y = static_cast<int>(position.y + (playerPosition.y - position.y) * 0.01f * acceleration);
-			app->render->DrawTexture(texture, position.x, position.y, &currentAnim->GetCurrentFrame());
-		}
-		else
+		iPoint playerPosition = app->scene->player->position;
+		float distanceX = abs(playerPosition.x - position.x);
+		if (followTimer > 10.0f && distanceX <= 10.0f)
 		{
 			app->entityManager->DestroyEntity(this);
 			app->physics->world->DestroyBody(pbody->body);
+		}
+		else
+		{
+			acceleration += 0.2f;
+			position.x = static_cast<int>(position.x + (playerPosition.x - position.x) * 0.01f * acceleration);
+			position.y = static_cast<int>(position.y + (playerPosition.y - position.y) * 0.01f * acceleration);
+			app->render->DrawTexture(texture, position.x, position.y, &currentAnim->GetCurrentFrame());
 		}
 	}
 	else
