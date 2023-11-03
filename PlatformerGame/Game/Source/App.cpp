@@ -210,8 +210,8 @@ void App::FinishUpdate()
 	/*sprintf_s(title, 256, "%s: Av.FPS: %.2f Last sec frames: %i Last dt: %.3f Time since startup: %I32u Frame Count: %I64u ",
 		gameTitle.GetString(), averageFps, framesPerSecond, dt, secondsSinceStartup, frameCount);*/
 
-	sprintf_s(title, 256, "%s: FPS: %.2f / Avg.FPS: %.2f / Last-frame MS: %.0f / Vsync: %s ",
-		gameTitle.GetString(), currentFps, averageFps, dt, vsync);
+	sprintf_s(title, 256, "%s: FPS: %i / Avg.FPS: %.2f / Last-frame MS: %.0f / Vsync: %s ",
+		gameTitle.GetString(), framesPerSecond, averageFps, dt, vsync);
 
 	app->win->SetTitle(title);
 }

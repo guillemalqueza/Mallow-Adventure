@@ -22,7 +22,7 @@ private:
 	int pingpongCount = 0;
 	int pingpongDirection = 1;
 
-	pugi::xml_document anim_file;	
+	pugi::xml_document animFile;
 
 public:
 
@@ -92,13 +92,13 @@ public:
 
 	void LoadAnimations(const char* name)
 	{
-		pugi::xml_parse_result result = anim_file.load_file("config.xml");
+		pugi::xml_parse_result result = animFile.load_file("config.xml");
 		if (result != NULL)
 		{
-			pugi::xml_node animation_name = anim_file.child("config").child("animations").child(name);
-			loop = animation_name.attribute("loop").as_bool();
-			speed = animation_name.attribute("speed").as_float();
-			for (pugi::xml_node animation = animation_name.child("animation"); animation; animation = animation.next_sibling("animation"))
+			pugi::xml_node animationName = animFile.child("config").child("animations").child(name);
+			loop = animationName.attribute("loop").as_bool();
+			speed = animationName.attribute("speed").as_float();
+			for (pugi::xml_node animation = animationName.child("animation"); animation; animation = animation.next_sibling("animation"))
 			{
 				PushBack({ animation.attribute("x").as_int(), animation.attribute("y").as_int(), animation.attribute("w").as_int(), animation.attribute("h").as_int() });
 			}

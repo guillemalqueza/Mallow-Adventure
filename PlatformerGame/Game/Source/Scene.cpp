@@ -39,6 +39,11 @@ bool Scene::Awake(pugi::xml_node& config)
 		item->parameters = itemNode;
 	}
 
+	if (config.child("lockDoor")) {
+		LockDoor* lockDoor = (LockDoor*)app->entityManager->CreateEntity(EntityType::LOCK_DOOR);
+		lockDoor->parameters = config.child("lockDoor");
+	}
+
 	if (config.child("player")) {
 		player = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER);
 		player->parameters = config.child("player");
@@ -52,11 +57,6 @@ bool Scene::Awake(pugi::xml_node& config)
 	if (config.child("crumblingPlatform")) {
 		CrumblingPlatform* crumblingPlatform = (CrumblingPlatform*)app->entityManager->CreateEntity(EntityType::CRUMBLING_PLATFORM);
 		crumblingPlatform->parameters = config.child("crumblingPlatform");
-	}
-
-	if (config.child("lockDoor")) {
-		LockDoor* lockDoor = (LockDoor*)app->entityManager->CreateEntity(EntityType::LOCK_DOOR);
-		lockDoor->parameters = config.child("lockDoor");
 	}
 
 	if (config.child("map")) {
@@ -94,7 +94,7 @@ bool Scene::Start()
 		app->map->mapData.tilesets.Count());
 
 	app->render->camera.x = 0;
-	app->render->camera.y = -110;
+	app->render->camera.y = 0;
 	return true;
 }
 
@@ -114,13 +114,13 @@ bool Scene::Update(float dt)
 
 	if (cameraIdx == 0)
 	{
-		cameraX = 400 - (windowW / 2);
-		cameraY = 659 - (windowH / 2);
+		cameraX = 56;
+		cameraY = 760 - (windowH / 2);
 	}
 	else if (cameraIdx == 1)
 	{
 		cameraX = 2460 - (windowW / 2);
-		cameraY = 179 - (windowH / 2);
+		cameraY = 575 - (windowH / 2);
 	}
 
 	if (cameraX < 0) {

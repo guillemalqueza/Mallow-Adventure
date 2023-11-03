@@ -160,7 +160,7 @@ bool Player::Update(float dt)
 				currentAnim = &jumpAnim;
 				isJumping = true;
 				hasJumped = true;
-				vel = b2Vec2(vel.x, -9.0f);
+				vel = b2Vec2(vel.x, -8.2f);
 				pbody->body->SetLinearVelocity(vel);
 				jumpCount = 1;
 			}
@@ -169,7 +169,7 @@ bool Player::Update(float dt)
 				currentAnim->Reset();
 				currentAnim = &jumpAnim;
 				isJumping = true;
-				vel = b2Vec2(vel.x, -9.0f);
+				vel = b2Vec2(vel.x, -8.2f);
 				pbody->body->SetLinearVelocity(vel);
 				jumpCount = 2;
 				dashCount = 1;
@@ -179,7 +179,7 @@ bool Player::Update(float dt)
 				currentAnim->Reset();
 				currentAnim = &jumpAnim;
 				isJumping = true;
-				vel = b2Vec2(vel.x, -9.0f);
+				vel = b2Vec2(vel.x, -8.2f);
 				pbody->body->SetLinearVelocity(vel);
 				jumpCount = 2;
 				dashCount = 1;
