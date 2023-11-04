@@ -277,10 +277,11 @@ bool Player::Update(float dt)
 		pbody->body->SetLinearVelocity({0, 0});
 		if (currentAnim!= &deadAnim)
 		{
+			currentAnim = &deadAnim;
+			currentAnim->ResetLoopCount();
 			currentAnim->Reset();
 		}
-		currentAnim = &deadAnim;
-		if (currentAnim->HasFinished()) SetToInitialPosition();
+		if (currentAnim == &deadAnim && currentAnim->HasFinished()) SetToInitialPosition();
 	}
 
     SDL_Rect rect = currentAnim->GetCurrentFrame();
