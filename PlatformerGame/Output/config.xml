@@ -30,6 +30,11 @@
     <!-- <crumblingPlatform x="600" y="850" texturepath="Assets/Textures/crumblingPlatform.png"/> -->
     <lockDoor x="3200" y="190" texturepath="Assets/Textures/lockDoor.png"/>
   </scene>
+
+  <scene2>
+	  <map2 path="Assets/Maps/" name="MapLvl2.tmx"/>
+	  <player x="400" y="800" texturepath="Assets/Textures/player.png"/>
+  </scene2>
   
   <animations>
     <!-- Player Animations-->

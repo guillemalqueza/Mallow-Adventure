@@ -132,6 +132,7 @@ private:
 	TileSet* GetTilesetFromTileId(int gid) const;
 	bool LoadProperties(pugi::xml_node& node, Properties& properties);
 	bool CreateColliders();
+	void DestroyAllColliders();
 
 public: 
 

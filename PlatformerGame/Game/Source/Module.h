@@ -16,7 +16,10 @@ public:
 
 	void Init()
 	{
-		active = true;
+		if (!active)
+		{
+			active = true;
+		}
 	}
 
 	// Called before render is available
@@ -53,6 +56,24 @@ public:
 	virtual bool CleanUp()
 	{
 		return true;
+	}
+
+	void Module::Enable()
+	{
+		if (!active)
+		{
+			active = true;
+			Start();
+		}
+	}
+
+	void Module::Disable()
+	{
+		if (active)
+		{
+			active = false;
+			CleanUp();
+		}
 	}
 
 public:

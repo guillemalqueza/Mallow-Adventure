@@ -9,6 +9,7 @@
 #include "Point.h"
 #include "Physics.h"
 #include "EntityManager.h"
+#include "FadeToBlack.h"
 
 LockDoor::LockDoor() : Entity(EntityType::LOCK_DOOR)
 {
@@ -51,6 +52,13 @@ bool LockDoor::Update(float dt)
 	{
 		isActivated = false;
 		currentAnim = &doorOpenAnim;
+	}
+
+	if (currentAnim == &doorOpenAnim && currentAnim->HasFinished())
+	{
+		app->fade->Fade(2, 90);
+		app->physics->world->DestroyBody(pbody->body);
+		app->entityManager->DestroyEntity(this);
 	}
 
 	SDL_Rect rect = currentAnim->GetCurrentFrame();

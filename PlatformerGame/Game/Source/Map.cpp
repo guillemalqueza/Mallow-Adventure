@@ -150,7 +150,7 @@ bool Map::CleanUp()
         RELEASE(layerItem->data);
         layerItem = layerItem->next;
     }
-
+    DestroyAllColliders();
     return true;
 }
 
@@ -431,4 +431,27 @@ Properties::Property* Properties::GetProperty(const char* name)
     return p;
 }
 
+void Map::DestroyAllColliders()
+{
+    b2World* physicsWorld = app->physics->world;
+    b2Body* body = physicsWorld->GetBodyList();
 
+    while (body)
+    {
+        b2Body* nextBody = body->GetNext();
+        PhysBody* physBody = static_cast<PhysBody*>(body->GetUserData());
+
+        if (physBody)
+        {
+            ColliderType ctype = physBody->ctype;
+
+            // Comprueba el tipo del collider y elimina solo los tipos específicos
+            if (ctype == ColliderType::CAMERA || ctype == ColliderType::SPIKE || ctype == ColliderType::R_WALL || ctype == ColliderType::L_WALL || ctype == ColliderType::PLATFORM)
+            {
+                physicsWorld->DestroyBody(body);
+            }
+        }
+
+        body = nextBody;
+    }
+}

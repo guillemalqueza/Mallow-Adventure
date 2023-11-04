@@ -6,6 +6,7 @@
 #include "Window.h"
 #include "Scene.h"
 #include "Map.h"
+#include "FadeToBlack.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -99,6 +100,7 @@ bool Scene::Update(float dt)
 
 	if (cameraIdx == 0) SetCameraPosition(56, 760 - (windowH / 2));
 	else if (cameraIdx == 1) SetCameraPosition(2460 - (windowW / 2), 575 - (windowH / 2));
+	else if (cameraIdx == 2) SetCameraPosition(0, 0);
 
 	ClampCamera();
 
@@ -132,7 +134,8 @@ bool Scene::PostUpdate()
 bool Scene::CleanUp()
 {
 	LOG("Freeing scene");
-
+	app->map->Disable();
+	//app->entityManager->DestroyEntity(player);
 	return true;
 }
 
