@@ -26,6 +26,8 @@ Scene::Scene() : Module()
 Scene::~Scene()
 {}
 
+pugi::xml_node configNode;
+
 // Called before render is available
 bool Scene::Awake(pugi::xml_node& config)
 {
@@ -51,6 +53,8 @@ bool Scene::Awake(pugi::xml_node& config)
 		app->map->path = config.child("map").attribute("path").as_string();
 	}
 
+	configNode = config;
+
 	return ret;
 }
 
@@ -58,8 +62,7 @@ bool Scene::Awake(pugi::xml_node& config)
 bool Scene::Start()
 {
 	// NOTE: We have to avoid the use of paths in the code, we will move it later to a config file
-	backgroundTexture = app->tex->Load("Assets/Maps/background.png");
-	
+	backgroundTexture = app->tex->Load(configNode.child("background").attribute("texturepath").as_string());
 	//Music is commented so that you can add your own music
 	//app->audio->PlayMusic("Assets/Audio/Music/music_spy.ogg");
 

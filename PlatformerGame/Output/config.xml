@@ -24,11 +24,14 @@
 
   <scene>
     <map path="Assets/Maps/" name="MapTemplate.tmx"/>
-    <player x="400" y="991" texturepath="Assets/Textures/player.png"/>
+    <player x="400" y="991" texturepath="Assets/Textures/player.png" speed="0.2f">
+	<itemAudio path="Assets/Audio/Fx/retro-video-game-coin-pickup-38299.ogg"/>
+	</player>
     <item x="704" y="632" texturepath="Assets/Textures/key.png"/>
     <!-- <jumper x="160" y="1019" texturepath="Assets/Textures/jumper.png"/> -->
     <!-- <crumblingPlatform x="600" y="850" texturepath="Assets/Textures/crumblingPlatform.png"/> -->
     <lockDoor x="3200" y="190" texturepath="Assets/Textures/lockDoor.png"/>
+	<background texturepath="Assets/Maps/background.png"/>
   </scene>
 
   <scene2>

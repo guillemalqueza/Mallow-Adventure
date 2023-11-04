@@ -23,7 +23,8 @@ bool Player::Awake() {
 	position.x = parameters.attribute("x").as_int();
 	position.y = parameters.attribute("y").as_int();
 	texturePath = parameters.attribute("texturepath").as_string();
-
+	speed = parameters.attribute("speed").as_float();
+	pickCoinFxId = app->audio->LoadFx(parameters.child("itemAudio").attribute("path").as_string());
 	return true;
 }
 
@@ -43,8 +44,6 @@ bool Player::Start() {
 	pbody->ctype = ColliderType::PLAYER;
 
 	initialTransform = pbody->body->GetTransform();
-
-	pickCoinFxId = app->audio->LoadFx("Assets/Audio/Fx/retro-video-game-coin-pickup-38299.ogg");
 
 	return true;
 }
@@ -141,16 +140,6 @@ bool Player::Update(float dt)
 			{
 				isWalking = false;
 				vel.x = 0;
-			}
-
-			if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT) {
-				isRunning = true;
-				speed = 0.5f;
-			}
-			else
-			{
-				isRunning = false;
-				speed = 0.2f;
 			}
 
 			if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)

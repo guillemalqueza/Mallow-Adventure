@@ -34,7 +34,7 @@ public:
 	void ToggleGodMode();
 
 public:
-	float speed = 0.4f;
+	float speed = 0.2f;
 	const char* texturePath;
 	SDL_Texture* texture = NULL;
 	PhysBody* pbody;
