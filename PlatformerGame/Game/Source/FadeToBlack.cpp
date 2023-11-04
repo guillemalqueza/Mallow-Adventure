@@ -46,8 +46,16 @@ bool FadeToBlack::Update(float dt)
 		{
 			currentStep = Fade_Step::NONE;
 		}
-		app->scene->cameraIdx = 2;
-		app->scene->cameraInitialized = true;
+		if (!activated)
+		{
+			activated = true;
+			app->scene->cameraIdx = 2;
+			app->scene->cameraInitialized = true;
+			app->map->name = "MapLvl2.tmx";
+			app->map->CleanUp();
+			app->map->Start();
+		}
+		
 	}
 
 	return true;
@@ -80,6 +88,7 @@ bool FadeToBlack::Fade(int cameraIdx, float frames)
 		this->cameraIdx = cameraIdx;
 		ret = true;
 	}
+	activated = false;
 
 	return ret;
 }

@@ -46,6 +46,7 @@ private:
 
 	// The rectangle of the screen, used to render the black rectangle
 	SDL_Rect screenRect;
+	bool activated = false;
 };
 
 #endif //__FADETOBLACK_H__

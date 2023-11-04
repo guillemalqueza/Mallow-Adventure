@@ -37,15 +37,15 @@ bool Scene::Awake(pugi::xml_node& config)
 	// iterate all objects in the scene
 	// Check https://pugixml.org/docs/quickstart.html#access
 
-	if (config.child("player")) {
-		player = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER);
-		player->parameters = config.child("player");
-	}
-
 	CreateEntities(config, "item", EntityType::ITEM);
 	CreateEntities(config, "lockDoor", EntityType::LOCK_DOOR);
 	CreateEntities(config, "jumper", EntityType::JUMPER);
 	CreateEntities(config, "crumblingPlatform", EntityType::CRUMBLING_PLATFORM);
+
+	if (config.child("player")) {
+		player = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER);
+		player->parameters = config.child("player");
+	}
 
 	if (config.child("map")) {
 		//Get the map name from the config file and assigns the value in the module

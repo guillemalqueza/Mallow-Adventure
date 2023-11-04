@@ -131,25 +131,30 @@ bool Map::CleanUp()
 {
     LOG("Unloading map");
 
-	ListItem<TileSet*>* item;
-	item = mapData.tilesets.start;
-
-	while (item != NULL)
-	{
-		RELEASE(item->data);
-		item = item->next;
-	}
-	mapData.tilesets.Clear();
-
     // Remove all layers
     ListItem<MapLayer*>* layerItem;
     layerItem = mapData.maplayers.start;
 
     while (layerItem != NULL)
     {
+        RELEASE_ARRAY(layerItem->data->data);
         RELEASE(layerItem->data);
         layerItem = layerItem->next;
     }
+    mapData.maplayers.Clear();
+
+    // Remove all tilesets
+    ListItem<TileSet*>* tilesetItem;
+    tilesetItem = mapData.tilesets.start;
+
+    while (tilesetItem != NULL)
+    {
+        app->tex->UnLoad(tilesetItem->data->texture);
+        RELEASE(tilesetItem->data);
+        tilesetItem = tilesetItem->next;
+    }
+    mapData.tilesets.Clear();
+
     DestroyAllColliders();
     return true;
 }
