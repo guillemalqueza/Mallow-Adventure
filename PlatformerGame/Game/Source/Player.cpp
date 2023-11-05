@@ -290,7 +290,7 @@ bool Player::Update(float dt)
     currentAnim->Update();
 	//printf("\r jumpcount: %d	ground: %d	isJumping: %d	hadJumped: %d	wall: %d", jumpCount, ground,isJumping,hasJumped,wall);
 	/*printf("\r playerX: %d playerY: %d", position.x, position.y);*/
-	printf("\r cameraX: %d cameraY: %d", app->render->camera.x, app->render->camera.y);
+	printf("\r cameraX: %d cameraY: %d positionX: %d positionY %d", app->render->camera.x, app->render->camera.y, position.x, position.y);
     return true;
 }
 
@@ -356,9 +356,15 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 
 void Player::SetToInitialPosition()
 {
-	pbody->body->SetTransform(b2Vec2(initialTransform.p.x, initialTransform.p.y), 0);
+	if (!app->scene->level2Enabled)
+	{
+		app->scene->StartLevel1();
+	}
+	else
+	{
+		app->scene->StartLevel2();
+	}
 	isDead = false;
-	app->scene->cameraIdx = 0;
 	app->scene->cameraInitialized = true;
 }
 

@@ -49,12 +49,17 @@ public:
 
 	void UpdateCameraShake();
 
+	void StartLevel2();
+	void StartLevel1();
+
 	Player* player;	
 	int cameraIdx = 0;
 	bool cameraInitialized = true;
+	bool level2Enabled = false;
 
 private:
 	SDL_Texture* backgroundTexture;
+	SDL_Texture* backgroundTexture2;
 	SDL_Rect bg;
 	float textPosX, textPosY = 0;
 	uint texW, texH;
@@ -70,6 +75,9 @@ private:
 
 	int levelWidth = 107 * 32;
 	int levelHeight = 50 * 32;
+
+	int level2Width = 140 * 32;
+	int level2Height = 45 * 32;
 
 	int playerX, playerY, cameraX, cameraY;
 };

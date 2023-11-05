@@ -28,10 +28,13 @@
 	<itemAudio path="Assets/Audio/Fx/retro-video-game-coin-pickup-38299.ogg"/>
 	</player>
     <item x="704" y="632" texturepath="Assets/Textures/key.png"/>
-    <!-- <jumper x="160" y="1019" texturepath="Assets/Textures/jumper.png"/> -->
-    <!-- <crumblingPlatform x="600" y="850" texturepath="Assets/Textures/crumblingPlatform.png"/> -->
+    <jumper x="4880" y="634" texturepath="Assets/Textures/jumper.png"/>
+    <crumblingPlatform x="5900" y="500" texturepath="Assets/Textures/crumblingPlatform.png"/>
+	<crumblingPlatform x="6050" y="550" texturepath="Assets/Textures/crumblingPlatform.png"/>
+	<crumblingPlatform x="6200" y="600" texturepath="Assets/Textures/crumblingPlatform.png"/>
     <lockDoor x="3200" y="190" texturepath="Assets/Textures/lockDoor.png"/>
 	<background texturepath="Assets/Maps/background.png"/>
+	<background2 texturepath="Assets/Maps/backgroundlvl2.png"/>
   </scene>
 
   <scene2>

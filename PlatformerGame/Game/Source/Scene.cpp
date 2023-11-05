@@ -63,6 +63,7 @@ bool Scene::Start()
 {
 	// NOTE: We have to avoid the use of paths in the code, we will move it later to a config file
 	backgroundTexture = app->tex->Load(configNode.child("background").attribute("texturepath").as_string());
+	backgroundTexture2 = app->tex->Load(configNode.child("background2").attribute("texturepath").as_string());
 	//Music is commented so that you can add your own music
 	//app->audio->PlayMusic("Assets/Audio/Music/music_spy.ogg");
 
@@ -96,14 +97,15 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
-	app->render->DrawTexture(backgroundTexture, 0, 0, &bg, SDL_FLIP_NONE, 0.0f);
+	if (!level2Enabled) app->render->DrawTexture(backgroundTexture, 0, 0, &bg, SDL_FLIP_NONE, 0.0f);
+	else app->render->DrawTexture(backgroundTexture2, 0, 0, &bg, SDL_FLIP_NONE, 0.0f);
 
 	playerX = player->position.x;
 	playerY = player->position.y;
 
 	if (cameraIdx == 0) SetCameraPosition(56, 760 - (windowH / 2));
 	else if (cameraIdx == 1) SetCameraPosition(2460 - (windowW / 2), 575 - (windowH / 2));
-	else if (cameraIdx == 2) SetCameraPosition(0, 0);
+	else if (cameraIdx == 2) SetCameraPosition(player->position.x - (windowW / 2), player->position.y + 60 - (windowH / 2));
 
 	ClampCamera();
 
@@ -119,6 +121,8 @@ bool Scene::Update(float dt)
 		app->render->camera.y += (-cameraY - app->render->camera.y) * cameraSmoothingFactor;
 	}
 
+	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) StartLevel1();
+	if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) StartLevel2();
 	return true;
 }
 
@@ -159,11 +163,24 @@ void Scene::SetCameraPosition(int x, int y)
 
 void Scene::ClampCamera()
 {
-	if (cameraX < 0) cameraX = 0;
-	else if (cameraX + windowW > levelWidth) cameraX = levelWidth - windowW;
+	if (!level2Enabled)
+	{
+		if (cameraX < 0) cameraX = 0;
+		else if (cameraX + windowW > levelWidth) cameraX = levelWidth - windowW;
 
-	if (cameraY < 0) cameraY = 0;
-	else if (cameraY + windowH > levelHeight) cameraY = levelHeight - windowH;
+		if (cameraY < 0) cameraY = 0;
+		else if (cameraY + windowH > levelHeight) cameraY = levelHeight - windowH;
+	}
+	else
+	{
+		if (cameraX < levelWidth + 550) cameraX = levelWidth + 550;
+		else if (cameraX + windowW > levelWidth + level2Width + 300) cameraX = (levelWidth +  level2Width + 300) - windowW;
+
+		if (cameraY < 0) cameraY = 0;
+		else if (cameraY > 200) cameraY = 460;
+		else if (cameraY + windowH > level2Height) cameraY = level2Height - windowH;
+	}
+	
 }
 
 void Scene::StartCameraShakeX(float duration, float intensity)
@@ -205,5 +222,21 @@ void Scene::UpdateCameraShake()
 		else shakingCameraY = false;
 	}
 	else cameraInitialized = true;
+}
+
+void Scene::StartLevel2()
+{
+	cameraIdx = 2;
+	cameraInitialized = true;
+	player->pbody->body->SetTransform(b2Vec2(PIXEL_TO_METERS(4120), PIXEL_TO_METERS(830)), 0);
+	level2Enabled = true;
+}
+
+void Scene::StartLevel1()
+{
+	cameraIdx = 0;
+	cameraInitialized = true;
+	player->pbody->body->SetTransform(b2Vec2(player->initialTransform.p.x, player->initialTransform.p.y), 0);
+	level2Enabled = false;
 }
 

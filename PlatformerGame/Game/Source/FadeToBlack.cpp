@@ -49,13 +49,8 @@ bool FadeToBlack::Update(float dt)
 		if (!activated)
 		{
 			activated = true;
-			app->scene->cameraIdx = 2;
-			app->scene->cameraInitialized = true;
-			app->map->name = "MapLvl2.tmx";
-			app->map->CleanUp();
-			app->map->Start();
+			app->scene->StartLevel2();
 		}
-		
 	}
 
 	return true;
