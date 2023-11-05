@@ -125,6 +125,8 @@ bool Player::Update(float dt)
 				if (currentAnim == &wallAnim && !ground && isFacingRight)
 				{
 					wall = false;
+					currentAnim = &idleAnim;
+					pbody->body->SetGravityScale(1.0f);
 				}
 				isFacingRight = false;
 			}
@@ -141,6 +143,8 @@ bool Player::Update(float dt)
 				if (currentAnim == &wallAnim && !ground && !isFacingRight)
 				{
 					wall = false;
+					currentAnim = &idleAnim;
+					pbody->body->SetGravityScale(1.0f);
 				}
 				isFacingRight = true;
 			}
