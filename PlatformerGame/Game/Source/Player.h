@@ -36,6 +36,7 @@ public:
 public:
 	float speed = 0.2f;
 	const char* texturePath;
+	const char* lightTexturePath;
 	SDL_Texture* texture = NULL;
 	SDL_Texture* lightTexture;
 	PhysBody* pbody;

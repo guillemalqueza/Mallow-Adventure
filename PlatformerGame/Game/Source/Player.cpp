@@ -25,6 +25,7 @@ bool Player::Awake() {
 	position.x = parameters.attribute("x").as_int();
 	position.y = parameters.attribute("y").as_int();
 	texturePath = parameters.attribute("texturepath").as_string();
+	lightTexturePath = parameters.attribute("lightTexture").as_string();
 	speed = parameters.attribute("speed").as_float();
 	pickCoinFxId = app->audio->LoadFx(parameters.child("itemAudio").attribute("path").as_string());
 	return true;
@@ -34,7 +35,7 @@ bool Player::Start() {
 
 	//initilize textures
 	texture = app->tex->Load(texturePath);
-	lightTexture = app->tex->Load("Assets/Textures/player_light.png");
+	lightTexture = app->tex->Load(lightTexturePath);
 	LoadAnimations();
 
 	currentAnim = &idleAnim;
@@ -52,8 +53,10 @@ bool Player::Start() {
 
 bool Player::Update(float dt)
 {
+	//restart position
 	if (app->input->GetKey(SDL_SCANCODE_F3)) SetToInitialPosition();
 
+	//godmode
 	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) ToggleGodMode();
 
 	if (!isDead)
@@ -64,6 +67,7 @@ bool Player::Update(float dt)
 
 		if (!godMode)
 		{
+			//idle wall keys
 			if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_IDLE && wall && !ground)
 			{
 				pbody->body->SetGravityScale(0.0f);
@@ -78,6 +82,7 @@ bool Player::Update(float dt)
 
 			if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_IDLE) isFacingUp = false;
 
+			//climb wall keys
 			if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 			{
 				isFacingUp = true;
@@ -99,6 +104,7 @@ bool Player::Update(float dt)
 				}
 			}
 
+			//crouch
 			if (app->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT)
 			{
 				isCrouching = true;
@@ -106,6 +112,7 @@ bool Player::Update(float dt)
 			}
 			else isCrouching = false;
 
+			//player movement
 			if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 			{
 				if (!isDashing) vel.x = -speed * dt;
@@ -144,6 +151,7 @@ bool Player::Update(float dt)
 				vel.x = 0;
 			}
 
+			//jump
 			if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 			{
 				if (!isJumping && !hasJumped && ground && jumpCount == 0)
@@ -179,6 +187,7 @@ bool Player::Update(float dt)
 
 			}
 
+			//dash
 			if (app->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN && !ground && !isDashing && dashCount == 0) {
 				isDashing = true;
 				dashTimer = 0.0f;
@@ -213,7 +222,6 @@ bool Player::Update(float dt)
 				jumper = false;
 			}
 
-
 			if (isJumping && currentAnim->HasFinished() || (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT && !wall))
 			{
 				currentAnim->ResetLoopCount();
@@ -229,17 +237,11 @@ bool Player::Update(float dt)
 				if (pbody->body->GetLinearVelocity().y > 0)
 				{
 					currentAnim = &fallAnim;
-					/*	printf("Falling");*/
 				}
 			}
-			//else if (position.y > previousY && wall)
-			//{
-			//	currentAnim = &fallAnim;
-			//}
 			else if (!wall)
 			{
 				ground = true;
-				//jumpCount = 0;
 			}
 
 			previousY = position.y;
@@ -320,6 +322,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		hasJumped = false;
 		isJumping = false;
 		wall = false;
+		if (!godMode) pbody->body->SetGravityScale(1.0f);
 		break;
 	case ColliderType::L_WALL:
 		LOG("Collision L_WALL");
@@ -335,6 +338,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		break;
 	case ColliderType::JUMP:
 		LOG("Collision JUMP");
+		pbody->body->SetGravityScale(1.0f);
 		jumper = true;
 		break;
 	case ColliderType::CAMERA:
