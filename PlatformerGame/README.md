@@ -17,6 +17,7 @@ Mallow's Adventure is a 2D platformer game based on Celeste's game univers.
  - Tutorial level
  - Second level
  - Different cameras: Smooth player follow and zone camera
+ - Camera shake
  - Debug keys
  - Crumbling platforms
  - Spring jumper
