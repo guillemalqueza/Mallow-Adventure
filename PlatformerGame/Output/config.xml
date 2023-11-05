@@ -6,7 +6,7 @@
   </app>
 
   <renderer>
-    <vsync value="true"/>
+    <vsync value="false"/>
   </renderer>
 
   <window>
@@ -23,24 +23,20 @@
   </audio>
 
   <scene>
+	  <!-- Scene -->
     <map path="Assets/Maps/" name="MapTemplate.tmx"/>
     <player x="400" y="991" texturepath="Assets/Textures/player.png" speed="0.2f">
-	<itemAudio path="Assets/Audio/Fx/retro-video-game-coin-pickup-38299.ogg"/>
+	<itemAudio path="Assets/Audio/Fx/coin_pickup.ogg"/>
 	</player>
     <item x="704" y="632" texturepath="Assets/Textures/key.png"/>
     <jumper x="4880" y="634" texturepath="Assets/Textures/jumper.png"/>
-    <crumblingPlatform x="5900" y="500" texturepath="Assets/Textures/crumblingPlatform.png"/>
-	<crumblingPlatform x="6050" y="550" texturepath="Assets/Textures/crumblingPlatform.png"/>
-	<crumblingPlatform x="6200" y="600" texturepath="Assets/Textures/crumblingPlatform.png"/>
-    <lockDoor x="3200" y="190" texturepath="Assets/Textures/lockDoor.png"/>
+    <crumblingPlatform x="5900" y="500" texturepath="Assets/Textures/crumbling_platform.png"/>
+	<crumblingPlatform x="6050" y="550" texturepath="Assets/Textures/crumbling_platform"/>
+	<crumblingPlatform x="6200" y="600" texturepath="Assets/Textures/crumbling_platform.png"/>
+    <lockDoor x="3200" y="190" texturepath="Assets/Textures/lock_door.png"/>
 	<background texturepath="Assets/Maps/background.png"/>
-	<background2 texturepath="Assets/Maps/backgroundlvl2.png"/>
+	<background2 texturepath="Assets/Maps/background_lvl_2.png"/>
   </scene>
-
-  <scene2>
-	  <map2 path="Assets/Maps/" name="MapLvl2.tmx"/>
-	  <player x="400" y="800" texturepath="Assets/Textures/player.png"/>
-  </scene2>
   
   <animations>
     <!-- Player Animations-->
