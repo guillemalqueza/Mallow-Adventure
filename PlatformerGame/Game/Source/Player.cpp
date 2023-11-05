@@ -8,6 +8,7 @@
 #include "Log.h"
 #include "Point.h"
 #include "Physics.h"
+#include "FadeToBlack.h"
 
 Player::Player() : Entity(EntityType::PLAYER)
 {
@@ -251,19 +252,19 @@ bool Player::Update(float dt)
 
 			if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 			{
-				vel.y = -speed * dt;
+				vel.y = -speed * 2 * dt;
 			}
 			if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 			{
-				vel.y = speed * dt;
+				vel.y = speed * 2 * dt;
 			}
 			if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 			{
-				vel.x = -speed * dt;
+				vel.x = -speed * 2 * dt;
 			}
 			if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 			{
-				vel.x = speed * dt;
+				vel.x = speed * 2 * dt;
 			}
 
 			pbody->body->SetLinearVelocity(vel);
@@ -328,7 +329,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		break;
 	case ColliderType::SPIKE:
 		LOG("Collision SPIKE");
-		if(!godMode) isDead = true;
+		if(!godMode && !isDead) isDead = true;
 		break;
 	case ColliderType::JUMP:
 		LOG("Collision JUMP");
@@ -358,14 +359,12 @@ void Player::SetToInitialPosition()
 {
 	if (!app->scene->level2Enabled)
 	{
-		app->scene->StartLevel1();
+		app->fade->Fade(1,60);
 	}
 	else
 	{
-		app->scene->StartLevel2();
+		app->fade->Fade(2, 60);
 	}
-	isDead = false;
-	app->scene->cameraInitialized = true;
 }
 
 void Player::LoadAnimations()

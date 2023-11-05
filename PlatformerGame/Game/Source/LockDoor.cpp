@@ -56,7 +56,7 @@ bool LockDoor::Update(float dt)
 
 	if (currentAnim == &doorOpenAnim && currentAnim->HasFinished())
 	{
-		app->fade->Fade(2, 90);
+		app->fade->Fade(2, 60);
 		app->physics->world->DestroyBody(pbody->body);
 		app->entityManager->DestroyEntity(this);
 	}

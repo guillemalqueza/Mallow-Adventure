@@ -49,7 +49,8 @@ bool FadeToBlack::Update(float dt)
 		if (!activated)
 		{
 			activated = true;
-			app->scene->StartLevel2();
+			if (levelIdx == 1) app->scene->StartLevel1();
+			else if (levelIdx == 2) app->scene->StartLevel2();
 		}
 	}
 
@@ -70,7 +71,7 @@ bool FadeToBlack::PostUpdate()
 	return true;
 }
 
-bool FadeToBlack::Fade(int cameraIdx, float frames)
+bool FadeToBlack::Fade(int levelIdx, float frames)
 {
 	bool ret = false;
 
@@ -80,7 +81,7 @@ bool FadeToBlack::Fade(int cameraIdx, float frames)
 		currentStep = Fade_Step::TO_BLACK;
 		frameCount = 0;
 		maxFadeFrames = frames;
-		this->cameraIdx = cameraIdx;
+		this->levelIdx = levelIdx;
 		ret = true;
 	}
 	activated = false;

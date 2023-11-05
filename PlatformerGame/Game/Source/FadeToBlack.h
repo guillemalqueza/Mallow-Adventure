@@ -42,7 +42,7 @@ private:
 	// A frame count system to handle the fade time and ratio
 	Uint32 frameCount = 0;
 	Uint32 maxFadeFrames = 0;
-	int cameraIdx = 0;
+	int levelIdx = 0;
 
 	// The rectangle of the screen, used to render the black rectangle
 	SDL_Rect screenRect;

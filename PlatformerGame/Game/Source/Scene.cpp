@@ -115,14 +115,20 @@ bool Scene::Update(float dt)
 
 	UpdateCameraShake();
 	
-	if (cameraInitialized)
+	if (cameraInitialized && !changingLevel)
 	{
 		app->render->camera.x += (-cameraX - app->render->camera.x) * cameraSmoothingFactor;
 		app->render->camera.y += (-cameraY - app->render->camera.y) * cameraSmoothingFactor;
 	}
+	else if (changingLevel)
+	{
+		app->render->camera.x = -cameraX;
+		app->render->camera.y = -cameraY;
+		changingLevel = false;
+	}
 
-	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) StartLevel1();
-	if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) StartLevel2();
+	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) app->fade->Fade(1,60);
+	if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) app->fade->Fade(2, 60);
 	return true;
 }
 
@@ -226,17 +232,22 @@ void Scene::UpdateCameraShake()
 
 void Scene::StartLevel2()
 {
-	cameraIdx = 2;
-	cameraInitialized = true;
 	player->pbody->body->SetTransform(b2Vec2(PIXEL_TO_METERS(4120), PIXEL_TO_METERS(830)), 0);
+	if (cameraIdx != 2) changingLevel = true;
+	cameraInitialized = true;
+	cameraIdx = 2;
 	level2Enabled = true;
+	player->isDead = false;
 }
 
 void Scene::StartLevel1()
 {
+	player->pbody->body->SetTransform(b2Vec2(player->initialTransform.p.x, player->initialTransform.p.y), 0);
+	if (cameraIdx != 0 && cameraIdx != 1) changingLevel = true;
+	cameraInitialized = true;
 	cameraIdx = 0;
 	cameraInitialized = true;
-	player->pbody->body->SetTransform(b2Vec2(player->initialTransform.p.x, player->initialTransform.p.y), 0);
 	level2Enabled = false;
+	player->isDead = false;
 }
 

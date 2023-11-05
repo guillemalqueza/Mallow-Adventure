@@ -80,6 +80,7 @@ private:
 	int level2Height = 45 * 32;
 
 	int playerX, playerY, cameraX, cameraY;
+	bool changingLevel = false;
 };
 
 #endif // __SCENE_H__

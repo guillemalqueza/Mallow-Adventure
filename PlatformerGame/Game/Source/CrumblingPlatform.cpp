@@ -53,12 +53,18 @@ bool CrumblingPlatform::Update(float dt)
 		isActivated = false;
 		isTimerStarted = true;
 		currentAnim = &platformBreakingAnim;
+		hasShaked = false;
 	}
 
 	if (isTimerStarted)
 	{
 		if (timer.ReadMSec() >= 1000)
 		{
+			if (!hasShaked)
+			{
+				app->scene->StartCameraShakeX(20.0f, 5.0f);
+				hasShaked = true;
+			}
 			pbody->body->SetActive(false);
 			isVisible = false;
 		}

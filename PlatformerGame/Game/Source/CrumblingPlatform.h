@@ -36,6 +36,7 @@ private:
 	const char* texturePath;
 	PhysBody* pbody;
 	bool isVisible = true;
+	bool hasShaked = false;
 	Timer timer;
 	bool isTimerStarted = false;
 
