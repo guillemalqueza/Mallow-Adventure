@@ -13,6 +13,7 @@
 Player::Player() : Entity(EntityType::PLAYER)
 {
 	name.Create("Player");
+
 }
 
 Player::~Player() {
@@ -33,7 +34,7 @@ bool Player::Start() {
 
 	//initilize textures
 	texture = app->tex->Load(texturePath);
-
+	lightTexture = app->tex->Load("Assets/Textures/player_light.png");
 	LoadAnimations();
 
 	currentAnim = &idleAnim;
@@ -285,6 +286,7 @@ bool Player::Update(float dt)
 		if (currentAnim == &deadAnim && currentAnim->HasFinished()) SetToInitialPosition();
 	}
 
+	app->render->DrawTexture(lightTexture, position.x-150, position.y-165, NULL, SDL_FLIP_NONE, 1.0f);
     SDL_Rect rect = currentAnim->GetCurrentFrame();
     if(isFacingRight) app->render->DrawTexture(texture, position.x, position.y, &rect);
 	else app->render->DrawTexture(texture, position.x, position.y, &rect, SDL_FLIP_HORIZONTAL);

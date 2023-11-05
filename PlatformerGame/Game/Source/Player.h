@@ -37,6 +37,7 @@ public:
 	float speed = 0.2f;
 	const char* texturePath;
 	SDL_Texture* texture = NULL;
+	SDL_Texture* lightTexture;
 	PhysBody* pbody;
 	int pickCoinFxId;
 
