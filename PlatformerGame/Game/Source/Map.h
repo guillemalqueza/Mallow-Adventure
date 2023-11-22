@@ -4,33 +4,43 @@
 #include "Module.h"
 #include "List.h"
 #include "Point.h"
+#include "PQueue.h"
+#include "DynArray.h"
+#include "Pathfinding.h"
 
 #include "PugiXml\src\pugixml.hpp"
+
+enum MapOrientation
+{
+	ORTOGRAPHIC = 0,
+	ISOMETRIC
+};
 
 // Ignore Terrain Types and Tile Types for now, but we want the image!
 struct TileSet
 {
-	SString	name;
-	int	firstgid;
+	SString name;
+	int firstgid;
+	int tileWidth;
+	int tileHeight;
+	int spacing;
 	int margin;
-	int	spacing;
-	int	tileWidth;
-	int	tileHeight;
-	int columns;
 	int tilecount;
+	int columns;
 
 	SDL_Texture* texture;
-	SDL_Rect GetTileRect(int gid) const;
-};
 
-//  We create an enum for map type, just for convenience,
-// NOTE: Platformer game will be of type ORTHOGONAL
-enum MapTypes
-{
-	MAPTYPE_UNKNOWN = 0,
-	MAPTYPE_ORTHOGONAL,
-	MAPTYPE_ISOMETRIC,
-	MAPTYPE_STAGGERED
+	SDL_Rect GetRect(uint gid) {
+		SDL_Rect rect = { 0 };
+
+		int relativeIndex = gid - firstgid;
+		rect.w = tileWidth;
+		rect.h = tileHeight;
+		rect.x = margin + (tileWidth + spacing) * (relativeIndex % columns);
+		rect.y = margin + (tileHeight + spacing) * (relativeIndex / columns);
+
+		return rect;
+	}
 };
 
 struct Properties
@@ -38,27 +48,27 @@ struct Properties
 	struct Property
 	{
 		SString name;
-		bool value;
+		bool value; //We assume that we are going to work only with bool for the moment
 	};
+
+	List<Property*> propertyList;
 
 	~Properties()
 	{
-		//...
-		ListItem<Property*>* item;
-		item = list.start;
+		ListItem<Property*>* property;
+		property = propertyList.start;
 
-		while (item != NULL)
+		while (property != NULL)
 		{
-			RELEASE(item->data);
-			item = item->next;
+			RELEASE(property->data);
+			property = property->next;
 		}
 
-		list.Clear();
+		propertyList.Clear();
 	}
 
 	Property* GetProperty(const char* name);
 
-	List<Property*> list;
 };
 
 struct MapLayer
@@ -67,34 +77,26 @@ struct MapLayer
 	int id; 
 	int width;
 	int height;
-	uint* data;
-
+	uint* tiles;
 	Properties properties;
 
-	MapLayer() : data(NULL)
-	{}
-
-	~MapLayer()
+	uint Get(int x, int y) const
 	{
-		RELEASE(data);
-	}
-
-	inline uint Get(int x, int y) const
-	{
-		return data[(y * width) + x];
+		return tiles[(y * width) + x];
 	}
 };
 
 struct MapData
 {
 	int width;
-	int	height;
-	int	tileWidth;
-	int	tileHeight;
+	int height;
+	int tileWidth;
+	int tileHeight;
 	List<TileSet*> tilesets;
-	MapTypes type;
 
-	List<MapLayer*> maplayers;
+	MapOrientation orientation;
+
+	List<MapLayer*> layers;
 };
 
 class Map : public Module
@@ -107,7 +109,7 @@ public:
     virtual ~Map();
 
     // Called before render is available
-    bool Awake(pugi::xml_node& conf);
+    bool Awake(pugi::xml_node& config);
 
 	bool Start();
 
@@ -121,28 +123,38 @@ public:
 	bool Load(SString mapFileName);
 
 	iPoint MapToWorld(int x, int y) const;
-	iPoint Map::WorldToMap(int x, int y);
+
+	// Obtain map coordinates from screen coordinates 
+	iPoint WorldToMap(int x, int y);
+
+	// Implement function to the Tileset based on a tile id
+	TileSet* GetTilesetFromTileId(int gid) const;
+
+	// Load a group of properties 
+	bool LoadProperties(pugi::xml_node& node, Properties& properties);
+
+	// Create navigation map for pathfinding
+	void CreateNavigationMap(int& width, int& height, uchar** buffer) const;
+
+	int GetTileWidth();
+	int GetTileHeight();
 
 private:
 
-	bool LoadMap(pugi::xml_node mapFile);
-	bool LoadTileSet(pugi::xml_node mapFile);
-	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
-	bool LoadAllLayers(pugi::xml_node mapNode);
-	TileSet* GetTilesetFromTileId(int gid) const;
-	bool LoadProperties(pugi::xml_node& node, Properties& properties);
 	bool CreateColliders();
 	void DestroyAllColliders();
 
 public: 
-
-	MapData mapData;
 	SString name;
 	SString path;
+	PathFinding* pathfinding;
 
 private:
 
+	MapData mapData;
 	bool mapLoaded;
+	MapLayer* navigationLayer;
+	int blockedGid = 49;
 };
 
 #endif // __MAP_H__

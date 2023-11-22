@@ -57,13 +57,18 @@
     <ClCompile Include="Source\Textures.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Map.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Skeleton.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Ghost.cpp" />
+    <ClCompile Include="Source\Ghost.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Pathfinding.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Map.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\App.h" />
@@ -151,13 +156,21 @@
     <ClInclude Include="Source\Animation.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Map.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Skeleton.h">
       <Filter>Entities</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Ghost.h" />
+    <ClInclude Include="Source\Ghost.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Pathfinding.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Map.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PQueue.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">
