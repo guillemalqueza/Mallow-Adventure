@@ -34,7 +34,7 @@ bool Item::Start() {
 	pbody->ctype = ColliderType::ITEM;
 	pbody->listener = this;
 
-	keyIdleAnim.LoadAnimations("keyIdleAnim");
+	keyIdleAnim.LoadAnimations("keyIdleAnim", "key");
 
 	followTimer = 0.0f;
 	currentAnim = &keyIdleAnim;

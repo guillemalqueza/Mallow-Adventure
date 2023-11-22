@@ -90,12 +90,12 @@ public:
 		return frames[actualFrame];
 	}
 
-	void LoadAnimations(const char* name)
+	void LoadAnimations(const char* animationFrame, const char* entity)
 	{
 		pugi::xml_parse_result result = animFile.load_file("config.xml");
 		if (result != NULL)
 		{
-			pugi::xml_node animationName = animFile.child("config").child("animations").child(name);
+			pugi::xml_node animationName = animFile.child("config").child("animations").child(entity).child(animationFrame);
 			loop = animationName.attribute("loop").as_bool();
 			speed = animationName.attribute("speed").as_float();
 			for (pugi::xml_node animation = animationName.child("animation"); animation; animation = animation.next_sibling("animation"))

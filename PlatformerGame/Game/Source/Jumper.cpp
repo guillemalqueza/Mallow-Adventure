@@ -34,8 +34,8 @@ bool Jumper::Start() {
 	pbody->ctype = ColliderType::JUMP;
 	pbody->listener = this;
 
-	jumperIdleAnim.LoadAnimations("jumperIdleAnim");
-	jumperAnim.LoadAnimations("jumperAnim");
+	jumperIdleAnim.LoadAnimations("jumperIdleAnim", "jumper");
+	jumperAnim.LoadAnimations("jumperAnim", "jumper");
 
 	currentAnim = &jumperIdleAnim;
 

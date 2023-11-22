@@ -35,8 +35,8 @@ bool LockDoor::Start() {
 	pbody->ctype = ColliderType::DOOR;
 	pbody->listener = this;
 	
-	doorIdleAnim.LoadAnimations("doorIdleAnim");
-	doorOpenAnim.LoadAnimations("doorOpenAnim");
+	doorIdleAnim.LoadAnimations("doorIdleAnim", "door");
+	doorOpenAnim.LoadAnimations("doorOpenAnim", "door");
 
 	currentAnim = &doorIdleAnim;
 

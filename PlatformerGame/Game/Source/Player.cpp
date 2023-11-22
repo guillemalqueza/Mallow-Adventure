@@ -379,14 +379,14 @@ void Player::SetToInitialPosition()
 
 void Player::LoadAnimations()
 {
-	idleAnim.LoadAnimations("idleAnim");
-	jumpAnim.LoadAnimations("jumpAnim");
-	walkAnim.LoadAnimations("walkAnim");
-	crouchAnim.LoadAnimations("crouchAnim");
-	crouchWalkAnim.LoadAnimations("crouchWalkAnim");
-	fallAnim.LoadAnimations("fallAnim");
-	wallAnim.LoadAnimations("wallAnim");
-	deadAnim.LoadAnimations("deadAnim");
+	idleAnim.LoadAnimations("idleAnim", "player");
+	jumpAnim.LoadAnimations("jumpAnim", "player");
+	walkAnim.LoadAnimations("walkAnim", "player");
+	crouchAnim.LoadAnimations("crouchAnim", "player");
+	crouchWalkAnim.LoadAnimations("crouchWalkAnim", "player");
+	fallAnim.LoadAnimations("fallAnim", "player");
+	wallAnim.LoadAnimations("wallAnim", "player");
+	deadAnim.LoadAnimations("deadAnim", "player");
 }
 
 void Player::ToggleGodMode()
