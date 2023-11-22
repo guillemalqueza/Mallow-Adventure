@@ -33,6 +33,8 @@ enum class ColliderType {
 	JUMP,
 	CAMERA,
 	DOOR,
+	SKELETON,
+	GHOST,
 	UNKNOWN
 	// ..
 };

@@ -225,7 +225,7 @@
 			<animation x="700" y="300" w="100" h="100"/>
 		</ghostIdle2Anim>
 
-		<ghostSkill1Anim loop="false" speed="0.1f">
+		<ghostSkillAnim loop="false" speed="0.1f">
 			<animation x="0" y="400" w="100" h="100"/>
 			<animation x="100" y="400" w="100" h="100"/>
 			<animation x="200" y="400" w="100" h="100"/>
@@ -238,7 +238,7 @@
 			<animation x="900" y="400" w="100" h="100"/>
 			<animation x="1000" y="400" w="100" h="100"/>
 			<animation x="1100" y="400" w="100" h="100"/>
-		</ghostSkill1Anim>
+		</ghostSkillAnim>
 
 		<ghostSummonAnim loop="false" speed="0.1f">
 			<animation x="0" y="500" w="100" h="100"/>
@@ -271,6 +271,7 @@
 			<animation x="200" y="800" w="100" h="100"/>
 			<animation x="300" y="800" w="100" h="100"/>
 		</ghostSummonIdleAnim>
+	</ghost>
 
     <!-- Platform Animations-->
 	  <platform>

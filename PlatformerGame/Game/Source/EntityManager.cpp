@@ -7,6 +7,8 @@
 #include "Jumper.h"
 #include "CrumblingPlatform.h"
 #include "LockDoor.h"
+#include "Skeleton.h"
+#include "Ghost.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -99,6 +101,12 @@ Entity* EntityManager::CreateEntity(EntityType type)
 		break;
 	case EntityType::LOCK_DOOR:
 		entity = new LockDoor();
+		break;
+	case EntityType::SKELETON:
+		entity = new Skeleton();
+		break;
+	case EntityType::GHOST:
+		entity = new Ghost();
 		break;
 	default:
 		break;

@@ -41,6 +41,8 @@ bool Scene::Awake(pugi::xml_node& config)
 	CreateEntities(config, "lockDoor", EntityType::LOCK_DOOR);
 	CreateEntities(config, "jumper", EntityType::JUMPER);
 	CreateEntities(config, "crumblingPlatform", EntityType::CRUMBLING_PLATFORM);
+	CreateEntities(config, "skeleton", EntityType::SKELETON);
+	CreateEntities(config, "ghost", EntityType::GHOST);
 
 	if (config.child("player")) {
 		player = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER);

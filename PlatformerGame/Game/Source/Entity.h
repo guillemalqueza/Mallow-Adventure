@@ -15,6 +15,8 @@ enum class EntityType
 	JUMPER,
 	CRUMBLING_PLATFORM,
 	LOCK_DOOR,
+	SKELETON,
+	GHOST,
 	UNKNOWN
 };
 
