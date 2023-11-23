@@ -28,10 +28,14 @@ public:
 
 	void LoadAnimations();
 
+	void Move(const iPoint& origin, const iPoint& destination);
+
 public:
 	float speed = 0.2f;
 	bool isActivated = false;
 	bool isFacingRight = false;
+	iPoint originPos;
+	b2Vec2 velocity;
 
 private:
 
@@ -39,6 +43,7 @@ private:
 	Animation skeletonIdleAnim, skeletonAttackAnim, skeletonDeadAnim, skeletonWalkAnim, skeletonHurtAnim;
 
 	SDL_Texture* texture;
+	SDL_Texture* pathTexture;
 	const char* texturePath;
 	PhysBody* pbody;
 	b2Transform initialTransform;

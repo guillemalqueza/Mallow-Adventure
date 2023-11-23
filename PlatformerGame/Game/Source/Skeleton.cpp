@@ -9,6 +9,7 @@
 #include "Point.h"
 #include "Physics.h"
 #include "EntityManager.h"
+#include "Map.h"
 
 Skeleton::Skeleton() : Entity(EntityType::SKELETON)
 {
@@ -31,6 +32,7 @@ bool Skeleton::Start() {
 
 	//initilize textures
 	texture = app->tex->Load(texturePath);
+	pathTexture = app->tex->Load("Assets/Textures/path.png");
 	pbody = app->physics->CreateCircle(position.x, position.y, 20, bodyType::DYNAMIC);
 	pbody->ctype = ColliderType::SKELETON;
 	pbody->listener = this;
@@ -44,14 +46,50 @@ bool Skeleton::Start() {
 
 bool Skeleton::Update(float dt)
 {
+	iPoint playerTilePos = app->map->WorldToMap(app->scene->player->position.x + 50, app->scene->player->position.y + 64);
+	iPoint skeletonTilePos = app->map->WorldToMap(position.x, position.y);
+
+	float distance = sqrt(pow(playerTilePos.x - skeletonTilePos.x, 2) + pow(playerTilePos.y - skeletonTilePos.y, 2));
+
+	app->map->pathfinding->CreatePath(skeletonTilePos, playerTilePos);
+
+	if (distance < 4)
+	{
+		currentAnim = &skeletonAttackAnim;
+		velocity = { 0, 0 };
+	}
+	else if (distance >= 4)
+	{
+		currentAnim = &skeletonWalkAnim;
+		Move(skeletonTilePos, playerTilePos);
+	}
+	else
+	{
+		currentAnim = &skeletonIdleAnim;
+		velocity = { 0, 0 };
+		app->map->pathfinding->ClearLastPath();
+	}
+
 	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x);
 	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y);
 
+	pbody->body->SetLinearVelocity(velocity);
+
 	SDL_Rect rect = currentAnim->GetCurrentFrame();
-	if (isFacingRight) app->render->DrawTexture(texture, position.x-60, position.y-75, &rect);
-	else app->render->DrawTexture(texture, position.x-65, position.y-75, &rect, SDL_FLIP_HORIZONTAL);
+	if (isFacingRight) app->render->DrawTexture(texture, position.x - 60, position.y - 75, &rect);
+	else app->render->DrawTexture(texture, position.x - 65, position.y - 75, &rect, SDL_FLIP_HORIZONTAL);
 
 	currentAnim->Update();
+
+	if (app->physics->debug)
+	{
+		const DynArray<iPoint>* path = app->map->pathfinding->GetLastPath();
+		for (uint i = 0; i < path->Count(); ++i)
+		{
+			iPoint pos = app->map->MapToWorld(path->At(i)->x, path->At(i)->y);
+			app->render->DrawTexture(pathTexture, pos.x, pos.y);
+		}
+	}
 
 	return true;
 }
@@ -59,6 +97,37 @@ bool Skeleton::Update(float dt)
 bool Skeleton::CleanUp()
 {
 	return true;
+}
+
+void Skeleton::Move(const iPoint& origin, const iPoint& destination) {
+
+	float xDiff = destination.x - origin.x;
+	float yDiff = destination.y - origin.y;
+
+	iPoint playerTilePos = app->map->WorldToMap(app->scene->player->position.x, app->scene->player->position.y);
+	if (app->map->pathfinding->IsWalkable(playerTilePos) != 0)
+	{
+		if (xDiff < 0)
+		{
+			velocity.x = -2;
+			isFacingRight = false;
+		}
+		if (xDiff > 0)
+		{
+			velocity.x = 2;
+			isFacingRight = true;
+		}
+
+		/*if (yDiff < 0)
+		{
+			velocity.y = -2;
+		}
+		if (yDiff > 0)
+		{
+			velocity.y = 2;
+		}*/
+	}
+	else velocity = { 0,0 };
 }
 
 void Skeleton::OnCollision(PhysBody* physA, PhysBody* physB)

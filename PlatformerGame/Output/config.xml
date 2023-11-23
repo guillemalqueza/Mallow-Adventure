@@ -107,7 +107,7 @@
     <!-- Enemies -->
       <!-- Skeleton -->
       <skeleton> 
-		<skeletonAttackAnim loop="false" speed="0.1f">
+		<skeletonAttackAnim loop="true" speed="0.1f">
 			<animation x="0" y="0" w="128" h="128"/>
 			<animation x="128" y="0" w="128" h="128"/>
 			<animation x="256" y="0" w="128" h="128"/>
