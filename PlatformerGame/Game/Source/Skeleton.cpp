@@ -48,7 +48,9 @@ bool Skeleton::Update(float dt)
 	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y);
 
 	SDL_Rect rect = currentAnim->GetCurrentFrame();
-	app->render->DrawTexture(texture, position.x-40, position.y-40, &rect);
+	if (isFacingRight) app->render->DrawTexture(texture, position.x-60, position.y-75, &rect);
+	else app->render->DrawTexture(texture, position.x-65, position.y-75, &rect, SDL_FLIP_HORIZONTAL);
+
 	currentAnim->Update();
 
 	return true;

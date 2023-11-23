@@ -31,6 +31,7 @@ public:
 public:
 	float speed = 0.2f;
 	bool isActivated = false;
+	bool isFacingRight = false;
 
 private:
 

@@ -48,7 +48,8 @@ bool Ghost::Update(float dt)
 	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y);
 
 	SDL_Rect rect = currentAnim->GetCurrentFrame();
-	app->render->DrawTexture(texture, position.x - 50, position.y - 50, &rect);
+	if (isFacingRight) app->render->DrawTexture(texture, position.x - 90, position.y - 130, &rect);
+	else app->render->DrawTexture(texture, position.x - 110, position.y - 130, &rect, SDL_FLIP_HORIZONTAL);
 	currentAnim->Update();
 
 	return true;

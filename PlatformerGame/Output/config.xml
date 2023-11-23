@@ -28,8 +28,8 @@
     <player x="400" y="991" texturepath="Assets/Textures/player.png" lightTexture = "Assets/Textures/player_light.png" speed="0.2f">
 	<itemAudio path="Assets/Audio/Fx/coin_pickup.ogg"/>
 	</player>
-	<skeleton x="300" y="991" texturepath="Assets/Textures/enemy_skeleton.png" speed="0.2f"/>
-	<ghost x="200" y="991" texturepath="Assets/Textures/enemy_ghost.png" speed="0.2f"/>
+	<skeleton x="1300" y="991" texturepath="Assets/Textures/enemy_skeleton.png" speed="0.2f"/>
+	<ghost x="1400" y="991" texturepath="Assets/Textures/enemy_ghost.png" speed="0.2f"/>
     <item x="704" y="632" texturepath="Assets/Textures/key.png"/>
     <jumper x="4880" y="634" texturepath="Assets/Textures/jumper.png"/>
     <crumblingPlatform x="5900" y="500" texturepath="Assets/Textures/crumbling_platform.png"/>
