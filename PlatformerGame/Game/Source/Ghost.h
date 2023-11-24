@@ -28,20 +28,41 @@ public:
 
 	void LoadAnimations();
 
+	void Move(const iPoint& origin, const iPoint& destination);
+
 public:
 	float speed = 0.2f;
 	bool isActivated = false;
 	bool isFacingRight = false;
+	bool isSummonFacingRight = false;
+	bool isSummonFollowing = false;
+
+	iPoint originPos;
+	b2Vec2 velocity;
+
+	iPoint summonOriginPos;
+	b2Vec2 summonVelocity;
 
 private:
 
 	Animation* currentAnim;
-	Animation ghostAttackAnim, ghostDeadAnim, ghostIdleAnim, ghostIdle2Anim, ghosSkillAnim;
+	Animation* currentSummonAnim;
+
+	Animation ghostAttackAnim, ghostDeadAnim, ghostIdleAnim, ghostIdle2Anim, ghosSkillAnim, ghostSummonAnim;
+	Animation ghostSummonIdleAnim, ghostSummonAppearAnim, ghostSummonDeathAnim;
 
 	SDL_Texture* texture;
+	SDL_Texture* pathTexture;
 	const char* texturePath;
 	PhysBody* pbody;
-	b2Transform initialTransform;
+	PhysBody* summonPbody;
+	b2Transform initialTransform, initialSummonTransform;
+	iPoint summonPosition;
+
+	iPoint playerTilePos;
+	iPoint summonTilePos;
+
+	float distance;
 };
 
 #endif // __GHOST_H__

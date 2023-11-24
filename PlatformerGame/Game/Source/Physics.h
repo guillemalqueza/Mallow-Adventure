@@ -35,6 +35,8 @@ enum class ColliderType {
 	DOOR,
 	SKELETON,
 	GHOST,
+	GHOST_SUMMON,
+	ENEMY,
 	UNKNOWN
 	// ..
 };

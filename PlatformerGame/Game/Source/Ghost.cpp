@@ -9,6 +9,7 @@
 #include "Point.h"
 #include "Physics.h"
 #include "EntityManager.h"
+#include "Map.h"
 
 Ghost::Ghost() : Entity(EntityType::GHOST)
 {
@@ -23,6 +24,8 @@ bool Ghost::Awake() {
 	position.y = parameters.attribute("y").as_int();
 	texturePath = parameters.attribute("texturepath").as_string();
 	speed = parameters.attribute("speed").as_float();
+	summonPosition.x = parameters.attribute("x").as_int() - 100;
+	summonPosition.y = parameters.attribute("y").as_int() - 150;
 
 	return true;
 }
@@ -31,11 +34,17 @@ bool Ghost::Start() {
 
 	//initilize textures
 	texture = app->tex->Load(texturePath);
+	pathTexture = app->tex->Load("Assets/Textures/path.png");
 	pbody = app->physics->CreateCircle(position.x, position.y, 20, bodyType::DYNAMIC);
 	pbody->ctype = ColliderType::GHOST;
 	pbody->listener = this;
 
+	summonPbody = app->physics->CreateCircle(summonPosition.x, summonPosition.y, 20, bodyType::KINEMATIC);
+	summonPbody->ctype = ColliderType::GHOST_SUMMON;
+	summonPbody->listener = this;
+
 	initialTransform = pbody->body->GetTransform();
+	initialSummonTransform = summonPbody->body->GetTransform();
 
 	LoadAnimations();
 
@@ -44,13 +53,78 @@ bool Ghost::Start() {
 
 bool Ghost::Update(float dt)
 {
+	playerTilePos = app->map->WorldToMap(app->scene->player->position.x + 50, app->scene->player->position.y);
+
+	//ghost
+	if (currentAnim == &ghostSummonAnim && currentAnim->HasFinished())
+	{
+		currentAnim = &ghostIdleAnim;
+	}
+
 	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x);
 	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y);
 
 	SDL_Rect rect = currentAnim->GetCurrentFrame();
-	if (isFacingRight) app->render->DrawTexture(texture, position.x - 90, position.y - 130, &rect);
+	if (isFacingRight) app->render->DrawTexture(texture, position.x - 110, position.y - 130, &rect);
 	else app->render->DrawTexture(texture, position.x - 110, position.y - 130, &rect, SDL_FLIP_HORIZONTAL);
 	currentAnim->Update();
+	
+	//ghost summon
+	summonTilePos = app->map->WorldToMap(summonPosition.x, summonPosition.y);
+
+	distance = sqrt(pow(playerTilePos.x - summonTilePos.x, 2) + pow(playerTilePos.y - summonTilePos.y, 2));
+
+	app->map->pathfinding->CreatePath(summonTilePos, playerTilePos);
+
+	if (distance < 2)
+	{
+		velocity = { 0, 0 };
+		if (isSummonFollowing) isSummonFollowing = false;
+	}
+	else if (distance >= 2)
+	{
+		if (!isSummonFollowing) isSummonFollowing = true;
+		Move(summonTilePos, playerTilePos);
+	}
+	else
+	{
+		velocity = { 0, 0 };
+		app->map->pathfinding->ClearLastPath();
+	}
+
+	if (currentSummonAnim == &ghostSummonAppearAnim && currentSummonAnim->HasFinished())
+	{
+		isSummonFollowing = true;
+		currentSummonAnim = &ghostSummonIdleAnim;
+	}
+
+	summonPosition.x = METERS_TO_PIXELS(summonPbody->body->GetTransform().p.x);
+	summonPosition.y = METERS_TO_PIXELS(summonPbody->body->GetTransform().p.y);
+
+	summonPbody->body->SetLinearVelocity(velocity);
+
+	SDL_Rect summonRect = currentSummonAnim->GetCurrentFrame();
+	if (isSummonFollowing)
+	{
+		if (isSummonFacingRight) app->render->DrawTexture(texture, summonPosition.x - 100, summonPosition.y - 90, &summonRect, SDL_FLIP_NONE, 1.0f, -90);
+		else app->render->DrawTexture(texture, summonPosition.x - 100, summonPosition.y - 90, &summonRect, SDL_FLIP_HORIZONTAL, 1.0f, 90);
+	}
+	else
+	{
+		if (isSummonFacingRight) app->render->DrawTexture(texture, summonPosition.x - 100, summonPosition.y - 90, &summonRect);
+		else app->render->DrawTexture(texture, summonPosition.x - 100, summonPosition.y - 90, &summonRect, SDL_FLIP_HORIZONTAL);
+	}
+	currentSummonAnim->Update();
+
+	if (app->physics->debug)
+	{
+		const DynArray<iPoint>* path = app->map->pathfinding->GetLastPath();
+		for (uint i = 0; i < path->Count(); ++i)
+		{
+			iPoint pos = app->map->MapToWorld(path->At(i)->x, path->At(i)->y);
+			app->render->DrawTexture(pathTexture, pos.x, pos.y);
+		}
+	}
 
 	return true;
 }
@@ -75,6 +149,43 @@ void Ghost::LoadAnimations()
 	ghostIdleAnim.LoadAnimations("ghostIdleAnim", "ghost");
 	ghostIdle2Anim.LoadAnimations("ghostIdle2Anim", "ghost");
 	ghosSkillAnim.LoadAnimations("ghosSkillAnim", "ghost");
+	ghostSummonAnim.LoadAnimations("ghostSummonAnim", "ghost");
 
-	currentAnim = &ghostIdleAnim;
+	ghostSummonIdleAnim.LoadAnimations("ghostSummonIdleAnim", "ghost");
+	ghostSummonAppearAnim.LoadAnimations("ghostSummonAppearAnim", "ghost");
+	ghostSummonDeathAnim.LoadAnimations("ghostSummonDeathAnim", "ghost");
+
+	currentAnim = &ghostSummonAnim;
+	currentSummonAnim = &ghostSummonAppearAnim;
+}
+
+void Ghost::Move(const iPoint& origin, const iPoint& destination) {
+
+	float xDiff = destination.x - origin.x;
+	float yDiff = destination.y - origin.y;
+
+	iPoint playerTilePos = app->map->WorldToMap(app->scene->player->position.x, app->scene->player->position.y);
+	if (app->map->pathfinding->IsWalkable(playerTilePos) != 0)
+	{
+		if (xDiff < 0)
+		{
+			velocity.x = -2;
+			isSummonFacingRight = false;
+		}
+		if (xDiff > 0)
+		{
+			velocity.x = 2;
+			isSummonFacingRight = true;
+		}
+
+		if (yDiff < 1)
+		{
+			velocity.y = -1;
+		}
+		if (yDiff > 1)
+		{
+			velocity.y = 1;
+		}
+	}
+	else velocity = { 0,0 };
 }

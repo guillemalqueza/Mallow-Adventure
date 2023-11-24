@@ -44,9 +44,16 @@ private:
 
 	SDL_Texture* texture;
 	SDL_Texture* pathTexture;
+
 	const char* texturePath;
 	PhysBody* pbody;
+	PhysBody* enemyPbody;
 	b2Transform initialTransform;
+
+	iPoint playerTilePos;
+	iPoint skeletonTilePos;
+
+	float distance;
 };
 
 #endif // __SKELETON_H__

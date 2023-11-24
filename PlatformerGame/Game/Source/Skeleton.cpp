@@ -37,6 +37,10 @@ bool Skeleton::Start() {
 	pbody->ctype = ColliderType::SKELETON;
 	pbody->listener = this;
 
+	enemyPbody = app->physics->CreateRectangleSensor(position.x, position.y, 30, 54, bodyType::KINEMATIC);
+	enemyPbody->ctype = ColliderType::ENEMY;
+	enemyPbody->listener = this;
+
 	initialTransform = pbody->body->GetTransform();
 
 	LoadAnimations();
@@ -46,10 +50,10 @@ bool Skeleton::Start() {
 
 bool Skeleton::Update(float dt)
 {
-	iPoint playerTilePos = app->map->WorldToMap(app->scene->player->position.x + 50, app->scene->player->position.y + 64);
-	iPoint skeletonTilePos = app->map->WorldToMap(position.x, position.y);
+	playerTilePos = app->map->WorldToMap(app->scene->player->position.x + 50, app->scene->player->position.y + 64);
+	skeletonTilePos = app->map->WorldToMap(position.x, position.y);
 
-	float distance = sqrt(pow(playerTilePos.x - skeletonTilePos.x, 2) + pow(playerTilePos.y - skeletonTilePos.y, 2));
+	distance = sqrt(pow(playerTilePos.x - skeletonTilePos.x, 2) + pow(playerTilePos.y - skeletonTilePos.y, 2));
 
 	app->map->pathfinding->CreatePath(skeletonTilePos, playerTilePos);
 
@@ -74,6 +78,7 @@ bool Skeleton::Update(float dt)
 	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y);
 
 	pbody->body->SetLinearVelocity(velocity);
+	enemyPbody->body->SetTransform({ pbody->body->GetPosition().x, pbody->body->GetPosition().y - PIXEL_TO_METERS(10) }, 0);
 
 	SDL_Rect rect = currentAnim->GetCurrentFrame();
 	if (isFacingRight) app->render->DrawTexture(texture, position.x - 60, position.y - 75, &rect);
