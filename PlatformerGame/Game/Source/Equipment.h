@@ -1,0 +1,47 @@
+#ifndef __EQUIPMENT_H__
+#define __EQUIPMENT_H__
+
+#include "Entity.h"
+#include "Point.h"
+#include "SDL/include/SDL.h"
+#include "Animation.h"
+
+struct SDL_Texture;
+
+class Equipment : public Entity
+{
+public:
+
+	Equipment();
+	virtual ~Equipment();
+
+	bool Awake();
+
+	bool Start();
+
+	bool Update(float dt);
+
+	bool CleanUp();
+
+	void OnCollision(PhysBody* physA, PhysBody* physB);
+
+	void OnPicked();
+
+public:
+
+	bool isPicked = false;
+	float followTimer = 0.0f;
+	float acceleration = 1.0f;
+
+
+private:
+
+	SDL_Texture* texture;
+	const char* texturePath;
+	PhysBody* pbody;
+
+	Animation* currentAnim;
+	Animation equipmentIdleAnim;
+};
+
+#endif // __EQUIPMENT_H__

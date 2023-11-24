@@ -83,8 +83,8 @@ bool Ghost::Update(float dt)
 	}
 	else if (distance >= 2)
 	{
-		if (!isSummonFollowing) isSummonFollowing = true;
-		Move(summonTilePos, playerTilePos);
+		//if (!isSummonFollowing) isSummonFollowing = true;
+		if (isSummonFollowing) Move(summonTilePos, playerTilePos);
 	}
 	else
 	{

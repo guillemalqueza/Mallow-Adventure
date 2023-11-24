@@ -61,6 +61,7 @@ public:
 	bool canDash = true;
 	bool jumper = false;
 	bool isDead = false;
+	bool isEquipped = false;
 
 	bool lastKeyPressA = false;
 	bool lastKeyPressD = false;

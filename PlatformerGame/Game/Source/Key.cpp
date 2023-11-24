@@ -1,4 +1,4 @@
-#include "Item.h"
+#include "Key.h"
 #include "App.h"
 #include "Textures.h"
 #include "Audio.h"
@@ -10,14 +10,14 @@
 #include "Physics.h"
 #include "EntityManager.h"
 
-Item::Item() : Entity(EntityType::ITEM)
+Key::Key() : Entity(EntityType::KEY)
 {
-	name.Create("item");
+	name.Create("key");
 }
 
-Item::~Item() {}
+Key::~Key() {}
 
-bool Item::Awake() {
+bool Key::Awake() {
 
 	position.x = parameters.attribute("x").as_int();
 	position.y = parameters.attribute("y").as_int();
@@ -26,12 +26,12 @@ bool Item::Awake() {
 	return true;
 }
 
-bool Item::Start() {
+bool Key::Start() {
 
 	//initilize textures
 	texture = app->tex->Load(texturePath);
 	pbody = app->physics->CreateCircle(position.x + 16, position.y + 16, 16, bodyType::STATIC);
-	pbody->ctype = ColliderType::ITEM;
+	pbody->ctype = ColliderType::KEY;
 	pbody->listener = this;
 
 	keyIdleAnim.LoadAnimations("keyIdleAnim", "key");
@@ -41,7 +41,7 @@ bool Item::Start() {
 	return true;
 }
 
-bool Item::Update(float dt)
+bool Key::Update(float dt)
 {
 	if (isPicked) OnPicked();
 
@@ -54,12 +54,12 @@ bool Item::Update(float dt)
 	return true;
 }
 
-bool Item::CleanUp()
+bool Key::CleanUp()
 {
 	return true;
 }
 
-void Item::OnCollision(PhysBody* physA, PhysBody* physB)
+void Key::OnCollision(PhysBody* physA, PhysBody* physB)
 {
 	switch (physB->ctype)
 	{
@@ -71,7 +71,7 @@ void Item::OnCollision(PhysBody* physA, PhysBody* physB)
 	}
 }
 
-void Item::OnPicked()
+void Key::OnPicked()
 {
 	followTimer += 0.1f;
 

@@ -30,7 +30,7 @@
 	</player>
 	<skeleton x="1300" y="1000" texturepath="Assets/Textures/enemy_skeleton.png" speed="0.2f"/>
 	<ghost x="1400" y="1000" texturepath="Assets/Textures/enemy_ghost.png" speed="0.2f"/>
-    <item x="704" y="632" texturepath="Assets/Textures/key.png"/>
+    <key x="704" y="632" texturepath="Assets/Textures/key.png"/>
     <jumper x="4880" y="634" texturepath="Assets/Textures/jumper.png"/>
     <crumblingPlatform x="5900" y="500" texturepath="Assets/Textures/crumbling_platform.png"/>
 	<crumblingPlatform x="6050" y="550" texturepath="Assets/Textures/crumbling_platform.png"/>

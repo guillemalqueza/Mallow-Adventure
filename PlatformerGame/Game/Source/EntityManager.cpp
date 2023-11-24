@@ -3,12 +3,13 @@
 #include "App.h"
 #include "Textures.h"
 #include "Scene.h"
-#include "Item.h"
+#include "Key.h"
 #include "Jumper.h"
 #include "CrumblingPlatform.h"
 #include "LockDoor.h"
 #include "Skeleton.h"
 #include "Ghost.h"
+#include "Equipment.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -90,8 +91,11 @@ Entity* EntityManager::CreateEntity(EntityType type)
 	case EntityType::PLAYER:
 		entity = new Player();
 		break;
-	case EntityType::ITEM:
-		entity = new Item();
+	case EntityType::KEY:
+		entity = new Key();
+		break;
+	case EntityType::EQUIPMENT:
+		entity = new Equipment();
 		break;
 	case EntityType::JUMPER:
 		entity = new Jumper();

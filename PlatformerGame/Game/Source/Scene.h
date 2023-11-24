@@ -3,7 +3,7 @@
 
 #include "Module.h"
 #include "Player.h"
-#include "Item.h"
+#include "Key.h"
 #include "Jumper.h"
 #include "CrumblingPlatform.h"
 #include "LockDoor.h"

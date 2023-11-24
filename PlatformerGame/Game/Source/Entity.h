@@ -11,7 +11,8 @@ class PhysBody;
 enum class EntityType
 {
 	PLAYER,
-	ITEM,
+	KEY,
+	EQUIPMENT,
 	JUMPER,
 	CRUMBLING_PLATFORM,
 	LOCK_DOOR,

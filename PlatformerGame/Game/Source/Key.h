@@ -1,5 +1,5 @@
-#ifndef __ITEM_H__
-#define __ITEM_H__
+#ifndef __KEY_H__
+#define __KEY_H__
 
 #include "Entity.h"
 #include "Point.h"
@@ -8,12 +8,12 @@
 
 struct SDL_Texture;
 
-class Item : public Entity
+class Key : public Entity
 {
 public:
 
-	Item();
-	virtual ~Item();
+	Key();
+	virtual ~Key();
 
 	bool Awake();
 
@@ -44,4 +44,4 @@ private:
 	Animation keyIdleAnim;
 };
 
-#endif // __ITEM_H__
+#endif // __KEY_H__

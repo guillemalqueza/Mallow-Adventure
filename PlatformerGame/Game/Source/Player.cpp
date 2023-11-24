@@ -313,8 +313,8 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 
 	switch (physB->ctype)
 	{
-	case ColliderType::ITEM:
-		LOG("Collision ITEM");
+	case ColliderType::KEY:
+		LOG("Collision KEY");
 		app->audio->PlayFx(pickCoinFxId);
 		keys++;
 		break;

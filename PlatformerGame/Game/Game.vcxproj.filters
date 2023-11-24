@@ -30,7 +30,7 @@
     <ClCompile Include="Source\Input.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Item.cpp">
+    <ClCompile Include="Source\Key.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
     <ClCompile Include="Source\Physics.cpp">
@@ -69,6 +69,7 @@
     <ClCompile Include="Source\Map.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Equipment.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\App.h" />
@@ -120,7 +121,7 @@
     <ClInclude Include="Source\Input.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Item.h">
+    <ClInclude Include="Source\Key.h">
       <Filter>Entities</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scene.h">
@@ -171,6 +172,7 @@
     <ClInclude Include="Source\PQueue.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Equipment.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">
