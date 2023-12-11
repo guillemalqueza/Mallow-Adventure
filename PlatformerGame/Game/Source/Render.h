@@ -50,6 +50,12 @@ public:
 	SDL_Color background;
 
 	bool vsync = false;
+
+	//
+	bool LoadState(pugi::xml_node node);
+
+	//
+	bool SaveState(pugi::xml_node node);
 };
 
 #endif // __RENDER_H__

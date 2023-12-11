@@ -125,6 +125,10 @@ bool Scene::Update(float dt)
 
 	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) app->fade->Fade(1,60);
 	if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) app->fade->Fade(2, 60);
+
+	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) app->SaveRequest();
+	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) app->LoadRequest();
+
 	return true;
 }
 
