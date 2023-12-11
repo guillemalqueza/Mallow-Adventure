@@ -43,7 +43,8 @@ public:
 	int pickCoinFxId;
 
 	Animation* currentAnim;
-	Animation idleAnim, jumpAnim, walkAnim, crouchAnim, crouchWalkAnim, fallAnim, wallAnim, deadAnim;
+	Animation idleAnim, jumpAnim, walkAnim, crouchAnim, crouchWalkAnim, fallAnim, wallAnim, deadAnim,
+				armorIdleAnim, armorJumpAnim, armorWalkAnim, armorCrouchAnim, armorCrouchWalkAnim, armorFallAnim, armorDeadAnim;
 
 	bool isJumping = false;
 	bool isCrouching = false;

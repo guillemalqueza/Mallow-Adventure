@@ -38,7 +38,8 @@ bool Player::Start() {
 	lightTexture = app->tex->Load(lightTexturePath);
 	LoadAnimations();
 
-	currentAnim = &idleAnim;
+	if (!isEquipped) currentAnim = &idleAnim;
+	else currentAnim = &armorIdleAnim;
 
 	jumper = false;
 
@@ -61,7 +62,11 @@ bool Player::Update(float dt)
 
 	if (!isDead)
 	{
-		if (!isJumping) currentAnim = &idleAnim;
+		if (!isJumping && !isCrouching)
+		{
+			if (!isEquipped) currentAnim = &idleAnim;
+			else currentAnim = &armorIdleAnim;
+		}
 
 		b2Vec2 vel = pbody->body->GetLinearVelocity();
 
@@ -107,8 +112,12 @@ bool Player::Update(float dt)
 			//crouch
 			if (app->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT)
 			{
-				isCrouching = true;
-				if (!isWalking) currentAnim = &crouchAnim;
+				if (!isCrouching) isCrouching = true;
+				if (!isWalking)
+				{
+					if (!isEquipped) currentAnim = &crouchAnim;
+					else currentAnim = &armorCrouchAnim;
+				}
 			}
 			else isCrouching = false;
 
@@ -118,14 +127,23 @@ bool Player::Update(float dt)
 				if (!isDashing) vel.x = -speed * dt;
 				if (!isJumping && !wall)
 				{
-					if (isCrouching) currentAnim = &crouchWalkAnim;
-					else currentAnim = &walkAnim;
+					if (isCrouching)
+					{
+						if (!isEquipped) currentAnim = &crouchWalkAnim;
+						else currentAnim = &armorCrouchWalkAnim;
+					}
+					else
+					{
+						if (!isEquipped) currentAnim = &walkAnim;
+						else currentAnim = &armorWalkAnim;
+					}
 				}
 				isWalking = true;
 				if (currentAnim == &wallAnim && !ground && isFacingRight)
 				{
 					wall = false;
-					currentAnim = &idleAnim;
+					if (!isEquipped) currentAnim = &idleAnim;
+					else currentAnim = &armorIdleAnim;
 					pbody->body->SetGravityScale(1.0f);
 				}
 				isFacingRight = false;
@@ -136,14 +154,23 @@ bool Player::Update(float dt)
 				if (!isDashing) vel.x = speed * dt;
 				if (!isJumping && !wall)
 				{
-					if (isCrouching) currentAnim = &crouchWalkAnim;
-					else currentAnim = &walkAnim;
+					if (isCrouching)
+					{
+						if (!isEquipped) currentAnim = &crouchWalkAnim;
+						else currentAnim = &armorCrouchWalkAnim;
+					}
+					else
+					{
+						if (!isEquipped) currentAnim = &walkAnim;
+						else currentAnim = &armorWalkAnim;
+					}
 				}
 				isWalking = true;
 				if (currentAnim == &wallAnim && !ground && !isFacingRight)
 				{
 					wall = false;
-					currentAnim = &idleAnim;
+					if (!isEquipped) currentAnim = &idleAnim;
+					else currentAnim = &armorIdleAnim;
 					pbody->body->SetGravityScale(1.0f);
 				}
 				isFacingRight = true;
@@ -161,7 +188,8 @@ bool Player::Update(float dt)
 				if (!isJumping && !hasJumped && ground && jumpCount == 0)
 				{
 					currentAnim->Reset();
-					currentAnim = &jumpAnim;
+					if (!isEquipped) currentAnim = &jumpAnim;
+					else currentAnim = &armorJumpAnim;
 					isJumping = true;
 					hasJumped = true;
 					vel = b2Vec2(vel.x, -8.2f);
@@ -171,7 +199,8 @@ bool Player::Update(float dt)
 				else if (jumpCount == 1 && hasJumped && dashCount == 0)
 				{
 					currentAnim->Reset();
-					currentAnim = &jumpAnim;
+					if (!isEquipped) currentAnim = &jumpAnim;
+					else currentAnim = &armorJumpAnim;
 					isJumping = true;
 					vel = b2Vec2(vel.x, -8.2f);
 					pbody->body->SetLinearVelocity(vel);
@@ -181,7 +210,8 @@ bool Player::Update(float dt)
 				else if (!ground && !isJumping && !hasJumped && jumpCount == 0 && dashCount == 0)
 				{
 					currentAnim->Reset();
-					currentAnim = &jumpAnim;
+					if (!isEquipped) currentAnim = &jumpAnim;
+					else currentAnim = &armorJumpAnim;
 					isJumping = true;
 					vel = b2Vec2(vel.x, -8.2f);
 					pbody->body->SetLinearVelocity(vel);
@@ -220,7 +250,8 @@ bool Player::Update(float dt)
 			{
 				isJumping = true;
 				currentAnim->Reset();
-				currentAnim = &jumpAnim;
+				if (!isEquipped) currentAnim = &jumpAnim;
+				else currentAnim = &armorJumpAnim;
 				vel = b2Vec2(vel.x, -1.0f * dt);
 				pbody->body->SetLinearVelocity(vel);
 				jumper = false;
@@ -230,7 +261,8 @@ bool Player::Update(float dt)
 			{
 				currentAnim->ResetLoopCount();
 				currentAnim->Reset();
-				currentAnim = &idleAnim;
+				if (!isEquipped) currentAnim = &idleAnim;
+				else currentAnim = &armorIdleAnim;
 				isJumping = false;
 			}
 
@@ -240,7 +272,8 @@ bool Player::Update(float dt)
 
 				if (pbody->body->GetLinearVelocity().y > 0)
 				{
-					currentAnim = &fallAnim;
+					if (!isEquipped) currentAnim = &fallAnim;
+					else currentAnim = &armorFallAnim;
 				}
 			}
 			else if (!wall)
@@ -283,14 +316,23 @@ bool Player::Update(float dt)
 	else
 	{
 		pbody->body->SetLinearVelocity({0, 0});
-		if (currentAnim!= &deadAnim)
+		if (!isEquipped && currentAnim!= &deadAnim)
 		{
 			currentAnim = &deadAnim;
 			currentAnim->ResetLoopCount();
 			currentAnim->Reset();
 		}
-		if (currentAnim == &deadAnim && currentAnim->HasFinished()) SetToInitialPosition();
+		else if (isEquipped && currentAnim != &armorDeadAnim)
+		{
+			currentAnim = &armorDeadAnim;
+			currentAnim->ResetLoopCount();
+			currentAnim->Reset();
+		}
+		if (isEquipped && currentAnim == &deadAnim && currentAnim->HasFinished()) SetToInitialPosition();
+		else if (!isEquipped && currentAnim == &armorDeadAnim && currentAnim->HasFinished()) SetToInitialPosition();
 	}
+
+	if (app->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN) isEquipped = !isEquipped;
 
 	app->render->DrawTexture(lightTexture, position.x-150, position.y-165, NULL, SDL_FLIP_NONE, 1.0f);
     SDL_Rect rect = currentAnim->GetCurrentFrame();
@@ -387,6 +429,14 @@ void Player::LoadAnimations()
 	fallAnim.LoadAnimations("fallAnim", "player");
 	wallAnim.LoadAnimations("wallAnim", "player");
 	deadAnim.LoadAnimations("deadAnim", "player");
+
+	armorIdleAnim.LoadAnimations("armorIdleAnim", "player");
+	armorJumpAnim.LoadAnimations("armorJumpAnim", "player");
+	armorWalkAnim.LoadAnimations("armorWalkAnim", "player");
+	armorCrouchAnim.LoadAnimations("armorCrouchAnim", "player");
+	armorCrouchWalkAnim.LoadAnimations("armorCrouchWalkAnim", "player");
+	armorFallAnim.LoadAnimations("armorFallAnim", "player");
+	armorDeadAnim.LoadAnimations("armorDeadAnim", "player");
 }
 
 void Player::ToggleGodMode()

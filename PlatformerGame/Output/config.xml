@@ -102,6 +102,61 @@
 			  <animation x="300" y="768" w="100" h="64"/>
 			  <animation x="400" y="768" w="100" h="64"/>
 		  </deadAnim>
+
+		  <armorIdleAnim loop="true" speed="0.1f">
+			  <animation x="0" y="1280" w="100" h="64"/>
+			  <animation x="100" y="1280" w="100" h="64"/>
+			  <animation x="200" y="1280" w="100" h="64"/>
+			  <animation x="300" y="1280" w="100" h="64"/>
+		  </armorIdleAnim>
+
+		  <armorJumpAnim loop="false" speed="0.2f">
+			  <animation x="0" y="1408" w="100" h="64"/>
+			  <animation x="100" y="1408" w="100" h="64"/>
+			  <animation x="200" y="1408" w="100" h="64"/>
+			  <animation x="300" y="1408" w="100" h="64"/>
+			  <animation x="400" y="1408" w="100" h="64"/>
+			  <animation x="500" y="1408" w="100" h="64"/>
+			  <animation x="0" y="1408" w="100" h="64"/>
+		  </armorJumpAnim>
+
+		  <armorWalkAnim loop="true" speed="0.2f">
+			  <animation x="0" y="2240" w="100" h="64"/>
+			  <animation x="100" y="2240" w="100" h="64"/>
+			  <animation x="200" y="2240" w="100" h="64"/>
+			  <animation x="300" y="2240" w="100" h="64"/>
+			  <animation x="400" y="2240" w="100" h="64"/>
+			  <animation x="500" y="2240" w="100" h="64"/>
+			  <animation x="600" y="2240" w="100" h="64"/>
+		  </armorWalkAnim>
+
+		  <armorCrouchAnim loop="true" speed="0.1f">
+			  <animation x="0" y="320" w="100" h="64"/>
+			  <animation x="100" y="320" w="100" h="64"/>
+			  <animation x="200" y="320" w="100" h="64"/>
+		  </armorCrouchAnim>
+
+		  <armorCrouchWalkAnim loop="true" speed="0.1f">
+			  <animation x="0" y="576" w="100" h="64"/>
+			  <animation x="100" y="576" w="100" h="64"/>
+			  <animation x="200" y="576" w="100" h="64"/>
+			  <animation x="300" y="576" w="100" h="64"/>
+		  </armorCrouchWalkAnim>
+
+		  <armorFallAnim loop="true" speed="0.1f">
+			  <animation x="0" y="960" w="100" h="64"/>
+			  <animation x="100" y="960" w="100" h="64"/>
+			  <animation x="200" y="960" w="100" h="64"/>
+		  </armorFallAnim>
+
+		  <armorDeadAnim loop="false" speed="0.1f">
+			  <animation x="0" y="832" w="100" h="64"/>
+			  <animation x="100" y="832" w="100" h="64"/>
+			  <animation x="200" y="832" w="100" h="64"/>
+			  <animation x="300" y="832" w="100" h="64"/>
+			  <animation x="400" y="832" w="100" h="64"/>
+		  </armorDeadAnim>
+		  
 	  </player>
 
     <!-- Enemies -->
