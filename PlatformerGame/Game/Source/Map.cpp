@@ -497,6 +497,13 @@ void Map::UpdateMapSize()
         endWidth = 264;
         endHeight = 45;
     }
+    else if (mapIdx == 3)
+    {
+		startWidth = 4;
+		startHeight = 54;
+		endWidth = 199;
+		endHeight = 180;
+	}
     else
     {
         startWidth = 0;

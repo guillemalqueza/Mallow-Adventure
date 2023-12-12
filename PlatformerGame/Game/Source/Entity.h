@@ -18,6 +18,7 @@ enum class EntityType
 	LOCK_DOOR,
 	SKELETON,
 	GHOST,
+	OBSTACLE,
 	UNKNOWN
 };
 

@@ -51,6 +51,7 @@ bool FadeToBlack::Update(float dt)
 			activated = true;
 			if (levelIdx == 1) app->scene->StartLevel1();
 			else if (levelIdx == 2) app->scene->StartLevel2();
+			else if (levelIdx == 3) app->scene->StartLevel3();
 		}
 	}
 

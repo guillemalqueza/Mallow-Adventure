@@ -62,7 +62,7 @@ bool Player::Update(float dt)
 
 	if (!isDead)
 	{
-		if (!isJumping && !isCrouching)
+		if (!isJumping && !isCrouching && !isAttacking)
 		{
 			if (!isEquipped) currentAnim = &idleAnim;
 			else currentAnim = &armorIdleAnim;
@@ -142,10 +142,14 @@ bool Player::Update(float dt)
 						if (!isEquipped) currentAnim = &crouchWalkAnim;
 						else currentAnim = &armorCrouchWalkAnim;
 					}
-					else
+					else if (!isPushing)
 					{
 						if (!isEquipped) currentAnim = &walkAnim;
 						else currentAnim = &armorWalkAnim;
+					}
+					else
+					{
+						currentAnim = &pushAnim;
 					}
 				}
 				isWalking = true;
@@ -170,10 +174,14 @@ bool Player::Update(float dt)
 						if (!isEquipped) currentAnim = &crouchWalkAnim;
 						else currentAnim = &armorCrouchWalkAnim;
 					}
-					else
+					else if (!isPushing)
 					{
 						if (!isEquipped) currentAnim = &walkAnim;
 						else currentAnim = &armorWalkAnim;
+					}
+					else
+					{
+						currentAnim = &pushAnim;
 					}
 				}
 				isWalking = true;
@@ -190,6 +198,7 @@ bool Player::Update(float dt)
 
 			if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_IDLE && !isDashing && !wallEnd)
 			{
+				if (isPushing) isPushing = false;
 				isWalking = false;
 				vel.x = 0;
 			}
@@ -261,6 +270,38 @@ bool Player::Update(float dt)
 				if (dashTimer >= dashDuration) {
 					isDashing = false;
 				}
+			}
+
+			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN && !isAttacking && isEquipped) 
+			{
+				isAttacking = true;
+				
+				currentAnim = &attack1Anim;
+				currentAnim->ResetLoopCount();
+				currentAnim->Reset();
+			}
+
+			if (app->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN && !isAttacking && isEquipped)
+			{
+				isAttacking = true;
+
+				currentAnim = &attack2Anim;
+				currentAnim->ResetLoopCount();
+				currentAnim->Reset();
+			}
+
+			if (app->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN && !isAttacking && isEquipped)
+			{
+				isAttacking = true;
+
+				currentAnim = &attack3Anim;
+				currentAnim->ResetLoopCount();
+				currentAnim->Reset();
+			}
+
+			if (isAttacking && currentAnim->HasFinished())
+			{
+				isAttacking = false;
 			}
 
 			if (jumper)
@@ -422,6 +463,9 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 	case ColliderType::WALL_END:
 		if (wallLeft || wallRight) wallEnd = true;
 		break;
+	case ColliderType::OBSTACLE:
+		isPushing = true;
+		break;
 	case ColliderType::UNKNOWN:
 		LOG("Collision UNKNOWN");
 		break;
@@ -431,13 +475,17 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 
 void Player::SetToInitialPosition()
 {
-	if (!app->scene->level2Enabled)
+	if (app->scene->level1Enabled)
 	{
 		app->fade->Fade(1,60);
 	}
-	else
+	else if (app->scene->level2Enabled)
 	{
 		app->fade->Fade(2, 60);
+	}
+	else if (app->scene->level3Enabled)
+	{
+		app->fade->Fade(3, 60);
 	}
 }
 
@@ -459,6 +507,10 @@ void Player::LoadAnimations()
 	armorCrouchWalkAnim.LoadAnimations("armorCrouchWalkAnim", "player");
 	armorFallAnim.LoadAnimations("armorFallAnim", "player");
 	armorDeadAnim.LoadAnimations("armorDeadAnim", "player");
+	attack1Anim.LoadAnimations("attack1Anim", "player");
+	attack2Anim.LoadAnimations("attack2Anim", "player");
+	attack3Anim.LoadAnimations("attack3Anim", "player");
+	pushAnim.LoadAnimations("pushAnim", "player");
 }
 
 void Player::ToggleGodMode()

@@ -44,6 +44,7 @@ bool Scene::Awake(pugi::xml_node& config)
 	CreateEntities(config, "crumblingPlatform", EntityType::CRUMBLING_PLATFORM);
 	CreateEntities(config, "skeleton", EntityType::SKELETON);
 	CreateEntities(config, "ghost", EntityType::GHOST);
+	CreateEntities(config, "obstacle", EntityType::OBSTACLE);
 
 	if (config.child("player")) {
 		player = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER);
@@ -102,6 +103,7 @@ bool Scene::Update(float dt)
 	if (cameraIdx == 0) SetCameraPosition(56, 760 - (windowH / 2));
 	else if (cameraIdx == 1) SetCameraPosition(2460 - (windowW / 2), 575 - (windowH / 2));
 	else if (cameraIdx == 2) SetCameraPosition(player->position.x - (windowW / 2), player->position.y + 60 - (windowH / 2));
+	else if (cameraIdx == 3) SetCameraPosition(200, 4860);
 
 	ClampCamera();
 
@@ -125,6 +127,7 @@ bool Scene::Update(float dt)
 
 	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) app->fade->Fade(1,60);
 	if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) app->fade->Fade(2, 60);
+	if (app->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN) app->fade->Fade(3, 60);
 
 	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) app->SaveRequest();
 	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) app->LoadRequest();
@@ -169,7 +172,7 @@ void Scene::SetCameraPosition(int x, int y)
 
 void Scene::ClampCamera()
 {
-	if (!level2Enabled)
+	if (level1Enabled)
 	{
 		if (cameraX < 0) cameraX = 0;
 		else if (cameraX + windowW > levelWidth) cameraX = levelWidth - windowW;
@@ -177,7 +180,7 @@ void Scene::ClampCamera()
 		if (cameraY < 0) cameraY = 0;
 		else if (cameraY + windowH > levelHeight) cameraY = levelHeight - windowH;
 	}
-	else
+	else if (level2Enabled)
 	{
 		if (cameraX < levelWidth + 550) cameraX = levelWidth + 550;
 		else if (cameraX + windowW > levelWidth + level2Width + 300) cameraX = (levelWidth +  level2Width + 300) - windowW;
@@ -186,7 +189,10 @@ void Scene::ClampCamera()
 		else if (cameraY > 200) cameraY = 460;
 		else if (cameraY + windowH > level2Height) cameraY = level2Height - windowH;
 	}
-	
+	else if (level3Enabled)
+	{
+		
+	}
 }
 
 void Scene::StartCameraShakeX(float duration, float intensity)
@@ -230,18 +236,6 @@ void Scene::UpdateCameraShake()
 	else cameraInitialized = true;
 }
 
-void Scene::StartLevel2()
-{
-	player->pbody->body->SetTransform(b2Vec2(PIXEL_TO_METERS(4120), PIXEL_TO_METERS(830)), 0);
-	if (cameraIdx != 2) changingLevel = true;
-	cameraInitialized = true;
-	cameraIdx = 2;
-	level2Enabled = true;
-	player->isDead = false;
-	app->map->mapIdx = 2;
-	app->map->UpdateMapSize();
-}
-
 void Scene::StartLevel1()
 {
 	player->pbody->body->SetTransform(b2Vec2(player->initialTransform.p.x, player->initialTransform.p.y), 0);
@@ -249,9 +243,39 @@ void Scene::StartLevel1()
 	cameraInitialized = true;
 	cameraIdx = 0;
 	cameraInitialized = true;
+	level1Enabled = true;
 	level2Enabled = false;
+	level3Enabled = false;
 	player->isDead = false;
 	app->map->mapIdx = 1;
+	app->map->UpdateMapSize();
+}
+
+void Scene::StartLevel2()
+{
+	player->pbody->body->SetTransform(b2Vec2(PIXEL_TO_METERS(4120), PIXEL_TO_METERS(830)), 0);
+	if (cameraIdx != 2) changingLevel = true;
+	cameraInitialized = true;
+	cameraIdx = 2;
+	level2Enabled = true;
+	level1Enabled = false;
+	level3Enabled = false;
+	player->isDead = false;
+	app->map->mapIdx = 2;
+	app->map->UpdateMapSize();
+}
+
+void Scene::StartLevel3()
+{
+	player->pbody->body->SetTransform(b2Vec2(PIXEL_TO_METERS(340), PIXEL_TO_METERS(5510)), 0);
+	if (cameraIdx != 3) changingLevel = true;
+	cameraInitialized = true;
+	cameraIdx = 3;
+	level3Enabled = true;
+	level1Enabled = false;
+	level2Enabled = false;
+	player->isDead = false;
+	app->map->mapIdx = 3;
 	app->map->UpdateMapSize();
 }
 

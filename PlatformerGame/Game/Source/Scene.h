@@ -49,13 +49,16 @@ public:
 
 	void UpdateCameraShake();
 
+	void StartLevel3();
 	void StartLevel2();
 	void StartLevel1();
 
 	Player* player;	
 	int cameraIdx = 0;
 	bool cameraInitialized = true;
+	bool level1Enabled = false;
 	bool level2Enabled = false;
+	bool level3Enabled = false;
 
 private:
 	SDL_Texture* backgroundTexture;

@@ -72,6 +72,7 @@
     <ClCompile Include="Source\Equipment.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Obstacle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\App.h" />
@@ -177,6 +178,7 @@
     <ClInclude Include="Source\Equipment.h">
       <Filter>Entities</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Obstacle.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">
