@@ -30,7 +30,7 @@
 	</player>
 	<!--<skeleton x="1300" y="1000" texturepath="Assets/Textures/enemy_skeleton.png" speed="0.2f"/>
 	<ghost x="1400" y="1000" texturepath="Assets/Textures/enemy_ghost.png" speed="0.2f"/>-->
-    <!--<key x="704" y="632" texturepath="Assets/Textures/key.png"/>-->
+    <key x="704" y="632" texturepath="Assets/Textures/key.png"/>
     <jumper x="4880" y="634" texturepath="Assets/Textures/jumper.png"/>
     <crumblingPlatform x="5900" y="500" texturepath="Assets/Textures/crumbling_platform.png"/>
 	<crumblingPlatform x="6050" y="550" texturepath="Assets/Textures/crumbling_platform.png"/>
@@ -38,7 +38,7 @@
     <lockDoor x="3200" y="190" texturepath="Assets/Textures/lock_door.png"/>
 	<background texturepath="Assets/Maps/background.png"/>
 	<background2 texturepath="Assets/Maps/background_lvl_2.png"/>
-	<equipment x="704" y="632" texturepath="Assets/Textures/key.png"/>
+	<equipment x="5080" y="280" texturepath="Assets/Textures/key.png"/>
   </scene>
   
   <animations>
