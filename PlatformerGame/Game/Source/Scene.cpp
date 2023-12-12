@@ -238,6 +238,8 @@ void Scene::StartLevel2()
 	cameraIdx = 2;
 	level2Enabled = true;
 	player->isDead = false;
+	app->map->mapIdx = 2;
+	app->map->UpdateMapSize();
 }
 
 void Scene::StartLevel1()
@@ -249,5 +251,7 @@ void Scene::StartLevel1()
 	cameraInitialized = true;
 	level2Enabled = false;
 	player->isDead = false;
+	app->map->mapIdx = 1;
+	app->map->UpdateMapSize();
 }
 

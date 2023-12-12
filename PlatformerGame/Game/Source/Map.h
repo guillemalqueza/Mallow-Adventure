@@ -139,6 +139,8 @@ public:
 	int GetTileWidth();
 	int GetTileHeight();
 
+	void UpdateMapSize();
+
 private:
 
 	bool CreateColliders();
@@ -149,12 +151,18 @@ public:
 	SString path;
 	PathFinding* pathfinding;
 
+	int mapIdx = 1;
+
 private:
 
 	MapData mapData;
 	bool mapLoaded;
 	MapLayer* navigationLayer;
 	int blockedGid = 49;
+	int startHeight = 0;
+	int endHeight = 0;
+	int startWidth = 0;
+	int endWidth = 0;
 };
 
 #endif // __MAP_H__

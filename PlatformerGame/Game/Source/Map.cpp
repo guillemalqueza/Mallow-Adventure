@@ -46,6 +46,8 @@ bool Map::Start() {
     pathfinding->SetNavigationMap((uint)mapData.width, (uint)mapData.height, navigationMap);
     RELEASE_ARRAY(navigationMap);
 
+    UpdateMapSize();
+
     return true;
 }
 
@@ -64,8 +66,8 @@ bool Map::Update(float dt)
         //Check if the property Draw exist get the value, if it's true draw the lawyer
         if (mapLayer->data->properties.GetProperty("Draw") != NULL && mapLayer->data->properties.GetProperty("Draw")->value) {
             //iterate all tiles in a layer
-            for (int i = 0; i < mapData.width; i++) {
-                for (int j = 0; j < mapData.height; j++) {
+            for (int i = startWidth; i < endWidth; i++) {
+                for (int j = startHeight; j < endHeight; j++) {
                     //Get the gid from tile
                     int gid = mapLayer->data->Get(i, j);
 
@@ -476,5 +478,30 @@ void Map::DestroyAllColliders()
         }
 
         body = nextBody;
+    }
+}
+
+void Map::UpdateMapSize()
+{
+    if (mapIdx == 1)
+    {
+        startWidth = 0;
+        startHeight = 0;
+        endWidth = 108;
+        endHeight = 53;
+    }
+    else if (mapIdx == 2)
+    {
+        startWidth = 122;
+        startHeight = 0;
+        endWidth = 264;
+        endHeight = 45;
+    }
+    else
+    {
+        startWidth = 0;
+        startHeight = 0;
+        endWidth = mapData.width;
+        endHeight = mapData.height;
     }
 }
