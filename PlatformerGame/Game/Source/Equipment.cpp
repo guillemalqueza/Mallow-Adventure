@@ -64,15 +64,19 @@ void Equipment::OnCollision(PhysBody* physA, PhysBody* physB)
 	{
 	case ColliderType::PLAYER:
 		LOG("Collision PLAYER");
-		pbody->body->SetActive(false);
-		isPicked = true;
-		app->entityManager->DestroyEntity(this);
-		app->physics->world->DestroyBody(pbody->body);
+		if (!isPicked)
+		{
+			pbody->body->SetActive(false);
+			app->scene->player->isEquipped = true;
+			isPicked = true;
+		}
 		break;
 	}
 }
 
 void Equipment::OnPicked()
 {
-	app->scene->player->isEquipped = true;
+	app->entityManager->DestroyEntity(this);
+	app->physics->world->DestroyBody(pbody->body);
+	isPicked = false;
 }

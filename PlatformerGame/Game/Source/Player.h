@@ -54,7 +54,9 @@ public:
 	bool isFacingUp = false;
 	int jumpCount = 0;
 	int dashCount = 0;
-	bool wall = false;
+	bool wallLeft = false;
+	bool wallRight = false;
+	bool wallEnd = false;
 	float previousY = 0.0f;
 	bool hasJumped = false;
 	bool isRunning = false;

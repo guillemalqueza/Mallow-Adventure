@@ -73,14 +73,14 @@ bool Player::Update(float dt)
 		if (!godMode)
 		{
 			//idle wall keys
-			if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_IDLE && wall && !ground)
+			if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_IDLE && !ground && (wallLeft || wallRight))
 			{
 				pbody->body->SetGravityScale(0.0f);
 				pbody->body->SetLinearVelocity({ pbody->body->GetLinearVelocity().x, 0 });
 				vel = b2Vec2(0, 0);
-				currentAnim = &wallAnim;
+				if (!wallEnd) currentAnim = &wallAnim;
 			}
-			else if (!wall)
+			else if (!wallLeft && !wallRight)
 			{
 				pbody->body->SetGravityScale(1.0f);
 			}
@@ -92,16 +92,26 @@ bool Player::Update(float dt)
 			{
 				isFacingUp = true;
 
-				if (wall)
+				if ((wallLeft || wallRight) && !wallEnd)
 				{
 					ground = false;
 					vel = b2Vec2(0, -speed * dt);
 					currentAnim = &wallAnim;
 				}
+				else if (wallEnd && wallRight)
+				{
+					vel = b2Vec2(speed * dt, 0);
+					currentAnim = &walkAnim;
+				}
+				else if (wallEnd && wallLeft)
+				{
+					vel = b2Vec2(-speed * dt, 0);
+					currentAnim = &walkAnim;
+				}
 			}
 			if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 			{
-				if (wall)
+				if (wallRight || wallLeft)
 				{
 					ground = false;
 					vel = b2Vec2(0, speed * dt);
@@ -125,7 +135,7 @@ bool Player::Update(float dt)
 			if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 			{
 				if (!isDashing) vel.x = -speed * dt;
-				if (!isJumping && !wall)
+				if (!isJumping && !wallLeft && !wallRight)
 				{
 					if (isCrouching)
 					{
@@ -141,7 +151,8 @@ bool Player::Update(float dt)
 				isWalking = true;
 				if (currentAnim == &wallAnim && !ground && isFacingRight)
 				{
-					wall = false;
+					wallLeft = false;
+					wallRight = false;
 					if (!isEquipped) currentAnim = &idleAnim;
 					else currentAnim = &armorIdleAnim;
 					pbody->body->SetGravityScale(1.0f);
@@ -152,7 +163,7 @@ bool Player::Update(float dt)
 			if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 			{
 				if (!isDashing) vel.x = speed * dt;
-				if (!isJumping && !wall)
+				if (!isJumping && !wallLeft && !wallRight)
 				{
 					if (isCrouching)
 					{
@@ -168,7 +179,8 @@ bool Player::Update(float dt)
 				isWalking = true;
 				if (currentAnim == &wallAnim && !ground && !isFacingRight)
 				{
-					wall = false;
+					wallLeft = false;
+					wallRight = false;
 					if (!isEquipped) currentAnim = &idleAnim;
 					else currentAnim = &armorIdleAnim;
 					pbody->body->SetGravityScale(1.0f);
@@ -176,12 +188,17 @@ bool Player::Update(float dt)
 				isFacingRight = true;
 			}
 
-			if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_IDLE && !isDashing)
+			if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_IDLE && !isDashing && !wallEnd)
 			{
 				isWalking = false;
 				vel.x = 0;
 			}
+			else if (wallEnd && app->input->GetKey(SDL_SCANCODE_UP) == KEY_IDLE)
+			{
+				vel.x = 0;
+			}
 
+			printf("\r jumpcount %d, isJumping %i, hasJumped %i, ground %i, dashCount %d", jumpCount, isJumping, hasJumped, ground, dashCount);
 			//jump
 			if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 			{
@@ -257,7 +274,7 @@ bool Player::Update(float dt)
 				jumper = false;
 			}
 
-			if (isJumping && currentAnim->HasFinished() || (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT && !wall))
+			if (isJumping && currentAnim->HasFinished() || (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT && !wallLeft && !wallRight))
 			{
 				currentAnim->ResetLoopCount();
 				currentAnim->Reset();
@@ -266,7 +283,7 @@ bool Player::Update(float dt)
 				isJumping = false;
 			}
 
-			if (position.y != previousY && !wall)
+			if (position.y != previousY && !wallLeft && !wallRight)
 			{
 				ground = false;
 
@@ -276,14 +293,14 @@ bool Player::Update(float dt)
 					else currentAnim = &armorFallAnim;
 				}
 			}
-			else if (!wall)
+			else if (!wallLeft && !wallRight)
 			{
 				ground = true;
 			}
 
 			previousY = position.y;
 
-			if (!isJumping && !wall && !isDashing) vel.y = -GRAVITY_Y;
+			if (!isJumping && !wallLeft && !wallRight && !isDashing) vel.y = -GRAVITY_Y;
 			pbody->body->SetLinearVelocity(vel);
 		}
 		else
@@ -328,8 +345,8 @@ bool Player::Update(float dt)
 			currentAnim->ResetLoopCount();
 			currentAnim->Reset();
 		}
-		if (isEquipped && currentAnim == &deadAnim && currentAnim->HasFinished()) SetToInitialPosition();
-		else if (!isEquipped && currentAnim == &armorDeadAnim && currentAnim->HasFinished()) SetToInitialPosition();
+		if (!isEquipped && currentAnim == &deadAnim && currentAnim->HasFinished()) SetToInitialPosition();
+		else if (isEquipped && currentAnim == &armorDeadAnim && currentAnim->HasFinished()) SetToInitialPosition();
 	}
 
 	if (app->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN) isEquipped = !isEquipped;
@@ -341,7 +358,7 @@ bool Player::Update(float dt)
     currentAnim->Update();
 	//printf("\r jumpcount: %d	ground: %d	isJumping: %d	hadJumped: %d	wall: %d", jumpCount, ground,isJumping,hasJumped,wall);
 	/*printf("\r playerX: %d playerY: %d", position.x, position.y);*/
-	printf("\r cameraX: %d cameraY: %d positionX: %d positionY %d", app->render->camera.x, app->render->camera.y, position.x, position.y);
+	//printf("\r cameraX: %d cameraY: %d positionX: %d positionY %d", app->render->camera.x, app->render->camera.y, position.x, position.y);
     return true;
 }
 
@@ -367,16 +384,18 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		dashCount = 0;
 		hasJumped = false;
 		isJumping = false;
-		wall = false;
+		wallLeft = false;
+		wallRight = false;
+		wallEnd = false;
 		if (!godMode) pbody->body->SetGravityScale(1.0f);
 		break;
 	case ColliderType::L_WALL:
 		LOG("Collision L_WALL");
-		wall = true;
+		wallLeft = true;
 		break;
 	case ColliderType::R_WALL:
 		LOG("Collision R_WALL");
-		wall = true;
+		wallRight = true;
 		break;
 	case ColliderType::SPIKE:
 		LOG("Collision SPIKE");
@@ -399,6 +418,9 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 			app->scene->cameraIdx--;
 			app->scene->cameraInitialized = true;
 		}
+		break;
+	case ColliderType::WALL_END:
+		if (wallLeft || wallRight) wallEnd = true;
 		break;
 	case ColliderType::UNKNOWN:
 		LOG("Collision UNKNOWN");
