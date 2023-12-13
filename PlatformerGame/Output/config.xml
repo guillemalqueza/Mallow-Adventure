@@ -39,7 +39,7 @@
 		<background texturepath="Assets/Maps/background.png"/>
 		<background2 texturepath="Assets/Maps/background_lvl_2.png"/>
 		<equipment x="5080" y="280" texturepath="Assets/Textures/key.png"/>
-		<obstacle x="500" y="991"/>
+		<obstacle x="500" y="991" texturepath="Assets/Textures/rock.png"/>
 	</scene>
 
 	<animations>
