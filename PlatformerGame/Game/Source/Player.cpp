@@ -276,16 +276,18 @@ bool Player::Update(float dt)
 			{
 				isAttacking = true;
 				
-				currentAnim = &attack1Anim;
-				currentAnim->ResetLoopCount();
-				currentAnim->Reset();
-			}
-
-			if (app->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN && !isAttacking && isEquipped)
-			{
-				isAttacking = true;
-
-				currentAnim = &attack2Anim;
+				if (isJumping) currentAnim = &attackJumpAnim;
+				else if (firstAttack)
+				{
+					currentAnim = &attack1Anim;
+					firstAttack = false;
+				}
+				else
+				{
+					currentAnim = &attack2Anim;
+					firstAttack = true;
+				}
+	
 				currentAnim->ResetLoopCount();
 				currentAnim->Reset();
 			}
@@ -459,6 +461,16 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 			app->scene->cameraIdx--;
 			app->scene->cameraInitialized = true;
 		}
+		else if (app->scene->cameraIdx == 3)
+		{
+			app->scene->cameraIdx++;
+			app->scene->cameraInitialized = true;
+		}
+		/*else if (app->scene->cameraIdx == 4)
+		{
+			app->scene->cameraIdx++;
+			app->scene->cameraInitialized = true;
+		}*/
 		break;
 	case ColliderType::WALL_END:
 		if (wallLeft || wallRight) wallEnd = true;
@@ -510,6 +522,7 @@ void Player::LoadAnimations()
 	attack1Anim.LoadAnimations("attack1Anim", "player");
 	attack2Anim.LoadAnimations("attack2Anim", "player");
 	attack3Anim.LoadAnimations("attack3Anim", "player");
+	attackJumpAnim.LoadAnimations("attackJumpAnim", "player");
 	pushAnim.LoadAnimations("pushAnim", "player");
 }
 

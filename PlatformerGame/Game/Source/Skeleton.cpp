@@ -55,24 +55,29 @@ bool Skeleton::Update(float dt)
 
 	distance = sqrt(pow(playerTilePos.x - skeletonTilePos.x, 2) + pow(playerTilePos.y - skeletonTilePos.y, 2));
 
-	app->map->pathfinding->CreatePath(skeletonTilePos, playerTilePos);
+	if (distance < 10)
+	{
+		app->map->pathfinding->CreatePath(skeletonTilePos, playerTilePos);
 
-	if (distance < 4)
-	{
-		currentAnim = &skeletonAttackAnim;
-		velocity = { 0, 0 };
+		if (distance < 4)
+		{
+			currentAnim = &skeletonAttackAnim;
+			velocity = { 0, 0 };
+		}
+		else if (distance >= 4)
+		{
+			currentAnim = &skeletonWalkAnim;
+			Move(skeletonTilePos, playerTilePos);
+		}
+		else
+		{
+			currentAnim = &skeletonIdleAnim;
+			velocity = { 0, 0 };
+			app->map->pathfinding->ClearLastPath();
+		}
 	}
-	else if (distance >= 4)
-	{
-		currentAnim = &skeletonWalkAnim;
-		Move(skeletonTilePos, playerTilePos);
-	}
-	else
-	{
-		currentAnim = &skeletonIdleAnim;
-		velocity = { 0, 0 };
-		app->map->pathfinding->ClearLastPath();
-	}
+	
+	
 
 	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x);
 	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y);

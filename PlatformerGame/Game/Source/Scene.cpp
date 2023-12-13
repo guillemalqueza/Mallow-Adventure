@@ -103,7 +103,9 @@ bool Scene::Update(float dt)
 	if (cameraIdx == 0) SetCameraPosition(56, 760 - (windowH / 2));
 	else if (cameraIdx == 1) SetCameraPosition(2460 - (windowW / 2), 575 - (windowH / 2));
 	else if (cameraIdx == 2) SetCameraPosition(player->position.x - (windowW / 2), player->position.y + 60 - (windowH / 2));
-	else if (cameraIdx == 3) SetCameraPosition(200, 4860);
+	else if (cameraIdx == 3) SetCameraPosition(100, 5240);
+	else if (cameraIdx == 4) SetCameraPosition(1100, 4400);
+	else if (cameraIdx == 5) SetCameraPosition(1900, 3400);
 
 	ClampCamera();
 
@@ -267,7 +269,7 @@ void Scene::StartLevel2()
 
 void Scene::StartLevel3()
 {
-	player->pbody->body->SetTransform(b2Vec2(PIXEL_TO_METERS(340), PIXEL_TO_METERS(5510)), 0);
+	player->pbody->body->SetTransform(b2Vec2(PIXEL_TO_METERS(320), PIXEL_TO_METERS(5824)), 0);
 	if (cameraIdx != 3) changingLevel = true;
 	cameraInitialized = true;
 	cameraIdx = 3;

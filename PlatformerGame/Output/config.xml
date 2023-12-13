@@ -28,8 +28,8 @@
 		<player x="400" y="991" texturepath="Assets/Textures/player.png" lightTexture = "Assets/Textures/player_light.png" speed="0.2f">
 			<itemAudio path="Assets/Audio/Fx/coin_pickup.ogg"/>
 		</player>
-		<!--<skeleton x="1300" y="1000" texturepath="Assets/Textures/enemy_skeleton.png" speed="0.2f"/>
-	<ghost x="1400" y="1000" texturepath="Assets/Textures/enemy_ghost.png" speed="0.2f"/>-->
+		<skeleton x="2200" y="4683" texturepath="Assets/Textures/enemy_skeleton.png" speed="0.2f"/>
+		<!--<ghost x="1400" y="1000" texturepath="Assets/Textures/enemy_ghost.png" speed="0.2f"/>-->
 		<key x="704" y="632" texturepath="Assets/Textures/key.png"/>
 		<jumper x="4880" y="634" texturepath="Assets/Textures/jumper.png"/>
 		<crumblingPlatform x="5900" y="500" texturepath="Assets/Textures/crumbling_platform.png"/>
@@ -188,6 +188,26 @@
 				<animation x="700" y="128" w="100" h="64"/>
 				<animation x="800" y="128" w="100" h="64"/>
 			</attack3Anim>
+
+			<attack3Anim loop ="false" speed="0.2f">
+				<animation x="0" y="128" w="100" h="64"/>
+				<animation x="100" y="128" w="100" h="64"/>
+				<animation x="200" y="128" w="100" h="64"/>
+				<animation x="300" y="128" w="100" h="64"/>
+				<animation x="400" y="128" w="100" h="64"/>
+				<animation x="500" y="128" w="100" h="64"/>
+				<animation x="600" y="128" w="100" h="64"/>
+				<animation x="700" y="128" w="100" h="64"/>
+				<animation x="800" y="128" w="100" h="64"/>
+			</attack3Anim>
+
+			<attackJumpAnim loop ="false" speed="0.2f">
+				<animation x="0" y="192" w="100" h="64"/>
+				<animation x="100" y="192" w="100" h="64"/>
+				<animation x="200" y="192" w="100" h="64"/>
+				<animation x="300" y="192" w="100" h="64"/>
+				<animation x="400" y="192" w="100" h="64"/>
+			</attackJumpAnim>
 
 			<pushAnim loop ="true" speed="0.2f">
 				<animation x="0" y="1856" w="100" h="64"/>
