@@ -54,6 +54,7 @@ private:
 	iPoint skeletonTilePos;
 
 	float distance;
+	int health = 100;
 };
 
 #endif // __SKELETON_H__

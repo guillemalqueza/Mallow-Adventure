@@ -299,11 +299,41 @@ bool Player::Update(float dt)
 				currentAnim = &attack3Anim;
 				currentAnim->ResetLoopCount();
 				currentAnim->Reset();
+
 			}
 
-			if (isAttacking && currentAnim->HasFinished())
+			if (isAttacking)
 			{
-				isAttacking = false;
+				if ((currentAnim == &attack1Anim || currentAnim == &attack2Anim) && currentAnim->GetCurrentFrameCount() >= 1 && !attackBodyCreated)
+				{
+					if (isFacingRight) pbodySword = app->physics->CreateRectangleSensor(position.x + 90, position.y + 20, 25, 25, bodyType::STATIC);
+					else pbodySword = app->physics->CreateRectangleSensor(position.x, position.y + 20, 25, 25, bodyType::STATIC);
+					pbodySword->ctype = ColliderType::SWORD;
+					attackBodyCreated = true;
+				}
+				else if (currentAnim == &attack3Anim && currentAnim->GetCurrentFrameCount() >= 5 && !attackBodyCreated)
+				{
+					if (isFacingRight)
+					{
+						vel.x = 80;
+						pbodySword = app->physics->CreateRectangleSensor(position.x + 150, position.y + 20, 25, 25, bodyType::STATIC);
+					}
+					else
+					{
+						vel.x = -80;
+						pbodySword = app->physics->CreateRectangleSensor(position.x - 50, position.y + 20, 25, 25, bodyType::STATIC);
+					}
+			
+					pbodySword->ctype = ColliderType::SWORD;
+					attackBodyCreated = true;
+				}
+
+				if (currentAnim->HasFinished())
+				{
+					isAttacking = false;
+					attackBodyCreated = false;
+					if (pbodySword != NULL) pbodySword->body->GetWorld()->DestroyBody(pbodySword->body);
+				}
 			}
 
 			if (jumper)

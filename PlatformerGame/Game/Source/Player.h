@@ -40,6 +40,7 @@ public:
 	SDL_Texture* texture = NULL;
 	SDL_Texture* lightTexture;
 	PhysBody* pbody;
+	PhysBody* pbodySword = NULL;
 	int pickCoinFxId;
 
 	Animation* currentAnim;
@@ -69,6 +70,7 @@ public:
 	bool isEquipped = false;
 	bool isAttacking = false;
 	bool firstAttack = true;
+	bool attackBodyCreated = false;
 
 	bool lastKeyPressA = false;
 	bool lastKeyPressD = false;

@@ -76,8 +76,14 @@ bool Skeleton::Update(float dt)
 			app->map->pathfinding->ClearLastPath();
 		}
 	}
-	
-	
+
+	if (health <= 0)
+	{
+		currentAnim = &skeletonDeadAnim;
+		velocity = { 0, 0 };
+	}
+
+	LOG("position x: %i position y: %i", position.x, position.y);
 
 	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x);
 	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y);
@@ -144,7 +150,9 @@ void Skeleton::OnCollision(PhysBody* physA, PhysBody* physB)
 {
 	switch (physB->ctype)
 	{
-
+		case ColliderType::SWORD:
+			health -= 50;
+			break;
 	}
 }
 
