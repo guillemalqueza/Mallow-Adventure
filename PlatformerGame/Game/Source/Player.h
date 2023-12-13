@@ -71,6 +71,7 @@ public:
 	bool isAttacking = false;
 	bool firstAttack = true;
 	bool attackBodyCreated = false;
+	bool destroyAttackBody = false;
 
 	bool lastKeyPressA = false;
 	bool lastKeyPressD = false;

@@ -122,14 +122,22 @@ bool Player::Update(float dt)
 			//crouch
 			if (app->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT)
 			{
-				if (!isCrouching) isCrouching = true;
+				if (!isCrouching)
+				{
+					isCrouching = true;
+					pbody->body->GetFixtureList()->GetShape()->m_radius = 0.22f;
+				}
 				if (!isWalking)
 				{
 					if (!isEquipped) currentAnim = &crouchAnim;
 					else currentAnim = &armorCrouchAnim;
 				}
 			}
-			else isCrouching = false;
+			else if (isCrouching)
+			{
+				isCrouching = false;
+				pbody->body->GetFixtureList()->GetShape()->m_radius = 0.44f;
+			}
 
 			//player movement
 			if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
@@ -299,7 +307,13 @@ bool Player::Update(float dt)
 				currentAnim = &attack3Anim;
 				currentAnim->ResetLoopCount();
 				currentAnim->Reset();
+			}
 
+			if (destroyAttackBody)
+			{
+				pbodySword->body->GetWorld()->DestroyBody(pbodySword->body);
+				pbodySword = NULL;
+				destroyAttackBody = false;
 			}
 
 			if (isAttacking)
@@ -308,6 +322,12 @@ bool Player::Update(float dt)
 				{
 					if (isFacingRight) pbodySword = app->physics->CreateRectangleSensor(position.x + 90, position.y + 20, 25, 25, bodyType::STATIC);
 					else pbodySword = app->physics->CreateRectangleSensor(position.x, position.y + 20, 25, 25, bodyType::STATIC);
+					pbodySword->ctype = ColliderType::SWORD;
+					attackBodyCreated = true;
+				}
+				else if (currentAnim == &attackJumpAnim && currentAnim->GetCurrentFrameCount() >= 2 && !attackBodyCreated)
+				{
+					pbodySword = app->physics->CreateRectangleSensor(position.x + 45, position.y + 20, 100, 25, bodyType::STATIC);
 					pbodySword->ctype = ColliderType::SWORD;
 					attackBodyCreated = true;
 				}
@@ -332,7 +352,8 @@ bool Player::Update(float dt)
 				{
 					isAttacking = false;
 					attackBodyCreated = false;
-					if (pbodySword != NULL) pbodySword->body->GetWorld()->DestroyBody(pbodySword->body);
+
+					if (pbodySword != NULL) destroyAttackBody = true;
 				}
 			}
 
@@ -426,8 +447,14 @@ bool Player::Update(float dt)
 
 	app->render->DrawTexture(lightTexture, position.x-150, position.y-165, NULL, SDL_FLIP_NONE, 1.0f);
     SDL_Rect rect = currentAnim->GetCurrentFrame();
-    if(isFacingRight) app->render->DrawTexture(texture, position.x, position.y, &rect);
-	else app->render->DrawTexture(texture, position.x, position.y, &rect, SDL_FLIP_HORIZONTAL);
+
+	int yOffset = 0;
+	if (!isCrouching) yOffset = 0;
+	else yOffset = 10;
+
+    if (isFacingRight) app->render->DrawTexture(texture, position.x, position.y - yOffset, &rect);
+	else app->render->DrawTexture(texture, position.x, position.y - yOffset, &rect, SDL_FLIP_HORIZONTAL);
+
     currentAnim->Update();
 	//printf("\r jumpcount: %d	ground: %d	isJumping: %d	hadJumped: %d	wall: %d", jumpCount, ground,isJumping,hasJumped,wall);
 	/*printf("\r playerX: %d playerY: %d", position.x, position.y);*/

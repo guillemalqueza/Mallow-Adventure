@@ -55,6 +55,7 @@ private:
 
 	float distance;
 	int health = 100;
+	bool isDead = false;
 };
 
 #endif // __SKELETON_H__

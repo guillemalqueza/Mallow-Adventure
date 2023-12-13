@@ -81,9 +81,8 @@ bool Skeleton::Update(float dt)
 	{
 		currentAnim = &skeletonDeadAnim;
 		velocity = { 0, 0 };
+		isDead = true;
 	}
-
-	LOG("position x: %i position y: %i", position.x, position.y);
 
 	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x);
 	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y);
