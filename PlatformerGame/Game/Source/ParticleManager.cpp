@@ -89,9 +89,9 @@ void ParticleManager::UpdateParticles(float dt, float time) {
 void ParticleManager::DrawParticles() {
 	for (auto& particle : particles) {
 		SDL_Rect particleRect = { particle.x, particle.y, particle.radius * 2, particle.radius * 2 };
-		if (particle.radius == 1) app->render->DrawTexture(particleTexture1, particleRect.x, particleRect.y);
-		else if (particle.radius == 2) app->render->DrawTexture(particleTexture2, particleRect.x, particleRect.y);
-		else if (particle.radius == 3) app->render->DrawTexture(particleTexture3, particleRect.x, particleRect.y);
+		if (particle.radius == 1) app->render->DrawTexture(particleTexture1, (-app->render->camera.x) + particleRect.x, (-app->render->camera.y) + particleRect.y);
+		else if (particle.radius == 2) app->render->DrawTexture(particleTexture2, (-app->render->camera.x) + particleRect.x, (-app->render->camera.y) + particleRect.y);
+		else if (particle.radius == 3) app->render->DrawTexture(particleTexture3, (-app->render->camera.x) + particleRect.x, (-app->render->camera.y) + particleRect.y);
 
 	}
 }
