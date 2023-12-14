@@ -7,6 +7,7 @@
 #include "Jumper.h"
 #include "CrumblingPlatform.h"
 #include "LockDoor.h"
+#include <vector>
 
 struct SDL_Texture;
 
@@ -84,6 +85,7 @@ private:
 
 	int playerX, playerY, cameraX, cameraY;
 	bool changingLevel = false;
+
 };
 
 #endif // __SCENE_H__

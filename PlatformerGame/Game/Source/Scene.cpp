@@ -82,6 +82,7 @@ bool Scene::Start()
 
 	app->render->camera.x = -32;
 	app->render->camera.y = -286;
+
 	return true;
 }
 
@@ -105,7 +106,8 @@ bool Scene::Update(float dt)
 	else if (cameraIdx == 2) SetCameraPosition(player->position.x - (windowW / 2), player->position.y + 60 - (windowH / 2));
 	else if (cameraIdx == 3) SetCameraPosition(100, 5240);
 	else if (cameraIdx == 4) SetCameraPosition(1100, 4400);
-	else if (cameraIdx == 5) SetCameraPosition(1900, 3400);
+	else if (cameraIdx == 5) SetCameraPosition(2000, 3520);
+	else if (cameraIdx == 6) SetCameraPosition(3032, 2680);
 
 	ClampCamera();
 
@@ -133,6 +135,7 @@ bool Scene::Update(float dt)
 
 	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) app->SaveRequest();
 	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) app->LoadRequest();
+
 
 	return true;
 }
@@ -279,5 +282,5 @@ void Scene::StartLevel3()
 	player->isDead = false;
 	app->map->mapIdx = 3;
 	app->map->UpdateMapSize();
-}
+}	
 

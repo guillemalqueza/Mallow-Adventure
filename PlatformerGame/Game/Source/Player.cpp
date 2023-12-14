@@ -215,7 +215,7 @@ bool Player::Update(float dt)
 				vel.x = 0;
 			}
 
-			printf("\r jumpcount %d, isJumping %i, hasJumped %i, ground %i, dashCount %d", jumpCount, isJumping, hasJumped, ground, dashCount);
+			//printf("\r jumpcount %d, isJumping %i, hasJumped %i, ground %i, dashCount %d", jumpCount, isJumping, hasJumped, ground, dashCount);
 			//jump
 			if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 			{
@@ -458,7 +458,7 @@ bool Player::Update(float dt)
     currentAnim->Update();
 	//printf("\r jumpcount: %d	ground: %d	isJumping: %d	hadJumped: %d	wall: %d", jumpCount, ground,isJumping,hasJumped,wall);
 	/*printf("\r playerX: %d playerY: %d", position.x, position.y);*/
-	//printf("\r cameraX: %d cameraY: %d positionX: %d positionY %d", app->render->camera.x, app->render->camera.y, position.x, position.y);
+	printf("\r cameraX: %d cameraY: %d positionX: %d positionY %d", app->render->camera.x, app->render->camera.y, position.x, position.y);
     return true;
 }
 
@@ -518,16 +518,36 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 			app->scene->cameraIdx--;
 			app->scene->cameraInitialized = true;
 		}
-		else if (app->scene->cameraIdx == 3)
+		else if (app->scene->cameraIdx == 3 && position.x < 1400 && position.y > 5200)
 		{
 			app->scene->cameraIdx++;
 			app->scene->cameraInitialized = true;
 		}
-		/*else if (app->scene->cameraIdx == 4)
+		else if (app->scene->cameraIdx == 4 && position.x < 1400 && position.y < 5200)
+		{
+			app->scene->cameraIdx--;
+			app->scene->cameraInitialized = true;
+		}
+		else if (app->scene->cameraIdx == 4 && position.x > 2000 && position.x < 2430 && position.y < 5200)
 		{
 			app->scene->cameraIdx++;
 			app->scene->cameraInitialized = true;
-		}*/
+		}
+		else if (app->scene->cameraIdx == 5 && position.x < 2000 && position.x < 2430 && position.y > 5200)
+		{
+			app->scene->cameraIdx--;
+			app->scene->cameraInitialized = true;
+		}
+		else if (app->scene->cameraIdx == 5 && position.x > 3200 && position.x < 3430 && position.y > 3515)
+		{
+			app->scene->cameraIdx++;
+			app->scene->cameraInitialized = true;
+		}
+		else if (app->scene->cameraIdx == 6 && position.x > 3200 && position.x < 3430 && position.y < 3515)
+		{
+			app->scene->cameraIdx--;
+			app->scene->cameraInitialized = true;
+		}
 		break;
 	case ColliderType::WALL_END:
 		if (wallLeft || wallRight) wallEnd = true;

@@ -202973,10 +202973,10 @@
    <tile/>
    <tile/>
    <tile gid="1441"/>
-   <tile gid="1447"/>
-   <tile gid="1447"/>
-   <tile gid="1447"/>
-   <tile gid="1447"/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
    <tile gid="1443"/>
    <tile gid="1441"/>
    <tile gid="1441"/>
@@ -204077,10 +204077,10 @@
    <tile/>
    <tile/>
    <tile gid="1441"/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="1447"/>
+   <tile gid="1447"/>
+   <tile gid="1447"/>
+   <tile gid="1447"/>
    <tile gid="1443"/>
    <tile gid="1441"/>
    <tile/>
