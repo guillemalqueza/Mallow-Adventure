@@ -12,6 +12,7 @@ FadeToBlack::FadeToBlack() : Module()
 {
 
 	screenRect = {0, 0, 2000, 2000 };
+	name.Create("fadetoblack");
 }
 
 FadeToBlack::~FadeToBlack()

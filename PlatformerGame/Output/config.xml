@@ -29,6 +29,8 @@
 			<itemAudio path="Assets/Audio/Fx/coin_pickup.ogg"/>
 		</player>
 		<skeleton x="2200" y="4875" texturepath="Assets/Textures/enemy_skeleton.png" speed="0.2f"/>
+		<skeleton x="3700" y="3423" texturepath="Assets/Textures/enemy_skeleton.png" speed="0.2f"/>
+		<skeleton x="3266" y="2300" texturepath="Assets/Textures/enemy_skeleton.png" speed="0.2f"/>
 		<!--<ghost x="1400" y="1000" texturepath="Assets/Textures/enemy_ghost.png" speed="0.2f"/>-->
 		<key x="704" y="632" texturepath="Assets/Textures/key.png"/>
 		<jumper x="4880" y="634" texturepath="Assets/Textures/jumper.png"/>
@@ -39,7 +41,7 @@
 		<background texturepath="Assets/Maps/background.png"/>
 		<background2 texturepath="Assets/Maps/background_lvl_2.png"/>
 		<equipment x="5080" y="280" texturepath="Assets/Textures/key.png"/>
-		<obstacle x="500" y="991" texturepath="Assets/Textures/rock.png"/>
+		<obstacle x="5170" y="2255" texturepath="Assets/Textures/rock.png"/>
 	</scene>
 
 	<animations>

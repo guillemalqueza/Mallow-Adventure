@@ -50,6 +50,9 @@ public:
 
 	void UpdateCameraShake();
 
+	bool LoadState(pugi::xml_node node);
+	bool SaveState(pugi::xml_node node);
+
 	void StartLevel3();
 	void StartLevel2();
 	void StartLevel1();
@@ -57,7 +60,7 @@ public:
 	Player* player;	
 	int cameraIdx = 0;
 	bool cameraInitialized = true;
-	bool level1Enabled = false;
+	bool level1Enabled = true;
 	bool level2Enabled = false;
 	bool level3Enabled = false;
 

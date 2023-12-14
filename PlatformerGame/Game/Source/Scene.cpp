@@ -109,8 +109,8 @@ bool Scene::Update(float dt)
 	else if (cameraIdx == 5) SetCameraPosition(2000, 3520);
 	else if (cameraIdx == 6) SetCameraPosition(3032, 2680);
 	else if (cameraIdx == 7) SetCameraPosition(2800, 1800);
-	else if (cameraIdx == 8) SetCameraPosition(5000, 1000);
-	else if (cameraIdx == 9) SetCameraPosition(6000, 200);
+	else if (cameraIdx == 8) SetCameraPosition(3700, 1800);
+	else if (cameraIdx == 9) SetCameraPosition(4900, 1700);
 
 	ClampCamera();
 
@@ -286,4 +286,60 @@ void Scene::StartLevel3()
 	app->map->mapIdx = 3;
 	app->map->UpdateMapSize();
 }	
+
+bool Scene::LoadState(pugi::xml_node node)
+{
+	//player
+	pugi::xml_node playerPositionNode = node.child("player").child("playerPosition");
+	player->position.x = playerPositionNode.attribute("x").as_int();
+	player->position.y = playerPositionNode.attribute("y").as_int();
+	pugi::xml_node playerStatesNode = node.child("player").child("playerStates");
+	player->isDead = playerStatesNode.attribute("isDead").as_bool();
+	player->isEquipped = playerStatesNode.attribute("isEquipped").as_bool();
+	pugi::xml_node playerItemsNode = node.child("player").child("playerItems");
+	player->keys = playerItemsNode.attribute("keys").as_int();
+
+	//scene
+	pugi::xml_node levelNode = node.child("sceneConfig").child("currentLevel");
+	level1Enabled = levelNode.attribute("level1").as_bool();
+	level2Enabled = levelNode.attribute("level2").as_bool();
+	level3Enabled = levelNode.attribute("level3").as_bool();
+	pugi::xml_node cameraNode = node.child("sceneConfig").child("cameraProperties");
+	cameraX = cameraNode.attribute("cameraX").as_int();
+	cameraY = cameraNode.attribute("cameraY").as_int();
+	cameraIdx = cameraNode.attribute("cameraIdx").as_int();
+	cameraInitialized = cameraNode.attribute("cameraInitialized").as_bool();
+
+	player->SetToInitialPosition();
+
+
+	return true;
+}
+
+bool Scene::SaveState(pugi::xml_node node)
+{
+	//player
+	pugi::xml_node playerPositionNode = node.append_child("player").append_child("playerPosition");
+	playerPositionNode.append_attribute("x").set_value(player->position.x);
+	playerPositionNode.append_attribute("y").set_value(player->position.y);
+	pugi::xml_node playerStatesNode = node.child("player").append_child("playerStates");
+	playerStatesNode.append_attribute("isDead").set_value(player->isDead);
+	playerStatesNode.append_attribute("isEquipped").set_value(player->isEquipped);
+	pugi::xml_node playerItemsNode = node.child("player").append_child("playerItems");
+	playerItemsNode.append_attribute("keys").set_value(player->keys);
+
+	//scene
+	pugi::xml_node levelNode = node.append_child("sceneConfig").append_child("currentLevel");
+	levelNode.append_attribute("level1").set_value(level1Enabled);
+	levelNode.append_attribute("level2").set_value(level2Enabled);
+	levelNode.append_attribute("level3").set_value(level3Enabled);
+	pugi::xml_node cameraNode = node.child("sceneConfig").append_child("cameraProperties");
+	cameraNode.append_attribute("cameraX").set_value(cameraX);
+	cameraNode.append_attribute("cameraY").set_value(cameraY);
+	cameraNode.append_attribute("cameraIdx").set_value(cameraIdx);
+	cameraNode.append_attribute("cameraInitialized").set_value(cameraInitialized);
+
+
+	return true;
+}
 

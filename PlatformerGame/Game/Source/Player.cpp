@@ -565,7 +565,27 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 			app->scene->cameraIdx++;
 			app->scene->cameraInitialized = true;
 		}
-		else if (app->scene->cameraIdx == 7 && position.x > 3760 && position.x < 4000 && position.y < 2668)
+		else if (app->scene->cameraIdx == 7 && position.x > 3760 && position.x < 4000 && position.y < 2716)
+		{
+			app->scene->cameraIdx--;
+			app->scene->cameraInitialized = true;
+		}
+		else if (app->scene->cameraIdx == 7 && position.x > 3800 && position.x < 4150 && position.y > 2000 && position.y < 2300)
+		{
+			app->scene->cameraIdx++;
+			app->scene->cameraInitialized = true;
+		}
+		else if (app->scene->cameraIdx == 8 && position.x > 3800 && position.x < 4150 && position.y < 2000)
+		{
+			app->scene->cameraIdx--;
+			app->scene->cameraInitialized = true;
+		}
+		else if (app->scene->cameraIdx == 8 && position.x < 5030 && position.x > 4800)
+		{
+			app->scene->cameraIdx++;
+			app->scene->cameraInitialized = true;
+		}
+		else if (app->scene->cameraIdx == 9 && position.x > 5070)
 		{
 			app->scene->cameraIdx--;
 			app->scene->cameraInitialized = true;
