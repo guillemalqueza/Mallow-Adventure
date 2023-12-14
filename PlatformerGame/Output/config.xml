@@ -217,6 +217,19 @@
 				<animation x="400" y="1856" w="100" h="64"/>
 			</pushAnim>
 
+			<swordAnim loop ="false" speed="0.2f">
+				<animation x="0" y="1791" w="100" h="64"/>
+				<animation x="100" y="1791" w="100" h="64"/>
+				<animation x="200" y="1791" w="100" h="64"/>
+				<animation x="300" y="1791" w="100" h="64"/>
+				<animation x="400" y="1791" w="100" h="64"/>
+				<animation x="500" y="1791" w="100" h="64"/>
+				<animation x="600" y="1791" w="100" h="64"/>
+				<animation x="700" y="1791" w="100" h="64"/>
+				<animation x="800" y="1791" w="100" h="64"/>
+				<animation x="900" y="1791" w="100" h="64"/>
+			</swordAnim>
+
 		</player>
 
 		<!-- Enemies -->

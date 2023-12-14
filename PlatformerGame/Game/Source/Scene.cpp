@@ -108,6 +108,9 @@ bool Scene::Update(float dt)
 	else if (cameraIdx == 4) SetCameraPosition(1100, 4400);
 	else if (cameraIdx == 5) SetCameraPosition(2000, 3520);
 	else if (cameraIdx == 6) SetCameraPosition(3032, 2680);
+	else if (cameraIdx == 7) SetCameraPosition(2800, 1800);
+	else if (cameraIdx == 8) SetCameraPosition(5000, 1000);
+	else if (cameraIdx == 9) SetCameraPosition(6000, 200);
 
 	ClampCamera();
 

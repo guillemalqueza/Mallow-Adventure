@@ -62,7 +62,7 @@ bool Player::Update(float dt)
 
 	if (!isDead)
 	{
-		if (!isJumping && !isCrouching && !isAttacking)
+		if (!isJumping && !isCrouching && !isAttacking && !activeSword)
 		{
 			if (!isEquipped) currentAnim = &idleAnim;
 			else currentAnim = &armorIdleAnim;
@@ -73,7 +73,7 @@ bool Player::Update(float dt)
 		if (!godMode)
 		{
 			//idle wall keys
-			if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_IDLE && !ground && (wallLeft || wallRight))
+			if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_IDLE && !ground && (wallLeft || wallRight) && !activeSword)
 			{
 				pbody->body->SetGravityScale(0.0f);
 				pbody->body->SetLinearVelocity({ pbody->body->GetLinearVelocity().x, 0 });
@@ -88,7 +88,7 @@ bool Player::Update(float dt)
 			if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_IDLE) isFacingUp = false;
 
 			//climb wall keys
-			if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+			if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT && !activeSword)
 			{
 				isFacingUp = true;
 
@@ -109,7 +109,7 @@ bool Player::Update(float dt)
 					currentAnim = &walkAnim;
 				}
 			}
-			if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+			if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT && !activeSword)
 			{
 				if (wallRight || wallLeft)
 				{
@@ -120,7 +120,7 @@ bool Player::Update(float dt)
 			}
 
 			//crouch
-			if (app->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT && !isJumping)
+			if (app->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT && !isJumping && !activeSword)
 			{
 				if (!isCrouching)
 				{
@@ -140,7 +140,7 @@ bool Player::Update(float dt)
 			}
 
 			//player movement
-			if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+			if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT && !activeSword)
 			{
 				if (!isDashing) vel.x = -speed * dt;
 				if (!isJumping && !wallLeft && !wallRight)
@@ -172,7 +172,7 @@ bool Player::Update(float dt)
 				isFacingRight = false;
 			}
 
-			if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+			if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT && !activeSword)
 			{
 				if (!isDashing) vel.x = speed * dt;
 				if (!isJumping && !wallLeft && !wallRight)
@@ -217,7 +217,7 @@ bool Player::Update(float dt)
 
 			//printf("\r jumpcount %d, isJumping %i, hasJumped %i, ground %i, dashCount %d", jumpCount, isJumping, hasJumped, ground, dashCount);
 			//jump
-			if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+			if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !activeSword)
 			{
 				if (!isJumping && !hasJumped && ground && jumpCount == 0)
 				{
@@ -280,7 +280,7 @@ bool Player::Update(float dt)
 				}
 			}
 
-			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN && !isAttacking && isEquipped) 
+			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN && !isAttacking && isEquipped && !activeSword)
 			{
 				isAttacking = true;
 				
@@ -300,7 +300,7 @@ bool Player::Update(float dt)
 				currentAnim->Reset();
 			}
 
-			if (app->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN && !isAttacking && isEquipped)
+			if (app->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN && !isAttacking && isEquipped && !activeSword)
 			{
 				isAttacking = true;
 
@@ -390,6 +390,18 @@ bool Player::Update(float dt)
 			else if (!wallLeft && !wallRight)
 			{
 				ground = true;
+			}
+
+			if (activeSword && currentAnim != &swordAnim)
+			{
+				currentAnim = &swordAnim;
+				currentAnim->ResetLoopCount();
+				currentAnim->Reset();
+			}
+
+			if (activeSword && currentAnim->HasFinished())
+			{
+				activeSword = false;
 			}
 
 			previousY = position.y;
@@ -548,6 +560,16 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 			app->scene->cameraIdx--;
 			app->scene->cameraInitialized = true;
 		}
+		else if (app->scene->cameraIdx == 6 && position.x > 3760 && position.x < 4000 && position.y > 2716)
+		{ 
+			app->scene->cameraIdx++;
+			app->scene->cameraInitialized = true;
+		}
+		else if (app->scene->cameraIdx == 7 && position.x > 3760 && position.x < 4000 && position.y < 2668)
+		{
+			app->scene->cameraIdx--;
+			app->scene->cameraInitialized = true;
+		}
 		break;
 	case ColliderType::WALL_END:
 		if (wallLeft || wallRight) wallEnd = true;
@@ -601,6 +623,7 @@ void Player::LoadAnimations()
 	attack3Anim.LoadAnimations("attack3Anim", "player");
 	attackJumpAnim.LoadAnimations("attackJumpAnim", "player");
 	pushAnim.LoadAnimations("pushAnim", "player");
+	swordAnim.LoadAnimations("swordAnim", "player");
 }
 
 void Player::ToggleGodMode()

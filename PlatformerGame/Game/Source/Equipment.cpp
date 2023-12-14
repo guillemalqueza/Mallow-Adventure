@@ -67,6 +67,7 @@ void Equipment::OnCollision(PhysBody* physA, PhysBody* physB)
 		if (!isPicked)
 		{
 			pbody->body->SetActive(false);
+			app->scene->player->activeSword = true;
 			app->scene->player->isEquipped = true;
 			isPicked = true;
 		}
