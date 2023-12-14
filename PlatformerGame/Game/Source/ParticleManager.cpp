@@ -66,7 +66,7 @@ void ParticleManager::CreateParticles() {
 		particle.radius = rand() % 3 + 1;
 		particle.speed = rand() % 1 + 1;
 		particle.timeOffset = rand() % 8 - 4;
-		particle.waveSpeed = 1 + (rand() % 31 - 15) / 20.0f;
+		particle.waveSpeed = 0.6f + (rand() % 31 - 15) / 20.0f;
 		particles.push_back(particle);
 	}
 }
@@ -82,7 +82,7 @@ void ParticleManager::UpdateParticles(float dt, float time) {
 			}
 		}
 
-		particle.y += sin(time + particle.timeOffset) * particle.waveSpeed * dt;
+		particle.y += sin(time + particle.timeOffset) * particle.waveSpeed * 0.6f * dt;
 	}
 }
 
@@ -92,6 +92,5 @@ void ParticleManager::DrawParticles() {
 		if (particle.radius == 1) app->render->DrawTexture(particleTexture1, (-app->render->camera.x) + particleRect.x, (-app->render->camera.y) + particleRect.y);
 		else if (particle.radius == 2) app->render->DrawTexture(particleTexture2, (-app->render->camera.x) + particleRect.x, (-app->render->camera.y) + particleRect.y);
 		else if (particle.radius == 3) app->render->DrawTexture(particleTexture3, (-app->render->camera.x) + particleRect.x, (-app->render->camera.y) + particleRect.y);
-
 	}
 }

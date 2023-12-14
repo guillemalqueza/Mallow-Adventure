@@ -428,6 +428,11 @@ bool Map::CreateColliders()
                             c1->ctype = ColliderType::R_WALL;
                             ret = true;
                             break;
+                        case 1444:
+                            c1 = app->physics->CreateRectangle(pos.x + (mapData.tileWidth / 2), pos.y + (mapData.tileHeight / 2), mapData.tileWidth, mapData.tileHeight, STATIC);
+                            c1->ctype = ColliderType::WALL;
+                            ret = true;
+                            break;
                         case 1445:
                             c1 = app->physics->CreateRectangleSensor(pos.x + (mapData.tileWidth / 2), pos.y + (mapData.tileHeight / 2), mapData.tileWidth, mapData.tileHeight, STATIC);
                             c1->ctype = ColliderType::SPIKE;

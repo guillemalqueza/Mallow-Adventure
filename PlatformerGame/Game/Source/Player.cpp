@@ -120,7 +120,7 @@ bool Player::Update(float dt)
 			}
 
 			//crouch
-			if (app->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT)
+			if (app->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT && !isJumping)
 			{
 				if (!isCrouching)
 				{
