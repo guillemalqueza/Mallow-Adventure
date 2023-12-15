@@ -46,7 +46,7 @@ public:
 	Animation* currentAnim;
 	Animation idleAnim, jumpAnim, walkAnim, crouchAnim, crouchWalkAnim, fallAnim, wallAnim, deadAnim,
 				armorIdleAnim, armorJumpAnim, armorWalkAnim, armorCrouchAnim, armorCrouchWalkAnim, armorFallAnim, armorDeadAnim, 
-				attack1Anim, attack2Anim, attack3Anim, attackJumpAnim, pushAnim, swordAnim;
+				attack1Anim, attack2Anim, attack3Anim, attackJumpAnim, pushAnim, swordAnim, doorAnim;
 
 	bool isJumping = false;
 	bool isCrouching = false;
@@ -73,6 +73,7 @@ public:
 	bool attackBodyCreated = false;
 	bool destroyAttackBody = false;
 	bool activeSword = false;
+	bool enterDoor = false;
 
 	bool lastKeyPressA = false;
 	bool lastKeyPressD = false;

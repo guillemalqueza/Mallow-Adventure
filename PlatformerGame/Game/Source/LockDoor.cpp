@@ -83,6 +83,7 @@ void LockDoor::OnCollision(PhysBody* physA, PhysBody* physB)
 		{
 			isActivated = true;
 			app->scene->player->keys--;
+			app->scene->player->enterDoor = true;
 		}
 		break;
 	}

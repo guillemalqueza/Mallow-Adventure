@@ -83,6 +83,8 @@ bool Scene::Start()
 	app->render->camera.x = -32;
 	app->render->camera.y = -286;
 
+	app->audio->PlayMusic("Assets/Audio/Music/prologue.ogg", 0.0f);
+
 	return true;
 }
 
@@ -257,6 +259,7 @@ void Scene::StartLevel1()
 	player->isDead = false;
 	app->map->mapIdx = 1;
 	app->map->UpdateMapSize();
+	app->audio->PlayMusic("Assets/Audio/Music/prologue.ogg", 0.0f);
 }
 
 void Scene::StartLevel2()
@@ -271,6 +274,7 @@ void Scene::StartLevel2()
 	player->isDead = false;
 	app->map->mapIdx = 2;
 	app->map->UpdateMapSize();
+	app->audio->PlayMusic("Assets/Audio/Music/first_steps.ogg", 0.0f);
 }
 
 void Scene::StartLevel3()
@@ -285,6 +289,7 @@ void Scene::StartLevel3()
 	player->isDead = false;
 	app->map->mapIdx = 3;
 	app->map->UpdateMapSize();
+	app->audio->PlayMusic("Assets/Audio/Music/resurrections.ogg", 0.0f);
 }	
 
 bool Scene::LoadState(pugi::xml_node node)
