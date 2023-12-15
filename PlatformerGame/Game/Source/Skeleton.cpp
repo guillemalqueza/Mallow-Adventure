@@ -42,6 +42,7 @@ bool Skeleton::Start() {
 	enemyPbody->listener = this;
 
 	initialTransform = pbody->body->GetTransform();
+	initialIdlePosition = position.x;
 
 	LoadAnimations();
 
@@ -75,6 +76,26 @@ bool Skeleton::Update(float dt)
 			velocity = { 0, 0 };
 			app->map->pathfinding->ClearLastPath();
 		}
+	}
+	else
+	{
+		const int idleDistance = 3;
+
+		if (position.x >= initialIdlePosition + idleDistance * 32)
+		{
+			isFacingRight = false;
+		}
+		else if (position.x <= initialIdlePosition - idleDistance * 32)
+		{
+			isFacingRight = true;
+		}
+
+		velocity.x = isFacingRight ? 1 : -1;
+
+		position.x += velocity.x;
+
+		currentAnim = &skeletonWalkAnim;
+
 	}
 
 	if (health <= 0)
