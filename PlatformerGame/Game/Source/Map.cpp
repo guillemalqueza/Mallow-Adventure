@@ -476,7 +476,11 @@ void Map::DestroyAllColliders()
             ColliderType ctype = physBody->ctype;
 
             // Comprueba el tipo del collider y elimina solo los tipos específicos
-            if (ctype == ColliderType::CAMERA || ctype == ColliderType::SPIKE || ctype == ColliderType::R_WALL || ctype == ColliderType::L_WALL || ctype == ColliderType::PLATFORM)
+            if (ctype == ColliderType::CAMERA 
+                || ctype == ColliderType::SPIKE 
+                || ctype == ColliderType::R_WALL 
+                || ctype == ColliderType::L_WALL 
+                || ctype == ColliderType::PLATFORM)
             {
                 physicsWorld->DestroyBody(body);
             }

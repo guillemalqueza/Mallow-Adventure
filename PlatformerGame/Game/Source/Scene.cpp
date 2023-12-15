@@ -248,6 +248,7 @@ void Scene::UpdateCameraShake()
 
 void Scene::StartLevel1()
 {
+	player->enterDoor = false;
 	player->pbody->body->SetTransform(b2Vec2(player->initialTransform.p.x, player->initialTransform.p.y), 0);
 	if (cameraIdx != 0 && cameraIdx != 1) changingLevel = true;
 	cameraInitialized = true;
@@ -264,6 +265,7 @@ void Scene::StartLevel1()
 
 void Scene::StartLevel2()
 {
+	player->enterDoor = false;
 	player->pbody->body->SetTransform(b2Vec2(PIXEL_TO_METERS(4120), PIXEL_TO_METERS(830)), 0);
 	if (cameraIdx != 2) changingLevel = true;
 	cameraInitialized = true;
@@ -279,6 +281,7 @@ void Scene::StartLevel2()
 
 void Scene::StartLevel3()
 {
+	player->enterDoor = false;
 	player->pbody->body->SetTransform(b2Vec2(PIXEL_TO_METERS(320), PIXEL_TO_METERS(5824)), 0);
 	if (cameraIdx != 3) changingLevel = true;
 	cameraInitialized = true;

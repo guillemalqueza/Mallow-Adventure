@@ -31,7 +31,7 @@ bool LockDoor::Start() {
 
 	//initilize textures
 	texture = app->tex->Load(texturePath);
-	pbody = app->physics->CreateRectangleSensor(position.x, position.y, 64, 64, bodyType::STATIC);
+	pbody = app->physics->CreateRectangleSensor(position.x, position.y, 32, 64, bodyType::STATIC);
 	pbody->ctype = ColliderType::DOOR;
 	pbody->listener = this;
 	

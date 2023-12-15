@@ -10,6 +10,7 @@
 #include "Player.h"
 #include "Window.h"
 #include "Box2D/Box2D/Box2D.h"
+#include "Scene.h"
 
 // Tell the compiler to reference the compiled Box2D libraries
 #ifdef _DEBUG
@@ -244,7 +245,11 @@ bool Physics::PostUpdate()
 					uint width, height;
 					app->win->GetWindowSize(width, height);
 					b2Vec2 pos = f->GetBody()->GetPosition();
-					app->render->DrawCircle(METERS_TO_PIXELS(pos.x), METERS_TO_PIXELS(pos.y), METERS_TO_PIXELS(shape->m_radius) * app->win->GetScale(), 255, 255, 255);
+					float distance = sqrt(pow(app->scene->player->position.x - METERS_TO_PIXELS(pos.x), 2) + pow(app->scene->player->position.y - METERS_TO_PIXELS(pos.y), 2));
+					if (distance < 1700)
+					{
+						app->render->DrawCircle(METERS_TO_PIXELS(pos.x), METERS_TO_PIXELS(pos.y), METERS_TO_PIXELS(shape->m_radius) * app->win->GetScale(), 255, 255, 255);
+					}
 				}
 				break;
 
@@ -259,13 +264,24 @@ bool Physics::PostUpdate()
 					{
 						v = b->GetWorldPoint(polygonShape->GetVertex(i));
 						if (i > 0)
-							app->render->DrawLine(METERS_TO_PIXELS(prev.x), METERS_TO_PIXELS(prev.y), METERS_TO_PIXELS(v.x), METERS_TO_PIXELS(v.y), 255, 255, 100);
-
+						{
+							float distance = sqrt(pow(app->scene->player->position.x - METERS_TO_PIXELS(v.x), 2) + pow(app->scene->player->position.y - METERS_TO_PIXELS(v.y), 2));
+							if (distance < 1700)
+							{
+								app->render->DrawLine(METERS_TO_PIXELS(prev.x), METERS_TO_PIXELS(prev.y), METERS_TO_PIXELS(v.x), METERS_TO_PIXELS(v.y), 255, 255, 100);
+							
+							}
+						}
+							
 						prev = v;
 					}
 
 					v = b->GetWorldPoint(polygonShape->GetVertex(0));
-					app->render->DrawLine(METERS_TO_PIXELS(prev.x), METERS_TO_PIXELS(prev.y), METERS_TO_PIXELS(v.x), METERS_TO_PIXELS(v.y), 255, 100, 100);
+					float distance = sqrt(pow(app->scene->player->position.x - METERS_TO_PIXELS(v.x), 2) + pow(app->scene->player->position.y - METERS_TO_PIXELS(v.y), 2));
+					if (distance < 1700)
+					{
+						app->render->DrawLine(METERS_TO_PIXELS(prev.x), METERS_TO_PIXELS(prev.y), METERS_TO_PIXELS(v.x), METERS_TO_PIXELS(v.y), 255, 100, 100);
+					}
 				}
 				break;
 
@@ -279,12 +295,23 @@ bool Physics::PostUpdate()
 					{
 						v = b->GetWorldPoint(shape->m_vertices[i]);
 						if (i > 0)
-							app->render->DrawLine(METERS_TO_PIXELS(prev.x), METERS_TO_PIXELS(prev.y), METERS_TO_PIXELS(v.x), METERS_TO_PIXELS(v.y), 100, 255, 100);
+						{
+							float distance = sqrt(pow(app->scene->player->position.x - METERS_TO_PIXELS(v.x), 2) + pow(app->scene->player->position.y - METERS_TO_PIXELS(v.y), 2));
+							if (distance < 1700)
+							{
+								app->render->DrawLine(METERS_TO_PIXELS(prev.x), METERS_TO_PIXELS(prev.y), METERS_TO_PIXELS(v.x), METERS_TO_PIXELS(v.y), 100, 255, 100);
+							}
+						}
+							
 						prev = v;
 					}
 
 					v = b->GetWorldPoint(shape->m_vertices[0]);
-					app->render->DrawLine(METERS_TO_PIXELS(prev.x), METERS_TO_PIXELS(prev.y), METERS_TO_PIXELS(v.x), METERS_TO_PIXELS(v.y), 100, 255, 100);
+					float distance = sqrt(pow(app->scene->player->position.x - METERS_TO_PIXELS(v.x), 2) + pow(app->scene->player->position.y - METERS_TO_PIXELS(v.y), 2));
+					if (distance < 1700)
+					{
+						app->render->DrawLine(METERS_TO_PIXELS(prev.x), METERS_TO_PIXELS(prev.y), METERS_TO_PIXELS(v.x), METERS_TO_PIXELS(v.y), 100, 255, 100);
+					}
 				}
 				break;
 
@@ -295,8 +322,12 @@ bool Physics::PostUpdate()
 					b2Vec2 v1, v2;
 
 					v1 = b->GetWorldPoint(shape->m_vertex0);
-					v1 = b->GetWorldPoint(shape->m_vertex1);
-					app->render->DrawLine(METERS_TO_PIXELS(v1.x), METERS_TO_PIXELS(v1.y), METERS_TO_PIXELS(v2.x), METERS_TO_PIXELS(v2.y), 100, 100, 255);
+					v2 = b->GetWorldPoint(shape->m_vertex1);
+					float distance = sqrt(pow(app->scene->player->position.x - METERS_TO_PIXELS(v1.x), 2) + pow(app->scene->player->position.y - METERS_TO_PIXELS(v1.y), 2));
+					if (distance < 1700)
+					{
+						app->render->DrawLine(METERS_TO_PIXELS(v1.x), METERS_TO_PIXELS(v1.y), METERS_TO_PIXELS(v2.x), METERS_TO_PIXELS(v2.y), 100, 100, 255);
+					}
 				}
 				break;
 				}
