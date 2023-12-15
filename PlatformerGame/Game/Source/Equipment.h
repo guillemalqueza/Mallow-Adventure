@@ -27,9 +27,13 @@ public:
 
 	void OnPicked();
 
+	void OnSensor();
+
 public:
 
 	bool isPicked = false;
+	bool equipmentArea = false;
+	bool equipmentIdleWaiting = false;
 	float followTimer = 0.0f;
 	float acceleration = 1.0f;
 
@@ -39,9 +43,13 @@ private:
 	SDL_Texture* texture;
 	const char* texturePath;
 	PhysBody* pbody;
+	PhysBody* pbody2;
 
 	Animation* currentAnim;
-	Animation equipmentIdleAnim;
+	Animation equipmentWithSword;
+	Animation equipmentAnim;
+	Animation equipmentWithoutSword;
+	Animation equipmentAnimIdle;
 };
 
 #endif // __EQUIPMENT_H__
