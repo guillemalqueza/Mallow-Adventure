@@ -140,6 +140,7 @@ public:
 	int GetTileHeight();
 
 	void UpdateMapSize();
+	void UpdateTileLoadSize();
 
 private:
 
@@ -163,6 +164,12 @@ private:
 	int endHeight = 0;
 	int startWidth = 0;
 	int endWidth = 0;
+	int startMapHeight = 0;
+	int endMapHeight = 0;
+	int startMapWidth = 0;
+	int endMapWidth = 0;
+	int tilesToLoad = 55;
+	int tilesSize = 32;
 };
 
 #endif // __MAP_H__

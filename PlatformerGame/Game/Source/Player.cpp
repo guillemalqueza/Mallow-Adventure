@@ -26,6 +26,7 @@ bool Player::Awake() {
 	position.y = parameters.attribute("y").as_int();
 	texturePath = parameters.attribute("texturepath").as_string();
 	lightTexturePath = parameters.attribute("lightTexture").as_string();
+	effectsTexturePath = parameters.attribute("effectsTexture").as_string();
 	speed = parameters.attribute("speed").as_float();
 	pickCoinFxId = app->audio->LoadFx(parameters.child("itemAudio").attribute("path").as_string());
 	return true;
@@ -36,6 +37,7 @@ bool Player::Start() {
 	//initilize textures
 	texture = app->tex->Load(texturePath);
 	lightTexture = app->tex->Load(lightTexturePath);
+	effectsTexture = app->tex->Load(effectsTexturePath);
 	LoadAnimations();
 
 	if (!isEquipped) currentAnim = &idleAnim;
@@ -222,8 +224,10 @@ bool Player::Update(float dt)
 				if (!isJumping && !hasJumped && ground && jumpCount == 0)
 				{
 					currentAnim->Reset();
+					if (currentEffectsAnim != nullptr) currentEffectsAnim->Reset();
 					if (!isEquipped) currentAnim = &jumpAnim;
 					else currentAnim = &armorJumpAnim;
+					currentEffectsAnim = &jumpEffectAnim;
 					isJumping = true;
 					hasJumped = true;
 					vel = b2Vec2(vel.x, -8.2f);
@@ -233,8 +237,10 @@ bool Player::Update(float dt)
 				else if (jumpCount == 1 && hasJumped && dashCount == 0)
 				{
 					currentAnim->Reset();
+					if (currentEffectsAnim != nullptr) currentEffectsAnim->Reset();
 					if (!isEquipped) currentAnim = &jumpAnim;
 					else currentAnim = &armorJumpAnim;
+					currentEffectsAnim = &jumpEffectAnim;
 					isJumping = true;
 					vel = b2Vec2(vel.x, -8.2f);
 					pbody->body->SetLinearVelocity(vel);
@@ -244,8 +250,10 @@ bool Player::Update(float dt)
 				else if (!ground && !isJumping && !hasJumped && jumpCount == 0 && dashCount == 0)
 				{
 					currentAnim->Reset();
+					if (currentEffectsAnim != nullptr) currentEffectsAnim->Reset();
 					if (!isEquipped) currentAnim = &jumpAnim;
 					else currentAnim = &armorJumpAnim;
+					currentEffectsAnim = &jumpEffectAnim;
 					isJumping = true;
 					vel = b2Vec2(vel.x, -8.2f);
 					pbody->body->SetLinearVelocity(vel);
@@ -468,10 +476,23 @@ bool Player::Update(float dt)
 	if (!isCrouching) yOffset = 0;
 	else yOffset = 10;
 
-    if (isFacingRight) app->render->DrawTexture(texture, position.x, position.y - yOffset, &rect);
-	else app->render->DrawTexture(texture, position.x, position.y - yOffset, &rect, SDL_FLIP_HORIZONTAL);
+	if (wallRight || wallLeft) currentEffectsAnim = &climbEffectAnim;
+
+	if (isFacingRight)
+	{
+		app->render->DrawTexture(texture, position.x, position.y - yOffset, &rect);
+		if (wallRight || wallLeft) app->render->DrawTexture(effectsTexture, position.x + 12, position.y - 32, &currentEffectsAnim->GetCurrentFrame());
+		else if (isJumping) app->render->DrawTexture(effectsTexture, position.x + 12, position.y + 32, &currentEffectsAnim->GetCurrentFrame());
+	}
+	else
+	{
+		app->render->DrawTexture(texture, position.x, position.y - yOffset, &rect, SDL_FLIP_HORIZONTAL);
+		if (wallRight || wallLeft) app->render->DrawTexture(effectsTexture, position.x + 24, position.y - 32, &currentEffectsAnim->GetCurrentFrame(), SDL_FLIP_HORIZONTAL);
+		else if (isJumping) app->render->DrawTexture(effectsTexture, position.x + 24, position.y + 32, &currentEffectsAnim->GetCurrentFrame(), SDL_FLIP_HORIZONTAL);
+	}
 
     currentAnim->Update();
+	if (wallRight || wallLeft || isJumping) currentEffectsAnim->Update();
 	//printf("\r jumpcount: %d	ground: %d	isJumping: %d	hadJumped: %d	wall: %d", jumpCount, ground,isJumping,hasJumped,wall);
 	/*printf("\r playerX: %d playerY: %d", position.x, position.y);*/
 	printf("\r cameraX: %d cameraY: %d positionX: %d positionY %d", app->render->camera.x, app->render->camera.y, position.x, position.y);
@@ -601,6 +622,9 @@ void Player::LoadAnimations()
 	pushAnim.LoadAnimations("pushAnim", "player");
 	swordAnim.LoadAnimations("swordAnim", "player");
 	doorAnim.LoadAnimations("doorAnim", "player");
+
+	climbEffectAnim.LoadAnimations("climbEffectAnim", "player");
+	jumpEffectAnim.LoadAnimations("jumpEffectAnim", "player");
 }
 
 void Player::ToggleGodMode()

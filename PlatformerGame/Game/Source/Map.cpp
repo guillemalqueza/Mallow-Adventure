@@ -12,6 +12,7 @@
 #include <math.h>
 #include "SDL_image/include/SDL_image.h"
 
+
 Map::Map() : Module(), mapLoaded(false)
 {
     name.Create("map");
@@ -66,6 +67,9 @@ bool Map::Update(float dt)
         //Check if the property Draw exist get the value, if it's true draw the lawyer
         if (mapLayer->data->properties.GetProperty("Draw") != NULL && mapLayer->data->properties.GetProperty("Draw")->value) {
             //iterate all tiles in a layer
+
+            UpdateTileLoadSize();
+
             for (int i = startWidth; i < endWidth; i++) {
                 for (int j = startHeight; j < endHeight; j++) {
                     //Get the gid from tile
@@ -492,32 +496,46 @@ void Map::DestroyAllColliders()
 
 void Map::UpdateMapSize()
 {
+
     if (mapIdx == 1)
     {
-        startWidth = 0;
-        startHeight = 0;
-        endWidth = 108;
-        endHeight = 53;
+        startMapWidth = 0;
+        startMapHeight = 0;
+        endMapWidth = 108;
+        endMapHeight = 53;
     }
     else if (mapIdx == 2)
     {
-        startWidth = 122;
-        startHeight = 0;
-        endWidth = 264;
-        endHeight = 45;
+        startMapWidth = 122;
+        startMapHeight = 0;
+        endMapWidth = 264;
+        endMapHeight = 45;
     }
     else if (mapIdx == 3)
     {
-		startWidth = 0;
-		startHeight = 50;
-		endWidth = 199;
-		endHeight = 199;
+		startMapWidth = 0;
+		startMapHeight = 50;
+		endMapWidth = 199;
+		endMapHeight = 199;
 	}
     else
     {
-        startWidth = 0;
-        startHeight = 0;
-        endWidth = mapData.width;
-        endHeight = mapData.height;
+        startMapWidth = 0;
+        startMapHeight = 0;
+        endMapWidth = mapData.width;
+        endMapHeight = mapData.height;
     }
+}
+
+void Map::UpdateTileLoadSize()
+{
+    iPoint playerPosition = app->scene->player->position;
+
+    int playerX = playerPosition.x / tilesSize;
+    int playerY = playerPosition.y / tilesSize;
+
+    startWidth = (playerX - tilesToLoad < startMapWidth) ? startMapWidth : playerX - tilesToLoad;
+    endWidth = (playerX + tilesToLoad > endMapWidth) ? endMapWidth : playerX + tilesToLoad;
+    startHeight = (playerY - tilesToLoad < startMapHeight) ? startMapHeight : playerY - tilesToLoad;
+    endHeight = (playerY + tilesToLoad > endMapHeight) ? endMapHeight : playerY + tilesToLoad;
 }

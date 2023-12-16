@@ -37,7 +37,9 @@ public:
 	float speed = 0.2f;
 	const char* texturePath;
 	const char* lightTexturePath;
+	const char* effectsTexturePath;
 	SDL_Texture* texture = NULL;
+	SDL_Texture* effectsTexture = NULL;
 	SDL_Texture* lightTexture;
 	PhysBody* pbody;
 	PhysBody* pbodySword = NULL;
@@ -47,6 +49,9 @@ public:
 	Animation idleAnim, jumpAnim, walkAnim, crouchAnim, crouchWalkAnim, fallAnim, wallAnim, deadAnim,
 				armorIdleAnim, armorJumpAnim, armorWalkAnim, armorCrouchAnim, armorCrouchWalkAnim, armorFallAnim, armorDeadAnim, 
 				attack1Anim, attack2Anim, attack3Anim, attackJumpAnim, pushAnim, swordAnim, doorAnim;
+
+	Animation* currentEffectsAnim;
+	Animation climbEffectAnim, jumpEffectAnim;
 
 	bool isJumping = false;
 	bool isCrouching = false;
