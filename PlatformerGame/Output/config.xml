@@ -41,7 +41,7 @@
 		<background texturepath="Assets/Maps/background.png"/>
 		<background2 texturepath="Assets/Maps/background_lvl_2.png"/>
 		<equipment x="5200" y="34" texturepath="Assets/Textures/spritesheet_sword.png"/>
-		<chest x="5500" y="160" texturepath="Assets/Textures/spritesheet_sword.png"/>
+		<chest x="2972" y="2234" texturepath="Assets/Textures/chest_spritesheet.png"/>
 		<obstacle x="5170" y="2255" texturepath="Assets/Textures/rock.png"/>
 	</scene>
 
@@ -561,6 +561,41 @@
 			</doorOpenAnim>
 		</door>
 
+		<!-- Chest Animations-->
+		<chest>
+			<chestClosedIdleAnim loop="false">
+				<animation x="0" y="0" w="76" h="76"/>
+			</chestClosedIdleAnim>
+
+			<chestOpenAnim loop="false" speed="0.2f">
+				<animation x="0" y="0" w="76" h="76"/>
+				<animation x="76" y="0" w="76" h="76"/>
+				<animation x="152" y="0" w="76" h="76"/>
+				<animation x="228" y="0" w="76" h="76"/>
+				<animation x="304" y="0" w="76" h="76"/>
+				<animation x="380" y="0" w="76" h="76"/>
+				<animation x="456" y="0" w="76" h="76"/>
+				<animation x="532" y="0" w="76" h="76"/>
+				<animation x="608" y="0" w="76" h="76"/>
+				<animation x="684" y="0" w="76" h="76"/>
+				<animation x="760" y="0" w="76" h="76"/>
+			</chestOpenAnim>
+
+			<chestOpenPotionAnim loop="true" speed="0.2f">
+				<animation x="836" y="0" w="76" h="76"/>
+				<animation x="912" y="0" w="76" h="76"/>
+				<animation x="988" y="0" w="76" h="76"/>
+				<animation x="1064" y="0" w="76" h="76"/>
+				<animation x="1140" y="0" w="76" h="76"/>
+				<animation x="1216" y="0" w="76" h="76"/>
+				<animation x="1292" y="0" w="76" h="76"/>
+				<animation x="1368" y="0" w="76" h="76"/>
+			</chestOpenPotionAnim>
+
+			<chestOpenedIdleAnim loop="false">
+				<animation x="1444" y="0" w="76" h="76"/>
+			</chestOpenedIdleAnim>
+		</chest>
 	</animations>
 </config>
 

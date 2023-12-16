@@ -32,8 +32,8 @@ public:
 public:
 
 	bool isPicked = false;
-	bool equipmentArea = false;
-	bool equipmentIdleWaiting = false;
+	bool chestArea = false;
+	bool chestIdleWaiting = false;
 	float followTimer = 0.0f;
 	float acceleration = 1.0f;
 
@@ -46,10 +46,10 @@ private:
 	PhysBody* pbody2;
 
 	Animation* currentAnim;
-	Animation equipmentWithSword;
-	Animation equipmentAnim;
-	Animation equipmentWithoutSword;
-	Animation equipmentAnimIdle;
+	Animation chestClosedIdleAnim;
+	Animation chestOpenAnim;
+	Animation chestOpenPotionAnim;
+	Animation chestOpenedIdleAnim;
 };
 
 #endif // __CHEST_H__

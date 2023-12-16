@@ -30,20 +30,20 @@ bool Chest::Start() {
 
 	//initilize textures
 	texture = app->tex->Load(texturePath);
-	pbody = app->physics->CreateRectangleSensor(position.x + 90, position.y + 190, 25, 200, bodyType::STATIC);
+	pbody = app->physics->CreateRectangleSensor(position.x + 38, position.y + 38, 25, 200, bodyType::STATIC);
 	pbody->ctype = ColliderType::CHEST;
 	pbody->listener = this;
 
-	pbody2 = app->physics->CreateCircle(position.x + 90, position.y + 190, 250, bodyType::STATIC);
+	pbody2 = app->physics->CreateCircle(position.x + 38, position.y + 38, 250, bodyType::STATIC);
 	pbody2->body->GetFixtureList()->SetSensor(true);
-	pbody2->ctype = ColliderType::EQUIPMENT_AREA;
+	pbody2->ctype = ColliderType::CHEST_AREA;
 	pbody2->listener = this;
 
-	equipmentWithSword.LoadAnimations("equipmentWithSword", "equipment");
-	equipmentAnim.LoadAnimations("equipmentAnim", "equipment");
-	equipmentWithoutSword.LoadAnimations("equipmentWithoutSword", "equipment");
-	equipmentAnimIdle.LoadAnimations("equipmentAnimIdle", "equipment");
-	currentAnim = &equipmentWithSword;
+	chestClosedIdleAnim.LoadAnimations("chestClosedIdleAnim", "chest");
+	chestOpenAnim.LoadAnimations("chestOpenAnim", "chest");
+	chestOpenPotionAnim.LoadAnimations("chestOpenPotionAnim", "chest");
+	chestOpenedIdleAnim.LoadAnimations("chestOpenedIdleAnim", "chest");
+	currentAnim = &chestClosedIdleAnim;
 
 
 	return true;
@@ -52,18 +52,18 @@ bool Chest::Start() {
 bool Chest::Update(float dt)
 {
 	if (isPicked)	OnPicked();
-	if (equipmentArea) {
-		currentAnim = &equipmentAnim;
+	if (chestArea) {
+		currentAnim = &chestOpenAnim;
 		OnSensor();
 	}
-	if (currentAnim == &equipmentAnim && currentAnim->HasFinished())
+	if (currentAnim == &chestOpenAnim && currentAnim->HasFinished())
 	{
-		currentAnim = &equipmentAnimIdle;
+		currentAnim = &chestOpenPotionAnim;
 	}
 
 
-	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 90;
-	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 190;
+	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 38;
+	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 38;
 
 	app->render->DrawTexture(texture, position.x, position.y, &currentAnim->GetCurrentFrame());
 
@@ -86,8 +86,7 @@ void Chest::OnCollision(PhysBody* physA, PhysBody* physB)
 			if (!isPicked)
 			{
 				pbody->body->SetActive(false);
-				app->scene->player->activeSword = true;
-				app->scene->player->isEquipped = true;
+				app->scene->player->canPush = true;
 				isPicked = true;
 			}
 			break;
@@ -98,10 +97,10 @@ void Chest::OnCollision(PhysBody* physA, PhysBody* physB)
 		{
 		case ColliderType::PLAYER:
 			LOG("Collision PLAYER");
-			if (!equipmentArea)
+			if (!chestArea)
 			{
 				pbody2->body->SetActive(false);
-				equipmentArea = true;
+				chestArea = true;
 			}
 			break;
 		}
@@ -110,7 +109,7 @@ void Chest::OnCollision(PhysBody* physA, PhysBody* physB)
 
 void Chest::OnPicked()
 {
-	currentAnim = &equipmentWithoutSword;
+	currentAnim = &chestOpenedIdleAnim;
 	//app->entityManager->DestroyEntity(this);
 	//app->physics->world->DestroyBody(pbody->body);
 	isPicked = false;
@@ -119,5 +118,5 @@ void Chest::OnPicked()
 void Chest::OnSensor()
 {
 	app->physics->world->DestroyBody(pbody2->body);
-	equipmentArea = false;
+	chestArea = false;
 }

@@ -79,6 +79,7 @@ public:
 	bool destroyAttackBody = false;
 	bool activeSword = false;
 	bool enterDoor = false;
+	bool canPush = false;
 
 	bool lastKeyPressA = false;
 	bool lastKeyPressD = false;

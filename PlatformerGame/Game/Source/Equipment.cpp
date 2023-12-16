@@ -78,34 +78,8 @@ bool Equipment::CleanUp()
 
 void Equipment::OnCollision(PhysBody* physA, PhysBody* physB)
 {
-	if (physA == pbody) {
-		switch (physB->ctype)
-		{
-		case ColliderType::PLAYER:
-			LOG("Collision PLAYER");
-			if (!isPicked)
-			{
-				pbody->body->SetActive(false);
-				app->scene->player->activeSword = true;
-				app->scene->player->isEquipped = true;
-				isPicked = true;
-			}
-			break;
-		}
-	}
-	else if (physA == pbody2) {
-		switch (physB->ctype)
-		{
-		case ColliderType::PLAYER:
-			LOG("Collision PLAYER");
-			if (!equipmentArea)
-			{
-				pbody2->body->SetActive(false);
-				equipmentArea = true;
-			}
-			break;
-		}
-	}
+	
+	
 }
 
 void Equipment::OnPicked()

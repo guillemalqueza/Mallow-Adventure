@@ -29,6 +29,7 @@ enum class ColliderType {
 	EQUIPMENT_AREA,
 	EQUIPMENT,
 	CHEST,
+	CHEST_AREA,
 	PLATFORM,
 	WALL,
 	L_WALL,
