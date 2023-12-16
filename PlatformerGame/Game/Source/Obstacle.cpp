@@ -30,10 +30,10 @@ bool Obstacle::Start() {
 
 	//initilize textures
 	texture = app->tex->Load(texturePath);
-	pbody = app->physics->CreateCircle(position.x + 16, position.y + 16, 32, bodyType::DYNAMIC);
+	pbody = app->physics->CreateCircle(position.x + 16, position.y, 46, bodyType::STATIC);
 	pbody->ctype = ColliderType::OBSTACLE;
 	pbody->listener = this;
-	pbody->body->GetFixtureList()->SetFriction(5.0f); // Valor de fricción lineal
+	pbody->body->GetFixtureList()->SetFriction(5.0f);
 	pbody->body->SetFixedRotation(true);
 
 	return true;
@@ -42,10 +42,13 @@ bool Obstacle::Start() {
 bool Obstacle::Update(float dt)
 {
 
+	if (app->scene->player->canPush && app->scene->player->isPushing && pbody->body->GetType() != b2_dynamicBody) pbody->body->SetType(b2BodyType::b2_dynamicBody);
+	else if (!app->scene->player->isPushing && pbody->body->GetType() != b2_staticBody) pbody->body->SetType(b2BodyType::b2_staticBody);
+
 	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 16;
 	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 16;
 
-	app->render->DrawTexture(texture, position.x - 16, position.y - 32 - 15);
+	app->render->DrawTexture(texture, position.x - 16, position.y - 16 - 15);
 
 	return true;
 }

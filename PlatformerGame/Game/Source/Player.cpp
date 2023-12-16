@@ -222,7 +222,9 @@ bool Player::Update(float dt)
 			//printf("\r jumpcount %d, isJumping %i, hasJumped %i, ground %i, dashCount %d", jumpCount, isJumping, hasJumped, ground, dashCount);
 			//jump
 			if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !activeSword && !enterDoor)
-			{
+			{	
+				isPushing = false;
+
 				if (!isJumping && !hasJumped && ground && jumpCount == 0)
 				{
 					currentAnim->Reset();
@@ -575,7 +577,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		else ground = true;
 		break;
 	case ColliderType::OBSTACLE:
-		isPushing = true;
+		if (!isJumping) isPushing = true;
 		break;
 	case ColliderType::UNKNOWN:
 		LOG("Collision UNKNOWN");
