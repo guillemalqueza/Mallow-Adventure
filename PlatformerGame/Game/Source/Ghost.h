@@ -61,6 +61,7 @@ private:
 
 	iPoint playerTilePos;
 	iPoint summonTilePos;
+	iPoint nextTilePath;
 
 	float distance;
 };

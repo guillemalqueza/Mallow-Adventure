@@ -41,6 +41,7 @@ bool Ghost::Start() {
 
 	summonPbody = app->physics->CreateCircle(summonPosition.x, summonPosition.y, 20, bodyType::KINEMATIC);
 	summonPbody->ctype = ColliderType::GHOST_SUMMON;
+	summonPbody->body->GetFixtureList()->SetSensor(true);
 	summonPbody->listener = this;
 
 	initialTransform = pbody->body->GetTransform();
@@ -72,24 +73,32 @@ bool Ghost::Update(float dt)
 	//ghost summon
 	summonTilePos = app->map->WorldToMap(summonPosition.x, summonPosition.y);
 
-	distance = sqrt(pow(playerTilePos.x - summonTilePos.x, 2) + pow(playerTilePos.y - summonTilePos.y, 2));
+	distance = playerTilePos.DistanceTo(summonTilePos);
 
-	app->map->pathfinding->CreatePath(summonTilePos, playerTilePos);
+	if (distance < 10)
+	{
+		app->map->pathfinding->CreatePath(summonTilePos, playerTilePos, true);
 
-	if (distance < 2)
-	{
-		velocity = { 0, 0 };
-		if (isSummonFollowing) isSummonFollowing = false;
-	}
-	else if (distance >= 2)
-	{
-		//if (!isSummonFollowing) isSummonFollowing = true;
-		if (isSummonFollowing) Move(summonTilePos, playerTilePos);
-	}
-	else
-	{
-		velocity = { 0, 0 };
-		app->map->pathfinding->ClearLastPath();
+		if (distance < 2)
+		{
+			velocity = { 0, 0 };
+			if (isSummonFollowing) isSummonFollowing = false;
+		}
+		else if (distance >= 2)
+		{
+			const DynArray<iPoint>* path = app->map->pathfinding->GetLastPath();
+			if (path->Count() > 1) {
+				nextTilePath = { path->At(1)->x, path->At(1)->y };
+				Move(summonTilePos, nextTilePath);
+			}
+
+			if (!isSummonFollowing) isSummonFollowing = true;
+		}
+		else
+		{
+			velocity = { 0, 0 };
+			app->map->pathfinding->ClearLastPath();
+		}
 	}
 
 	if (currentSummonAnim == &ghostSummonAppearAnim && currentSummonAnim->HasFinished())
@@ -164,28 +173,10 @@ void Ghost::Move(const iPoint& origin, const iPoint& destination) {
 	float xDiff = destination.x - origin.x;
 	float yDiff = destination.y - origin.y;
 
-	iPoint playerTilePos = app->map->WorldToMap(app->scene->player->position.x, app->scene->player->position.y);
-	if (app->map->pathfinding->IsWalkable(playerTilePos) != 0)
-	{
-		if (xDiff < 0)
-		{
-			velocity.x = -2;
-			isSummonFacingRight = false;
-		}
-		if (xDiff > 0)
-		{
-			velocity.x = 2;
-			isSummonFacingRight = true;
-		}
 
-		if (yDiff < 1)
-		{
-			velocity.y = -1;
-		}
-		if (yDiff > 1)
-		{
-			velocity.y = 1;
-		}
-	}
-	else velocity = { 0,0 };
+	velocity.x = (xDiff < 0) ? -2 : (xDiff > 0) ? 2 : 0;
+	velocity.y = (yDiff < 0) ? -2 : (yDiff > 0) ? 2 : 0;
+
+	isSummonFacingRight = (xDiff > 0);
+
 }

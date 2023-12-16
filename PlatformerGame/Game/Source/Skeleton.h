@@ -52,6 +52,12 @@ private:
 
 	iPoint playerTilePos;
 	iPoint skeletonTilePos;
+	iPoint nextTilePath;
+
+	PhysBody* pbodySword = NULL;
+	bool isAttacking = false;
+	bool attackBodyCreated = false;
+	bool destroyAttackBody = false;
 
 	float distance;
 	int health = 100;

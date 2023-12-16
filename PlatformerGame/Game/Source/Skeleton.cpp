@@ -54,26 +54,41 @@ bool Skeleton::Update(float dt)
 	playerTilePos = app->map->WorldToMap(app->scene->player->position.x + 50, app->scene->player->position.y + 64);
 	skeletonTilePos = app->map->WorldToMap(position.x, position.y);
 
-	distance = sqrt(pow(playerTilePos.x - skeletonTilePos.x, 2) + pow(playerTilePos.y - skeletonTilePos.y, 2));
+	distance = playerTilePos.DistanceTo(skeletonTilePos);
+
+	if (destroyAttackBody)
+	{
+		pbodySword->body->GetWorld()->DestroyBody(pbodySword->body);
+		pbodySword = NULL;
+		destroyAttackBody = false;
+	}
 
 	if (distance < 10)
 	{
 		app->map->pathfinding->CreatePath(skeletonTilePos, playerTilePos);
 
-		if (distance < 4)
+		if (distance < 3 && !isAttacking)
 		{
+			isAttacking = true;
 			currentAnim = &skeletonAttackAnim;
-			velocity = { 0, 0 };
+			currentAnim->ResetLoopCount();
+			currentAnim->Reset();
+			velocity = { 0, -GRAVITY_Y};
+
 		}
-		else if (distance >= 4)
+		else if (distance >= 3 && !isAttacking)
 		{
+			const DynArray<iPoint>* path = app->map->pathfinding->GetLastPath();
+			if (path->Count() > 1) {
+				nextTilePath = { path->At(1)->x, path->At(1)->y};
+				Move(skeletonTilePos, nextTilePath);
+			}
 			currentAnim = &skeletonWalkAnim;
-			Move(skeletonTilePos, playerTilePos);
 		}
-		else
+		else if (!isAttacking)
 		{
 			currentAnim = &skeletonIdleAnim;
-			velocity = { 0, 0 };
+			velocity = { 0, -GRAVITY_Y };
 			app->map->pathfinding->ClearLastPath();
 		}
 	}
@@ -97,6 +112,26 @@ bool Skeleton::Update(float dt)
 		currentAnim = &skeletonWalkAnim;
 
 	}
+
+	if (isAttacking)
+	{
+		if (currentAnim == &skeletonAttackAnim && currentAnim->GetCurrentFrameCount() >= 4 && !attackBodyCreated)
+		{
+			if (isFacingRight) pbodySword = app->physics->CreateRectangleSensor(position.x + 50, position.y - 20, 30, 30, bodyType::STATIC);
+			else pbodySword = app->physics->CreateRectangleSensor(position.x - 50, position.y - 20, 30, 30, bodyType::STATIC);
+			pbodySword->ctype = ColliderType::ENEMY_SWORD;
+			attackBodyCreated = true;
+		}
+
+		if (currentAnim == &skeletonAttackAnim && currentAnim->GetCurrentFrameCount() >= 9 && attackBodyCreated)
+		{
+			isAttacking = false;
+			attackBodyCreated = false;
+
+			if (pbodySword != NULL) destroyAttackBody = true;
+		}
+	}
+		
 
 	if (health <= 0)
 	{
@@ -135,35 +170,21 @@ bool Skeleton::CleanUp()
 	return true;
 }
 
-void Skeleton::Move(const iPoint& origin, const iPoint& destination) {
-
+void Skeleton::Move(const iPoint& origin, const iPoint& destination) 
+{
 	float xDiff = destination.x - origin.x;
 	float yDiff = destination.y - origin.y;
 
-	iPoint playerTilePos = app->map->WorldToMap(app->scene->player->position.x, app->scene->player->position.y);
-	if (app->map->pathfinding->IsWalkable(playerTilePos) != 0)
+	if (app->map->pathfinding->IsWalkable(destination) != 0)
 	{
-		if (xDiff < 0)
-		{
-			velocity.x = -2;
-			isFacingRight = false;
-		}
-		if (xDiff > 0)
-		{
-			velocity.x = 2;
-			isFacingRight = true;
-		}
+		velocity.x = (xDiff < 0) ? -2 : (xDiff > 0) ? 2 : 0;
+		velocity.y = (yDiff < 0) ? -2 : (yDiff > 0) ? -GRAVITY_Y : 0;
 
-		/*if (yDiff < 0)
-		{
-			velocity.y = -2;
-		}
-		if (yDiff > 0)
-		{
-			velocity.y = 2;
-		}*/
+		isFacingRight = (xDiff > 0);
 	}
-	else velocity = { 0,0 };
+	else {
+		velocity = { 0, -GRAVITY_Y };
+	}
 }
 
 void Skeleton::OnCollision(PhysBody* physA, PhysBody* physB)

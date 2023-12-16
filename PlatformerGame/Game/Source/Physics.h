@@ -44,6 +44,7 @@ enum class ColliderType {
 	ENEMY,
 	OBSTACLE,
 	SWORD,
+	ENEMY_SWORD,
 	UNKNOWN
 	// ..
 };

@@ -31,7 +31,7 @@
 		<skeleton x="2200" y="4875" texturepath="Assets/Textures/enemy_skeleton.png" speed="0.2f"/>
 		<skeleton x="3700" y="3423" texturepath="Assets/Textures/enemy_skeleton.png" speed="0.2f"/>
 		<skeleton x="3266" y="2300" texturepath="Assets/Textures/enemy_skeleton.png" speed="0.2f"/>
-		<!--<ghost x="1400" y="1000" texturepath="Assets/Textures/enemy_ghost.png" speed="0.2f"/>-->
+		<ghost x="1400" y="1000" texturepath="Assets/Textures/enemy_ghost.png" speed="0.2f"/>
 		<key x="704" y="632" texturepath="Assets/Textures/key.png"/>
 		<jumper x="4880" y="634" texturepath="Assets/Textures/jumper.png"/>
 		<crumblingPlatform x="5900" y="500" texturepath="Assets/Textures/crumbling_platform.png"/>
@@ -263,7 +263,7 @@
 		<!-- Enemies -->
 		<!-- Skeleton -->
 		<skeleton>
-			<skeletonAttackAnim loop="true" speed="0.1f">
+			<skeletonAttackAnim loop="false" speed="0.1f">
 				<animation x="0" y="0" w="128" h="128"/>
 				<animation x="128" y="0" w="128" h="128"/>
 				<animation x="256" y="0" w="128" h="128"/>
