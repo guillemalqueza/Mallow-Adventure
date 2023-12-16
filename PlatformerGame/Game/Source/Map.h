@@ -154,6 +154,8 @@ public:
 
 	int mapIdx = 1;
 
+	List<PhysBody*> wallEndCollision;
+
 private:
 
 	MapData mapData;

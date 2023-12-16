@@ -89,6 +89,23 @@ bool Map::Update(float dt)
         mapLayer = mapLayer->next;
     }
 
+    if (!app->scene->player->wallRight && !app->scene->player->wallLeft)
+    {
+        for (int i = 0; i < wallEndCollision.Count(); i++)
+        {
+            PhysBody* wall = wallEndCollision.At(i)->data;
+            wall->body->SetActive(false);
+		}
+	}
+    else if (app->scene->player->wallRight || app->scene->player->wallLeft)
+    {
+        for (int i = 0; i < wallEndCollision.Count(); i++)
+        {
+			PhysBody* wall = wallEndCollision.At(i)->data;
+            wall->body->SetActive(true);
+		}
+	}
+
     return true;
 }
 
@@ -450,6 +467,7 @@ bool Map::CreateColliders()
                         case 1449:
                             c1 = app->physics->CreateRectangleSensor(pos.x + (mapData.tileWidth / 2), pos.y + (mapData.tileHeight / 2), mapData.tileWidth, mapData.tileHeight, STATIC);
                             c1->ctype = ColliderType::WALL_END;
+                            wallEndCollision.Add(c1);
                             ret = true;
                             break;
                         default:

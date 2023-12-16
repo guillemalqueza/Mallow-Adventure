@@ -11,6 +11,7 @@
 #include "Ghost.h"
 #include "Equipment.h"
 #include "Obstacle.h"
+#include "Chest.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -115,6 +116,9 @@ Entity* EntityManager::CreateEntity(EntityType type)
 		break;
 	case EntityType::OBSTACLE:
 		entity = new Obstacle();
+		break;
+	case EntityType::CHEST:
+		entity = new Chest();
 		break;
 	default:
 		break;

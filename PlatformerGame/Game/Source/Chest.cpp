@@ -1,4 +1,4 @@
-#include "Equipment.h"
+#include "Chest.h"
 #include "App.h"
 #include "Textures.h"
 #include "Audio.h"
@@ -10,14 +10,14 @@
 #include "Physics.h"
 #include "EntityManager.h"
 
-Equipment::Equipment() : Entity(EntityType::EQUIPMENT)
+Chest::Chest() : Entity(EntityType::CHEST)
 {
-	name.Create("equipment");
+	name.Create("chest");
 }
 
-Equipment::~Equipment() {}
+Chest::~Chest() {}
 
-bool Equipment::Awake() {
+bool Chest::Awake() {
 
 	position.x = parameters.attribute("x").as_int();
 	position.y = parameters.attribute("y").as_int();
@@ -26,12 +26,12 @@ bool Equipment::Awake() {
 	return true;
 }
 
-bool Equipment::Start() {
+bool Chest::Start() {
 
 	//initilize textures
 	texture = app->tex->Load(texturePath);
 	pbody = app->physics->CreateRectangleSensor(position.x + 90, position.y + 190, 25, 200, bodyType::STATIC);
-	pbody->ctype = ColliderType::EQUIPMENT;
+	pbody->ctype = ColliderType::CHEST;
 	pbody->listener = this;
 
 	pbody2 = app->physics->CreateCircle(position.x + 90, position.y + 190, 250, bodyType::STATIC);
@@ -41,7 +41,7 @@ bool Equipment::Start() {
 
 	equipmentWithSword.LoadAnimations("equipmentWithSword", "equipment");
 	equipmentAnim.LoadAnimations("equipmentAnim", "equipment");
-	equipmentWithoutSword.LoadAnimations("equipmentWithoutSword", "equipment");	
+	equipmentWithoutSword.LoadAnimations("equipmentWithoutSword", "equipment");
 	equipmentAnimIdle.LoadAnimations("equipmentAnimIdle", "equipment");
 	currentAnim = &equipmentWithSword;
 
@@ -49,16 +49,16 @@ bool Equipment::Start() {
 	return true;
 }
 
-bool Equipment::Update(float dt)
+bool Chest::Update(float dt)
 {
 	if (isPicked)	OnPicked();
-	if (equipmentArea) { 
+	if (equipmentArea) {
 		currentAnim = &equipmentAnim;
 		OnSensor();
 	}
 	if (currentAnim == &equipmentAnim && currentAnim->HasFinished())
 	{
-		currentAnim= &equipmentAnimIdle;
+		currentAnim = &equipmentAnimIdle;
 	}
 
 
@@ -71,12 +71,12 @@ bool Equipment::Update(float dt)
 	return true;
 }
 
-bool Equipment::CleanUp()
+bool Chest::CleanUp()
 {
 	return true;
 }
 
-void Equipment::OnCollision(PhysBody* physA, PhysBody* physB)
+void Chest::OnCollision(PhysBody* physA, PhysBody* physB)
 {
 	if (physA == pbody) {
 		switch (physB->ctype)
@@ -108,7 +108,7 @@ void Equipment::OnCollision(PhysBody* physA, PhysBody* physB)
 	}
 }
 
-void Equipment::OnPicked()
+void Chest::OnPicked()
 {
 	currentAnim = &equipmentWithoutSword;
 	//app->entityManager->DestroyEntity(this);
@@ -116,7 +116,7 @@ void Equipment::OnPicked()
 	isPicked = false;
 }
 
-void Equipment::OnSensor()
+void Chest::OnSensor()
 {
 	app->physics->world->DestroyBody(pbody2->body);
 	equipmentArea = false;

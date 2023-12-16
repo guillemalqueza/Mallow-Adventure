@@ -119,6 +119,8 @@ bool Player::Update(float dt)
 					vel = b2Vec2(0, speed * dt);
 					currentAnim = &wallAnim;
 				}
+				if (wallRight) isFacingRight = true;
+				else if (wallLeft) isFacingRight = false;
 			}
 
 			//crouch
@@ -570,6 +572,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		break;
 	case ColliderType::WALL_END:
 		if (wallLeft || wallRight) wallEnd = true;
+		else ground = true;
 		break;
 	case ColliderType::OBSTACLE:
 		isPushing = true;

@@ -13,6 +13,7 @@ enum class EntityType
 	PLAYER,
 	KEY,
 	EQUIPMENT,
+	CHEST,
 	JUMPER,
 	CRUMBLING_PLATFORM,
 	LOCK_DOOR,

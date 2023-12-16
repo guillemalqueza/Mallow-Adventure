@@ -41,6 +41,7 @@
 		<background texturepath="Assets/Maps/background.png"/>
 		<background2 texturepath="Assets/Maps/background_lvl_2.png"/>
 		<equipment x="5200" y="34" texturepath="Assets/Textures/spritesheet_sword.png"/>
+		<chest x="5500" y="160" texturepath="Assets/Textures/spritesheet_sword.png"/>
 		<obstacle x="5170" y="2255" texturepath="Assets/Textures/rock.png"/>
 	</scene>
 
