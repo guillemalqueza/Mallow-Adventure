@@ -243,10 +243,11 @@ bool Player::Update(float dt)
 
 				if (!isJumping && !hasJumped && ground && jumpCount == 0)
 				{
-					currentAnim->Reset();
 					if (currentEffectsAnim != nullptr) currentEffectsAnim->Reset();
 					if (!isEquipped) currentAnim = &jumpAnim;
 					else currentAnim = &armorJumpAnim;
+					currentAnim->ResetLoopCount();
+					currentAnim->Reset();
 					currentEffectsAnim = &jumpEffectAnim;
 					isJumping = true;
 					hasJumped = true;
@@ -256,10 +257,11 @@ bool Player::Update(float dt)
 				}
 				else if (jumpCount == 1 && hasJumped && dashCount == 0)
 				{
-					currentAnim->Reset();
 					if (currentEffectsAnim != nullptr) currentEffectsAnim->Reset();
 					if (!isEquipped) currentAnim = &jumpAnim;
 					else currentAnim = &armorJumpAnim;
+					currentAnim->ResetLoopCount();
+					currentAnim->Reset();
 					currentEffectsAnim = &jumpEffectAnim;
 					isJumping = true;
 					vel = b2Vec2(vel.x, -8.2f);
@@ -267,12 +269,13 @@ bool Player::Update(float dt)
 					jumpCount = 2;
 					dashCount = 1;
 				}
-				else if (!ground && !isJumping && !hasJumped && jumpCount == 0 && dashCount == 0)
+ 				else if (!ground && !isJumping && !hasJumped && jumpCount == 0 && dashCount == 0)
 				{
-					currentAnim->Reset();
 					if (currentEffectsAnim != nullptr) currentEffectsAnim->Reset();
 					if (!isEquipped) currentAnim = &jumpAnim;
 					else currentAnim = &armorJumpAnim;
+					currentAnim->ResetLoopCount();
+					currentAnim->Reset();
 					currentEffectsAnim = &jumpEffectAnim;
 					isJumping = true;
 					vel = b2Vec2(vel.x, -8.2f);
@@ -398,8 +401,6 @@ bool Player::Update(float dt)
 
 			if (isJumping && currentAnim->HasFinished() || (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT && !wallLeft && !wallRight))
 			{
-				currentAnim->ResetLoopCount();
-				currentAnim->Reset();
 				if (!isEquipped) currentAnim = &idleAnim;
 				else currentAnim = &armorIdleAnim;
 				isJumping = false;

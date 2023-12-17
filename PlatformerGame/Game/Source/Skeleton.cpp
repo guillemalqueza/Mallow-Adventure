@@ -141,6 +141,8 @@ bool Skeleton::Update(float dt)
 		currentAnim = &skeletonDeadAnim;
 		velocity = { 0, 0 };
 		isDead = true;
+		pbody->body->SetActive(false);
+		enemyPbody->body->SetActive(false);
 	}
 
 	if (isDead && open)
