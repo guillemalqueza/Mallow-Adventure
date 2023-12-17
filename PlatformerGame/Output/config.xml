@@ -28,9 +28,9 @@
 		<player x="400" y="991" texturepath="Assets/Textures/player.png" lightTexture = "Assets/Textures/player_light.png" effectsTexture="Assets/Textures/effects.png" speed="0.2f">
 			<itemAudio path="Assets/Audio/Fx/coin_pickup.ogg"/>
 		</player>
-		<skeleton x="2200" y="4875" texturepath="Assets/Textures/enemy_skeleton.png" speed="0.2f"/>
-		<skeleton x="3700" y="3423" texturepath="Assets/Textures/enemy_skeleton.png" speed="0.2f"/>
-		<skeleton x="3266" y="2300" texturepath="Assets/Textures/enemy_skeleton.png" speed="0.2f"/>
+		<skeleton x="2200" y="4875" texturepath="Assets/Textures/enemy_skeleton.png" speed="0.2f" open="false"/>
+		<skeleton x="3700" y="3423" texturepath="Assets/Textures/enemy_skeleton.png" speed="0.2f" open="false"/>
+		<skeleton x="3266" y="2300" texturepath="Assets/Textures/enemy_skeleton.png" speed="0.2f" open="true"/>
 		<ghost x="5920" y="2150" texturepath="Assets/Textures/enemy_ghost.png" speed="0.2f"/>
 		<key x="704" y="632" texturepath="Assets/Textures/key.png"/>
 		<jumper x="4880" y="634" texturepath="Assets/Textures/jumper.png"/>
@@ -242,6 +242,16 @@
 				<animation x="200" y="1536" w="100" h="64"/>
 				<animation x="300" y="1536" w="100" h="64"/>
 			</doorAnim>
+
+			<drinkAnim loop ="false" speed="0.1f">
+				<animation x="0" y="704" w="100" h="64"/>
+				<animation x="100" y="704" w="100" h="64"/>
+				<animation x="200" y="704" w="100" h="64"/>
+				<animation x="300" y="704" w="100" h="64"/>
+				<animation x="400" y="704" w="100" h="64"/>
+				<animation x="500" y="704" w="100" h="64"/>
+				<animation x="600" y="704" w="100" h="64"/>
+			</drinkAnim>
 			
 			<!--Player Effects-->
 

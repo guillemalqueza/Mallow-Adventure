@@ -64,7 +64,7 @@ bool Player::Update(float dt)
 
 	if (!isDead)
 	{
-		if (!isJumping && !isCrouching && !isAttacking && !activeSword && !enterDoor)
+		if (!isJumping && !isCrouching && !isAttacking && !activeSword && !enterDoor && !isDrinking)
 		{
 			if (!isEquipped) currentAnim = &idleAnim;
 			else currentAnim = &armorIdleAnim;
@@ -75,7 +75,8 @@ bool Player::Update(float dt)
 		if (!godMode)
 		{
 			//idle wall keys
-			if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_IDLE && !ground && (wallLeft || wallRight) && !activeSword)
+			if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_IDLE && !ground 
+				&& (wallLeft || wallRight) && !activeSword && !isDrinking)
 			{
 				pbody->body->SetGravityScale(0.0f);
 				pbody->body->SetLinearVelocity({ pbody->body->GetLinearVelocity().x, 0 });
@@ -90,7 +91,7 @@ bool Player::Update(float dt)
 			if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_IDLE) isFacingUp = false;
 
 			//climb wall keys
-			if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT && !activeSword && !enterDoor)
+			if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT && !activeSword && !enterDoor && !isDrinking)
 			{
 				isFacingUp = true;
 
@@ -111,7 +112,7 @@ bool Player::Update(float dt)
 					currentAnim = &walkAnim;
 				}
 			}
-			if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT && !activeSword && !enterDoor)
+			if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT && !activeSword && !enterDoor && !isDrinking)
 			{
 				if ((wallRight) && wallEnd)
 				{
@@ -136,7 +137,7 @@ bool Player::Update(float dt)
 			}
 
 			//crouch
-			if (app->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT && !isJumping && !activeSword && !enterDoor)
+			if (app->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT && !isJumping && !activeSword && !enterDoor && !isDrinking)
 			{
 				if (!isCrouching)
 				{
@@ -156,7 +157,7 @@ bool Player::Update(float dt)
 			}
 
 			//player movement
-			if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT && !activeSword && !enterDoor)
+			if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT && !activeSword && !enterDoor && !isDrinking)
 			{
 				if (!isDashing) vel.x = -speed * dt;
 				if (!isJumping && !wallLeft && !wallRight)
@@ -188,7 +189,7 @@ bool Player::Update(float dt)
 				isFacingRight = false;
 			}
 
-			if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT && !activeSword && !enterDoor)
+			if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT && !activeSword && !enterDoor && !isDrinking)
 			{
 				if (!isDashing) vel.x = speed * dt;
 				if (!isJumping && !wallLeft && !wallRight)
@@ -234,7 +235,7 @@ bool Player::Update(float dt)
 
 			//printf("\r jumpcount %d, isJumping %i, hasJumped %i, ground %i, dashCount %d", jumpCount, isJumping, hasJumped, ground, dashCount);
 			//jump
-			if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !activeSword && !enterDoor)
+			if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !activeSword && !enterDoor && !isDrinking)
 			{	
 				isPushing = false;
 				wallLeft = false;
@@ -307,7 +308,7 @@ bool Player::Update(float dt)
 				}
 			}
 
-			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN && !isAttacking && isEquipped && !activeSword && !enterDoor)
+			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN && !isAttacking && isEquipped && !activeSword && !enterDoor && !isDrinking)
 			{
 				isAttacking = true;
 				
@@ -327,7 +328,7 @@ bool Player::Update(float dt)
 				currentAnim->Reset();
 			}
 			
-			if (app->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN && !isAttacking && isEquipped && !activeSword && !enterDoor)
+			if (app->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN && !isAttacking && isEquipped && !activeSword && !enterDoor && !isDrinking)
 			{
 				isAttacking = true;
 
@@ -433,7 +434,16 @@ bool Player::Update(float dt)
 				currentAnim->Reset();
 			}
 
+			if (canPush && isDrinking && currentAnim != &drinkAnim)
+			{
+				currentAnim = &drinkAnim;
+				currentAnim->ResetLoopCount();
+				currentAnim->Reset();
+			}
+
 			if (activeSword && currentAnim->HasFinished()) activeSword = false;
+
+			if (isDrinking && currentAnim->HasFinished()) isDrinking = false;
 		
 			previousY = position.y;
 
@@ -570,7 +580,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 			|| (app->scene->cameraIdx == 4 && position.x > 2000 && position.x < 2430 && position.y < 5200) 
 			|| (app->scene->cameraIdx == 5 && position.x > 3200 && position.x < 3430 && position.y > 3515)
 			|| (app->scene->cameraIdx == 6 && position.x > 3760 && position.x < 4000 && position.y > 2716)
-			|| (app->scene->cameraIdx == 7 && position.x > 3800 && position.x < 4150 && position.y > 2000 && position.y < 2300)
+			|| (app->scene->cameraIdx == 7 && position.x > 3800 && position.x < 4150 && position.y > 2075 && position.y < 2300)
 			|| (app->scene->cameraIdx == 8 && position.x < 5030 && position.x > 4800))
 		{
 			app->scene->cameraIdx++;
@@ -581,7 +591,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 			|| (app->scene->cameraIdx == 5 && position.x < 2000 && position.x < 2430 && position.y > 5200)
 			|| (app->scene->cameraIdx == 6 && position.x > 3200 && position.x < 3430 && position.y < 3515)
 			|| (app->scene->cameraIdx == 7 && position.x > 3760 && position.x < 4000 && position.y < 2716)
-			|| (app->scene->cameraIdx == 8 && position.x > 3800 && position.x < 4150 && position.y < 2000)
+			|| (app->scene->cameraIdx == 8 && position.x > 3800 && position.x < 4150 && position.y < 2075)
 			|| (app->scene->cameraIdx == 9 && position.x > 5070))
 		{
 			app->scene->cameraIdx--;
@@ -646,6 +656,7 @@ void Player::LoadAnimations()
 	pushAnim.LoadAnimations("pushAnim", "player");
 	swordAnim.LoadAnimations("swordAnim", "player");
 	doorAnim.LoadAnimations("doorAnim", "player");
+	drinkAnim.LoadAnimations("drinkAnim", "player");
 
 	climbEffectAnim.LoadAnimations("climbEffectAnim", "player");
 	jumpEffectAnim.LoadAnimations("jumpEffectAnim", "player");

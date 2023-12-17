@@ -24,6 +24,7 @@ bool Skeleton::Awake() {
 	position.y = parameters.attribute("y").as_int();
 	texturePath = parameters.attribute("texturepath").as_string();
 	speed = parameters.attribute("speed").as_float();
+	open = parameters.attribute("open").as_bool();
 
 	return true;
 }
@@ -51,93 +52,101 @@ bool Skeleton::Start() {
 
 bool Skeleton::Update(float dt)
 {
-	playerTilePos = app->map->WorldToMap(app->scene->player->position.x + 50, app->scene->player->position.y + 64);
-	skeletonTilePos = app->map->WorldToMap(position.x, position.y);
-
-	distance = playerTilePos.DistanceTo(skeletonTilePos);
-
-	if (destroyAttackBody)
+	if (!isDead)
 	{
-		pbodySword->body->GetWorld()->DestroyBody(pbodySword->body);
-		pbodySword = NULL;
-		destroyAttackBody = false;
-	}
+		playerTilePos = app->map->WorldToMap(app->scene->player->position.x + 50, app->scene->player->position.y + 64);
+		skeletonTilePos = app->map->WorldToMap(position.x, position.y);
 
-	if (distance < 10)
-	{
-		app->map->pathfinding->CreatePath(skeletonTilePos, playerTilePos);
+		distance = playerTilePos.DistanceTo(skeletonTilePos);
 
-		if (distance < 3 && !isAttacking)
+		if (destroyAttackBody)
 		{
-			isAttacking = true;
-			currentAnim = &skeletonAttackAnim;
-			currentAnim->ResetLoopCount();
-			currentAnim->Reset();
-			velocity = { 0, -GRAVITY_Y};
-
+			pbodySword->body->GetWorld()->DestroyBody(pbodySword->body);
+			pbodySword = NULL;
+			destroyAttackBody = false;
 		}
-		else if (distance >= 3 && !isAttacking)
+
+		if (distance < 10)
 		{
-			const DynArray<iPoint>* path = app->map->pathfinding->GetLastPath();
-			if (path->Count() > 1) {
-				nextTilePath = { path->At(1)->x, path->At(1)->y};
-				Move(skeletonTilePos, nextTilePath);
+			app->map->pathfinding->CreatePath(skeletonTilePos, playerTilePos);
+
+			if (distance < 3 && !isAttacking)
+			{
+				isAttacking = true;
+				currentAnim = &skeletonAttackAnim;
+				currentAnim->ResetLoopCount();
+				currentAnim->Reset();
+				velocity = { 0, -GRAVITY_Y };
+
 			}
+			else if (distance >= 3 && !isAttacking)
+			{
+				const DynArray<iPoint>* path = app->map->pathfinding->GetLastPath();
+				if (path->Count() > 1) {
+					nextTilePath = { path->At(1)->x, path->At(1)->y };
+					Move(skeletonTilePos, nextTilePath);
+				}
+				currentAnim = &skeletonWalkAnim;
+			}
+			else if (!isAttacking)
+			{
+				currentAnim = &skeletonIdleAnim;
+				velocity = { 0, -GRAVITY_Y };
+				app->map->pathfinding->ClearLastPath();
+			}
+		}
+		else
+		{
+			const int idleDistance = 3;
+
+			if (position.x >= initialIdlePosition + idleDistance * 32)
+			{
+				isFacingRight = false;
+			}
+			else if (position.x <= initialIdlePosition - idleDistance * 32)
+			{
+				isFacingRight = true;
+			}
+
+			velocity.x = isFacingRight ? 1 : -1;
+
+			position.x += velocity.x;
+
 			currentAnim = &skeletonWalkAnim;
+
 		}
-		else if (!isAttacking)
+
+		if (isAttacking)
 		{
-			currentAnim = &skeletonIdleAnim;
-			velocity = { 0, -GRAVITY_Y };
-			app->map->pathfinding->ClearLastPath();
+			if (currentAnim == &skeletonAttackAnim && currentAnim->GetCurrentFrameCount() >= 4 && !attackBodyCreated)
+			{
+				if (isFacingRight) pbodySword = app->physics->CreateRectangleSensor(position.x + 50, position.y - 20, 30, 30, bodyType::STATIC);
+				else pbodySword = app->physics->CreateRectangleSensor(position.x - 50, position.y - 20, 30, 30, bodyType::STATIC);
+				pbodySword->ctype = ColliderType::ENEMY_SWORD;
+				attackBodyCreated = true;
+			}
+
+			if (currentAnim == &skeletonAttackAnim && currentAnim->GetCurrentFrameCount() >= 9 && attackBodyCreated)
+			{
+				isAttacking = false;
+				attackBodyCreated = false;
+
+				if (pbodySword != NULL) destroyAttackBody = true;
+			}
 		}
 	}
-	else
-	{
-		const int idleDistance = 3;
 
-		if (position.x >= initialIdlePosition + idleDistance * 32)
-		{
-			isFacingRight = false;
-		}
-		else if (position.x <= initialIdlePosition - idleDistance * 32)
-		{
-			isFacingRight = true;
-		}
-
-		velocity.x = isFacingRight ? 1 : -1;
-
-		position.x += velocity.x;
-
-		currentAnim = &skeletonWalkAnim;
-
-	}
-
-	if (isAttacking)
-	{
-		if (currentAnim == &skeletonAttackAnim && currentAnim->GetCurrentFrameCount() >= 4 && !attackBodyCreated)
-		{
-			if (isFacingRight) pbodySword = app->physics->CreateRectangleSensor(position.x + 50, position.y - 20, 30, 30, bodyType::STATIC);
-			else pbodySword = app->physics->CreateRectangleSensor(position.x - 50, position.y - 20, 30, 30, bodyType::STATIC);
-			pbodySword->ctype = ColliderType::ENEMY_SWORD;
-			attackBodyCreated = true;
-		}
-
-		if (currentAnim == &skeletonAttackAnim && currentAnim->GetCurrentFrameCount() >= 9 && attackBodyCreated)
-		{
-			isAttacking = false;
-			attackBodyCreated = false;
-
-			if (pbodySword != NULL) destroyAttackBody = true;
-		}
-	}
-		
-
-	if (health <= 0)
+	if (health <= 0 && !isDead)
 	{
 		currentAnim = &skeletonDeadAnim;
 		velocity = { 0, 0 };
 		isDead = true;
+	}
+
+	if (isDead && open)
+	{
+		app->scene->player->canOpen = true;
+		open = false;
 	}
 
 	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x);

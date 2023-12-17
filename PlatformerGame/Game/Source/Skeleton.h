@@ -32,6 +32,7 @@ public:
 
 public:
 	float speed = 0.2f;
+	bool open = false;
 	bool isActivated = false;
 	bool isFacingRight = false;
 	iPoint originPos;

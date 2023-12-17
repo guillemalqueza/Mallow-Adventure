@@ -48,7 +48,7 @@ public:
 	Animation* currentAnim;
 	Animation idleAnim, jumpAnim, walkAnim, crouchAnim, crouchWalkAnim, fallAnim, wallAnim, deadAnim,
 				armorIdleAnim, armorJumpAnim, armorWalkAnim, armorCrouchAnim, armorCrouchWalkAnim, armorFallAnim, armorDeadAnim, 
-				attack1Anim, attack2Anim, attack3Anim, attackJumpAnim, pushAnim, swordAnim, doorAnim;
+				attack1Anim, attack2Anim, attack3Anim, attackJumpAnim, pushAnim, swordAnim, doorAnim, drinkAnim;
 
 	Animation* currentEffectsAnim;
 	Animation climbEffectAnim, jumpEffectAnim, dangerEffectAnim;
@@ -79,7 +79,9 @@ public:
 	bool destroyAttackBody = false;
 	bool activeSword = false;
 	bool enterDoor = false;
+	bool isDrinking = false;
 	bool canPush = false;
+	bool canOpen = false;
 
 	bool lastKeyPressA = false;
 	bool lastKeyPressD = false;

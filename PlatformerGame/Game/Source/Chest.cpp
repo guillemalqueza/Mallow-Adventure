@@ -87,6 +87,7 @@ void Chest::OnCollision(PhysBody* physA, PhysBody* physB)
 			{
 				pbody->body->SetActive(false);
 				app->scene->player->canPush = true;
+				app->scene->player->isDrinking = true;
 				isPicked = true;
 			}
 			break;
@@ -97,7 +98,7 @@ void Chest::OnCollision(PhysBody* physA, PhysBody* physB)
 		{
 		case ColliderType::PLAYER:
 			LOG("Collision PLAYER");
-			if (!chestArea)
+			if (!chestArea && app->scene->player->canOpen)
 			{
 				pbody2->body->SetActive(false);
 				chestArea = true;
@@ -110,8 +111,6 @@ void Chest::OnCollision(PhysBody* physA, PhysBody* physB)
 void Chest::OnPicked()
 {
 	currentAnim = &chestOpenedIdleAnim;
-	//app->entityManager->DestroyEntity(this);
-	//app->physics->world->DestroyBody(pbody->body);
 	isPicked = false;
 }
 
