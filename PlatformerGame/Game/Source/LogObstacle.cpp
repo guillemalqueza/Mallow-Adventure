@@ -30,7 +30,8 @@ bool LogObstacle::Start() {
 
 	//initilize textures
 	texture = app->tex->Load(texturePath);
-	pbody = app->physics->CreateRectangle(position.x + 240, position.y + 200, 25, 130, bodyType::STATIC);
+	pbody = app->physics->CreateRectangle(position.x + 240, position.y + 200, 25, 130, bodyType::DYNAMIC);
+	pbody->body->SetGravityScale(0);
 	pbody->ctype = ColliderType::LOG_OBSTACLE;
 	pbody->listener = this;
 
@@ -72,12 +73,11 @@ bool LogObstacle::CleanUp()
 
 void LogObstacle::OnCollision(PhysBody* physA, PhysBody* physB)
 {
-	if (physA == pbody) {
-		switch (physB->ctype)
-		{
+	switch (physB->ctype)
+	{
 		case ColliderType::SWORD:
-			health -= 1;
-			break;
-		}
+		health -= 1;
+		break;
 	}
+	
 }

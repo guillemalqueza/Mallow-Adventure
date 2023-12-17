@@ -1,5 +1,5 @@
-#ifndef __LOG_OBSTACLE_H__
-#define __LOG_OBSTACLE_H__
+#ifndef __LOGOBSTACLE_H__
+#define __LOGOBSTACLE_H__
 
 #include "Entity.h"
 #include "Point.h"
@@ -47,4 +47,4 @@ private:
 	Animation logDownIdle;
 };
 
-#endif // __EQUIPMENT_H__
+#endif // __LOGOBSTACLE_H__

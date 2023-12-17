@@ -348,14 +348,14 @@ bool Player::Update(float dt)
 			{
 				if ((currentAnim == &attack1Anim || currentAnim == &attack2Anim) && currentAnim->GetCurrentFrameCount() >= 1 && !attackBodyCreated)
 				{
-					if (isFacingRight) pbodySword = app->physics->CreateRectangleSensor(position.x + 90, position.y + 20, 25, 25, bodyType::STATIC);
-					else pbodySword = app->physics->CreateRectangleSensor(position.x, position.y + 20, 25, 25, bodyType::STATIC);
+					if (isFacingRight) pbodySword = app->physics->CreateRectangleSensor(position.x + 90, position.y + 20, 25, 25, bodyType::KINEMATIC);
+					else pbodySword = app->physics->CreateRectangleSensor(position.x, position.y + 20, 25, 25, bodyType::KINEMATIC);
 					pbodySword->ctype = ColliderType::SWORD;
 					attackBodyCreated = true;
 				}
 				else if (currentAnim == &attackJumpAnim && currentAnim->GetCurrentFrameCount() >= 2 && !attackBodyCreated)
 				{
-					pbodySword = app->physics->CreateRectangleSensor(position.x + 45, position.y + 20, 100, 25, bodyType::STATIC);
+					pbodySword = app->physics->CreateRectangleSensor(position.x + 45, position.y + 20, 100, 25, bodyType::KINEMATIC);
 					pbodySword->ctype = ColliderType::SWORD;
 					attackBodyCreated = true;
 				}
@@ -364,12 +364,12 @@ bool Player::Update(float dt)
 					if (isFacingRight)
 					{
 						vel.x = 80;
-						pbodySword = app->physics->CreateRectangleSensor(position.x + 150, position.y + 20, 25, 25, bodyType::STATIC);
+						pbodySword = app->physics->CreateRectangleSensor(position.x + 150, position.y + 20, 25, 25, bodyType::KINEMATIC);
 					}
 					else
 					{
 						vel.x = -80;
-						pbodySword = app->physics->CreateRectangleSensor(position.x - 50, position.y + 20, 25, 25, bodyType::STATIC);
+						pbodySword = app->physics->CreateRectangleSensor(position.x - 50, position.y + 20, 25, 25, bodyType::KINEMATIC);
 					}
 			
 					pbodySword->ctype = ColliderType::SWORD;
