@@ -51,7 +51,7 @@ public:
 				attack1Anim, attack2Anim, attack3Anim, attackJumpAnim, pushAnim, swordAnim, doorAnim;
 
 	Animation* currentEffectsAnim;
-	Animation climbEffectAnim, jumpEffectAnim;
+	Animation climbEffectAnim, jumpEffectAnim, dangerEffectAnim;
 
 	bool isJumping = false;
 	bool isCrouching = false;

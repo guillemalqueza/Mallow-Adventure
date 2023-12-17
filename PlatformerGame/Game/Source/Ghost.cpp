@@ -54,6 +54,7 @@ bool Ghost::Start() {
 
 bool Ghost::Update(float dt)
 {
+	LOG("POSITION X: %i, POSITION Y: %i", position.x, position.y);
 	playerTilePos = app->map->WorldToMap(app->scene->player->position.x + 50, app->scene->player->position.y);
 
 	//ghost

@@ -43,7 +43,7 @@ bool Obstacle::Update(float dt)
 {
 
 	if (app->scene->player->canPush && app->scene->player->isPushing && pbody->body->GetType() != b2_dynamicBody) pbody->body->SetType(b2BodyType::b2_dynamicBody);
-	else if (!app->scene->player->isPushing && pbody->body->GetType() != b2_staticBody) pbody->body->SetType(b2BodyType::b2_staticBody);
+	else if ((!app->scene->player->isPushing || app->scene->player->isJumping) && pbody->body->GetType() != b2_staticBody) pbody->body->SetType(b2BodyType::b2_staticBody);
 
 	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 16;
 	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 16;

@@ -31,12 +31,15 @@
 		<skeleton x="2200" y="4875" texturepath="Assets/Textures/enemy_skeleton.png" speed="0.2f"/>
 		<skeleton x="3700" y="3423" texturepath="Assets/Textures/enemy_skeleton.png" speed="0.2f"/>
 		<skeleton x="3266" y="2300" texturepath="Assets/Textures/enemy_skeleton.png" speed="0.2f"/>
-		<ghost x="1400" y="1000" texturepath="Assets/Textures/enemy_ghost.png" speed="0.2f"/>
+		<ghost x="5920" y="2150" texturepath="Assets/Textures/enemy_ghost.png" speed="0.2f"/>
 		<key x="704" y="632" texturepath="Assets/Textures/key.png"/>
 		<jumper x="4880" y="634" texturepath="Assets/Textures/jumper.png"/>
 		<crumblingPlatform x="5900" y="500" texturepath="Assets/Textures/crumbling_platform.png"/>
 		<crumblingPlatform x="6050" y="550" texturepath="Assets/Textures/crumbling_platform.png"/>
 		<crumblingPlatform x="6200" y="600" texturepath="Assets/Textures/crumbling_platform.png"/>
+		<crumblingPlatform x="4416" y="2560" texturepath="Assets/Textures/crumbling_platform2.png"/>
+		<crumblingPlatform x="4544" y="2528" texturepath="Assets/Textures/crumbling_platform2.png"/>
+		<crumblingPlatform x="4672" y="2464" texturepath="Assets/Textures/crumbling_platform2.png"/>
 		<lockDoor x="3200" y="190" texturepath="Assets/Textures/lock_door.png"/>
 		<background texturepath="Assets/Maps/background.png"/>
 		<background2 texturepath="Assets/Maps/background_lvl_2.png"/>
@@ -239,6 +242,8 @@
 				<animation x="200" y="1536" w="100" h="64"/>
 				<animation x="300" y="1536" w="100" h="64"/>
 			</doorAnim>
+			
+			<!--Player Effects-->
 
 			<climbEffectAnim loop ="true" speed="0.1f">
 				<animation x="0" y="0" w="64" h="64"/>
@@ -257,6 +262,14 @@
 				<animation x="192" y="64" w="64" h="64"/>
 				<animation x="0" y="0" w="0" h="0"/>
 			</jumpEffectAnim>
+
+			<dangerEffectAnim loop ="true" speed="0.1f">
+				<animation x="0" y="128" w="64" h="64"/>
+				<animation x="64" y="128" w="64" h="64"/>
+				<animation x="128" y="128" w="64" h="64"/>
+				<animation x="192" y="128" w="64" h="64"/>
+				<animation x="256" y="128" w="64" h="64"/>
+			</dangerEffectAnim>
 
 		</player>
 

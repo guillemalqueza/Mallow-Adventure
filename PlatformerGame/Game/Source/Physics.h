@@ -35,6 +35,7 @@ enum class ColliderType {
 	L_WALL,
 	R_WALL,
 	WALL_END,
+	WALL_DOWN,
 	SPIKE,
 	JUMP,
 	CAMERA,

@@ -113,7 +113,19 @@ bool Player::Update(float dt)
 			}
 			if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT && !activeSword && !enterDoor)
 			{
-				if (wallRight || wallLeft)
+				if ((wallRight) && wallEnd)
+				{
+					ground = false;
+					vel = b2Vec2(-(speed/2) * dt, speed * dt);
+					currentAnim = &wallAnim;
+				}
+				else if ((wallLeft) && wallEnd)
+				{
+					ground = false;
+					vel = b2Vec2((speed/2) * dt, speed * dt);
+					currentAnim = &wallAnim;
+				}
+				else
 				{
 					ground = false;
 					vel = b2Vec2(0, speed * dt);
@@ -208,13 +220,14 @@ bool Player::Update(float dt)
 				isFacingRight = true;
 			}
 
-			if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_IDLE && !isDashing && !wallEnd)
+			if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_IDLE && !isDashing && !wallEnd && (!wallLeft || !wallRight))
 			{
 				if (isPushing) isPushing = false;
 				isWalking = false;
 				vel.x = 0;
 			}
-			else if (wallEnd && app->input->GetKey(SDL_SCANCODE_UP) == KEY_IDLE)
+			else if (wallEnd && app->input->GetKey(SDL_SCANCODE_UP) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_IDLE
+				&& ((wallRight && app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) || (wallLeft && app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)))
 			{
 				vel.x = 0;
 			}
@@ -224,6 +237,8 @@ bool Player::Update(float dt)
 			if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !activeSword && !enterDoor)
 			{	
 				isPushing = false;
+				wallLeft = false;
+				wallRight = false;
 
 				if (!isJumping && !hasJumped && ground && jumpCount == 0)
 				{
@@ -481,22 +496,23 @@ bool Player::Update(float dt)
 	else yOffset = 10;
 
 	if (wallRight || wallLeft) currentEffectsAnim = &climbEffectAnim;
+	if (isPushing && !canPush) currentEffectsAnim = &dangerEffectAnim;
 
 	if (isFacingRight)
 	{
 		app->render->DrawTexture(texture, position.x, position.y - yOffset, &rect);
-		if (wallRight || wallLeft) app->render->DrawTexture(effectsTexture, position.x + 12, position.y - 32, &currentEffectsAnim->GetCurrentFrame());
+		if (wallRight || wallLeft || (isPushing && !canPush)) app->render->DrawTexture(effectsTexture, position.x + 12, position.y - 32, &currentEffectsAnim->GetCurrentFrame());
 		else if (isJumping) app->render->DrawTexture(effectsTexture, position.x + 12, position.y + 32, &currentEffectsAnim->GetCurrentFrame());
 	}
 	else
 	{
 		app->render->DrawTexture(texture, position.x, position.y - yOffset, &rect, SDL_FLIP_HORIZONTAL);
-		if (wallRight || wallLeft) app->render->DrawTexture(effectsTexture, position.x + 24, position.y - 32, &currentEffectsAnim->GetCurrentFrame(), SDL_FLIP_HORIZONTAL);
+		if (wallRight || wallLeft || (isPushing && !canPush)) app->render->DrawTexture(effectsTexture, position.x + 24, position.y - 32, &currentEffectsAnim->GetCurrentFrame(), SDL_FLIP_HORIZONTAL);
 		else if (isJumping) app->render->DrawTexture(effectsTexture, position.x + 24, position.y + 32, &currentEffectsAnim->GetCurrentFrame(), SDL_FLIP_HORIZONTAL);
 	}
 
     currentAnim->Update();
-	if (wallRight || wallLeft || isJumping) currentEffectsAnim->Update();
+	if (wallRight || wallLeft || isJumping || (isPushing && !canPush)) currentEffectsAnim->Update();
 	//printf("\r jumpcount: %d	ground: %d	isJumping: %d	hadJumped: %d	wall: %d", jumpCount, ground,isJumping,hasJumped,wall);
 	/*printf("\r playerX: %d playerY: %d", position.x, position.y);*/
 	printf("\r cameraX: %d cameraY: %d positionX: %d positionY %d", app->render->camera.x, app->render->camera.y, position.x, position.y);
@@ -576,6 +592,9 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		if (wallLeft || wallRight) wallEnd = true;
 		else ground = true;
 		break;
+	case ColliderType::WALL_DOWN:
+		wallEnd = false;
+		break;
 	case ColliderType::OBSTACLE:
 		if (!isJumping) isPushing = true;
 		break;
@@ -630,6 +649,7 @@ void Player::LoadAnimations()
 
 	climbEffectAnim.LoadAnimations("climbEffectAnim", "player");
 	jumpEffectAnim.LoadAnimations("jumpEffectAnim", "player");
+	dangerEffectAnim.LoadAnimations("dangerEffectAnim", "player");
 }
 
 void Player::ToggleGodMode()

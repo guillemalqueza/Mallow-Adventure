@@ -81,6 +81,10 @@ public:
 
 	};
 
+	virtual void OnExitCollision(PhysBody* physA, PhysBody* physB) {
+	
+	};
+
 public:
 
 	SString name;

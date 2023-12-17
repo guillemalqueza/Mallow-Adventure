@@ -30,7 +30,7 @@ bool Equipment::Start() {
 
 	//initilize textures
 	texture = app->tex->Load(texturePath);
-	pbody = app->physics->CreateRectangleSensor(position.x + 90, position.y + 190, 25, 200, bodyType::STATIC);
+	pbody = app->physics->CreateRectangleSensor(position.x + 90, position.y + 120, 25, 200, bodyType::STATIC);
 	pbody->ctype = ColliderType::EQUIPMENT;
 	pbody->listener = this;
 
@@ -63,7 +63,7 @@ bool Equipment::Update(float dt)
 
 
 	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 90;
-	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 190;
+	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 120;
 
 	app->render->DrawTexture(texture, position.x, position.y, &currentAnim->GetCurrentFrame());
 
@@ -78,7 +78,34 @@ bool Equipment::CleanUp()
 
 void Equipment::OnCollision(PhysBody* physA, PhysBody* physB)
 {
-	
+	if (physA == pbody) {
+		switch (physB->ctype)
+		{
+		case ColliderType::PLAYER:
+			LOG("Collision PLAYER");
+			if (!isPicked)
+			{
+				pbody->body->SetActive(false);
+				app->scene->player->activeSword = true;
+				app->scene->player->isEquipped = true;
+				isPicked = true;
+			}
+			break;
+		}
+	}
+	else if (physA == pbody2) {
+		switch (physB->ctype)
+		{
+		case ColliderType::PLAYER:
+			LOG("Collision PLAYER");
+			if (!equipmentArea)
+			{
+				pbody2->body->SetActive(false);
+				equipmentArea = true;
+			}
+			break;
+		}
+	}
 	
 }
 
