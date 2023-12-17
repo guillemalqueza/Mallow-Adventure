@@ -33,6 +33,7 @@ public:
 	float acceleration = 1.0f;
 	int health = 3;
 	bool logUp = true;
+	bool changeLevel = false;
 
 
 private:

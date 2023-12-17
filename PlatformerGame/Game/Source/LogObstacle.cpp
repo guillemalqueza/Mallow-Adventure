@@ -9,6 +9,7 @@
 #include "Point.h"
 #include "Physics.h"
 #include "EntityManager.h"
+#include "FadeToBlack.h"
 
 LogObstacle::LogObstacle() : Entity(EntityType::LOG_OBSTACLE)
 {
@@ -51,10 +52,16 @@ bool LogObstacle::Update(float dt)
 		logUp = false;
 		LOG("LOG DOWN");	
 	}
-	if (logUp==false && currentAnim == &logDownAnim && currentAnim->HasFinished()) {
+	if (!logUp && currentAnim == &logDownAnim && currentAnim->HasFinished()) {
 		pbody->body->SetActive(false);
 		currentAnim = &logDownIdle;
 		LOG("LOG DOWN IDLE");
+	}
+
+	if (!logUp && app->scene->player->position.x > (position.x + 100) && !changeLevel)
+	{
+		app->fade->Fade(3, 60);
+		changeLevel = true;
 	}
 
 	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 124;

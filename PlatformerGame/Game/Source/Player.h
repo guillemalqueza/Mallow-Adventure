@@ -33,6 +33,18 @@ public:
 	
 	void ToggleGodMode();
 
+	void DrawPlayer();
+
+	void LeftMovement();
+
+	void RightMovement();
+
+	void Jump();
+
+	void ClimbUp();
+
+	void ClimbDown();
+
 public:
 	float speed = 0.2f;
 	const char* texturePath;
@@ -95,6 +107,10 @@ public:
 	bool godMode = false;
 
 	b2Transform initialTransform;
+
+	b2Vec2 vel;
+
+	float dt;
 
 };
 

@@ -56,6 +56,8 @@ bool Player::Start() {
 
 bool Player::Update(float dt)
 {
+	this->dt = dt;
+
 	//restart position
 	if (app->input->GetKey(SDL_SCANCODE_F3)) SetToInitialPosition();
 
@@ -70,7 +72,7 @@ bool Player::Update(float dt)
 			else currentAnim = &armorIdleAnim;
 		}
 
-		b2Vec2 vel = pbody->body->GetLinearVelocity();
+		vel = pbody->body->GetLinearVelocity();
 
 		if (!godMode)
 		{
@@ -93,47 +95,12 @@ bool Player::Update(float dt)
 			//climb wall keys
 			if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT && !activeSword && !enterDoor && !isDrinking)
 			{
-				isFacingUp = true;
-
-				if ((wallLeft || wallRight) && !wallEnd)
-				{
-					ground = false;
-					vel = b2Vec2(0, -speed * dt);
-					currentAnim = &wallAnim;
-				}
-				else if (wallEnd && wallRight)
-				{
-					vel = b2Vec2(speed * dt, 0);
-					currentAnim = &walkAnim;
-				}
-				else if (wallEnd && wallLeft)
-				{
-					vel = b2Vec2(-speed * dt, 0);
-					currentAnim = &walkAnim;
-				}
+				ClimbUp();
 			}
+
 			if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT && !activeSword && !enterDoor && !isDrinking)
 			{
-				if ((wallRight) && wallEnd)
-				{
-					ground = false;
-					vel = b2Vec2(-(speed/2) * dt, speed * dt);
-					currentAnim = &wallAnim;
-				}
-				else if ((wallLeft) && wallEnd)
-				{
-					ground = false;
-					vel = b2Vec2((speed/2) * dt, speed * dt);
-					currentAnim = &wallAnim;
-				}
-				else
-				{
-					ground = false;
-					vel = b2Vec2(0, speed * dt);
-					currentAnim = &wallAnim;
-				}
-				if (wallRight) isFacingRight = true;
-				else if (wallLeft) isFacingRight = false;
+				ClimbDown();
 			}
 
 			//crouch
@@ -159,66 +126,12 @@ bool Player::Update(float dt)
 			//player movement
 			if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT && !activeSword && !enterDoor && !isDrinking)
 			{
-				if (!isDashing) vel.x = -speed * dt;
-				if (!isJumping && !wallLeft && !wallRight)
-				{
-					if (isCrouching)
-					{
-						if (!isEquipped) currentAnim = &crouchWalkAnim;
-						else currentAnim = &armorCrouchWalkAnim;
-					}
-					else if (!isPushing)
-					{
-						if (!isEquipped) currentAnim = &walkAnim;
-						else currentAnim = &armorWalkAnim;
-					}
-					else
-					{
-						currentAnim = &pushAnim;
-					}
-				}
-				isWalking = true;
-				if (currentAnim == &wallAnim && !ground && isFacingRight)
-				{
-					wallLeft = false;
-					wallRight = false;
-					if (!isEquipped) currentAnim = &idleAnim;
-					else currentAnim = &armorIdleAnim;
-					pbody->body->SetGravityScale(1.0f);
-				}
-				isFacingRight = false;
+				LeftMovement();
 			}
 
 			if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT && !activeSword && !enterDoor && !isDrinking)
 			{
-				if (!isDashing) vel.x = speed * dt;
-				if (!isJumping && !wallLeft && !wallRight)
-				{
-					if (isCrouching)
-					{
-						if (!isEquipped) currentAnim = &crouchWalkAnim;
-						else currentAnim = &armorCrouchWalkAnim;
-					}
-					else if (!isPushing)
-					{
-						if (!isEquipped) currentAnim = &walkAnim;
-						else currentAnim = &armorWalkAnim;
-					}
-					else
-					{
-						currentAnim = &pushAnim;
-					}
-				}
-				isWalking = true;
-				if (currentAnim == &wallAnim && !ground && !isFacingRight)
-				{
-					wallLeft = false;
-					wallRight = false;
-					if (!isEquipped) currentAnim = &idleAnim;
-					else currentAnim = &armorIdleAnim;
-					pbody->body->SetGravityScale(1.0f);
-				}
-				isFacingRight = true;
+				RightMovement();
 			}
 
 			if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_IDLE && !isDashing && !wallEnd && (!wallLeft || !wallRight))
@@ -233,57 +146,10 @@ bool Player::Update(float dt)
 				vel.x = 0;
 			}
 
-			//printf("\r jumpcount %d, isJumping %i, hasJumped %i, ground %i, dashCount %d", jumpCount, isJumping, hasJumped, ground, dashCount);
 			//jump
 			if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !activeSword && !enterDoor && !isDrinking)
 			{	
-				isPushing = false;
-				wallLeft = false;
-				wallRight = false;
-
-				if (!isJumping && !hasJumped && ground && jumpCount == 0)
-				{
-					if (currentEffectsAnim != nullptr) currentEffectsAnim->Reset();
-					if (!isEquipped) currentAnim = &jumpAnim;
-					else currentAnim = &armorJumpAnim;
-					currentAnim->ResetLoopCount();
-					currentAnim->Reset();
-					currentEffectsAnim = &jumpEffectAnim;
-					isJumping = true;
-					hasJumped = true;
-					vel = b2Vec2(vel.x, -8.2f);
-					pbody->body->SetLinearVelocity(vel);
-					jumpCount = 1;
-				}
-				else if (jumpCount == 1 && hasJumped && dashCount == 0)
-				{
-					if (currentEffectsAnim != nullptr) currentEffectsAnim->Reset();
-					if (!isEquipped) currentAnim = &jumpAnim;
-					else currentAnim = &armorJumpAnim;
-					currentAnim->ResetLoopCount();
-					currentAnim->Reset();
-					currentEffectsAnim = &jumpEffectAnim;
-					isJumping = true;
-					vel = b2Vec2(vel.x, -8.2f);
-					pbody->body->SetLinearVelocity(vel);
-					jumpCount = 2;
-					dashCount = 1;
-				}
- 				else if (!ground && !isJumping && !hasJumped && jumpCount == 0 && dashCount == 0)
-				{
-					if (currentEffectsAnim != nullptr) currentEffectsAnim->Reset();
-					if (!isEquipped) currentAnim = &jumpAnim;
-					else currentAnim = &armorJumpAnim;
-					currentAnim->ResetLoopCount();
-					currentAnim->Reset();
-					currentEffectsAnim = &jumpEffectAnim;
-					isJumping = true;
-					vel = b2Vec2(vel.x, -8.2f);
-					pbody->body->SetLinearVelocity(vel);
-					jumpCount = 2;
-					dashCount = 1;
-				}
-
+				Jump();
 			}
 
 			//dash
@@ -391,9 +257,10 @@ bool Player::Update(float dt)
 			if (jumper)
 			{
 				isJumping = true;
-				currentAnim->Reset();
 				if (!isEquipped) currentAnim = &jumpAnim;
 				else currentAnim = &armorJumpAnim;
+				currentAnim->ResetLoopCount();
+				currentAnim->Reset();
 				vel = b2Vec2(vel.x, -1.0f * dt);
 				pbody->body->SetLinearVelocity(vel);
 				jumper = false;
@@ -498,17 +365,190 @@ bool Player::Update(float dt)
 	}
 
 	if (app->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN) isEquipped = !isEquipped;
+	if (wallRight || wallLeft) currentEffectsAnim = &climbEffectAnim;
+	if (isPushing && !canPush) currentEffectsAnim = &dangerEffectAnim;
 
-	app->render->DrawTexture(lightTexture, position.x-150, position.y-165, NULL, SDL_FLIP_NONE, 1.0f);
-    SDL_Rect rect = currentAnim->GetCurrentFrame();
+	DrawPlayer();
 
+    currentAnim->Update();
+	if (wallRight || wallLeft || isJumping || (isPushing && !canPush)) currentEffectsAnim->Update();
+
+	printf("\r cameraX: %d cameraY: %d positionX: %d positionY %d", app->render->camera.x, app->render->camera.y, position.x, position.y);
+    return true;
+}
+
+void Player::ClimbUp()
+{
+	isFacingUp = true;
+
+	if ((wallLeft || wallRight) && !wallEnd)
+	{
+		ground = false;
+		vel = b2Vec2(0, -speed * dt);
+		currentAnim = &wallAnim;
+	}
+	else if (wallEnd && wallRight)
+	{
+		vel = b2Vec2(speed * dt, 0);
+		currentAnim = &walkAnim;
+	}
+	else if (wallEnd && wallLeft)
+	{
+		vel = b2Vec2(-speed * dt, 0);
+		currentAnim = &walkAnim;
+	}
+}
+
+void Player::ClimbDown()
+{
+	if ((wallRight) && wallEnd)
+	{
+		ground = false;
+		vel = b2Vec2(-(speed / 2) * dt, speed * dt);
+		currentAnim = &wallAnim;
+	}
+	else if ((wallLeft) && wallEnd)
+	{
+		ground = false;
+		vel = b2Vec2((speed / 2) * dt, speed * dt);
+		currentAnim = &wallAnim;
+	}
+	else
+	{
+		ground = false;
+		vel = b2Vec2(0, speed * dt);
+		currentAnim = &wallAnim;
+	}
+	if (wallRight) isFacingRight = true;
+	else if (wallLeft) isFacingRight = false;
+}
+
+void Player::LeftMovement()
+{
+	if (!isDashing) vel.x = -speed * dt;
+	if (!isJumping && !wallLeft && !wallRight)
+	{
+		if (isCrouching)
+		{
+			if (!isEquipped) currentAnim = &crouchWalkAnim;
+			else currentAnim = &armorCrouchWalkAnim;
+		}
+		else if (!isPushing)
+		{
+			if (!isEquipped) currentAnim = &walkAnim;
+			else currentAnim = &armorWalkAnim;
+		}
+		else
+		{
+			currentAnim = &pushAnim;
+		}
+	}
+	isWalking = true;
+	if (currentAnim == &wallAnim && !ground && isFacingRight)
+	{
+		wallLeft = false;
+		wallRight = false;
+		if (!isEquipped) currentAnim = &idleAnim;
+		else currentAnim = &armorIdleAnim;
+		pbody->body->SetGravityScale(1.0f);
+	}
+	isFacingRight = false;
+}
+
+void Player::RightMovement()
+{
+	if (!isDashing) vel.x = speed * dt;
+	if (!isJumping && !wallLeft && !wallRight)
+	{
+		if (isCrouching)
+		{
+			if (!isEquipped) currentAnim = &crouchWalkAnim;
+			else currentAnim = &armorCrouchWalkAnim;
+		}
+		else if (!isPushing)
+		{
+			if (!isEquipped) currentAnim = &walkAnim;
+			else currentAnim = &armorWalkAnim;
+		}
+		else
+		{
+			currentAnim = &pushAnim;
+		}
+	}
+	isWalking = true;
+	if (currentAnim == &wallAnim && !ground && !isFacingRight)
+	{
+		wallLeft = false;
+		wallRight = false;
+		if (!isEquipped) currentAnim = &idleAnim;
+		else currentAnim = &armorIdleAnim;
+		pbody->body->SetGravityScale(1.0f);
+	}
+	isFacingRight = true;
+}
+
+void Player::Jump()
+{
+	isPushing = false;
+	wallLeft = false;
+	wallRight = false;
+
+	if (!isJumping && !hasJumped && ground && jumpCount == 0)
+	{
+		if (currentEffectsAnim != nullptr) currentEffectsAnim->Reset();
+		if (!isEquipped) currentAnim = &jumpAnim;
+		else currentAnim = &armorJumpAnim;
+		currentAnim->ResetLoopCount();
+		currentAnim->Reset();
+		currentEffectsAnim = &jumpEffectAnim;
+		isJumping = true;
+		hasJumped = true;
+		vel = b2Vec2(vel.x, -8.2f);
+		pbody->body->SetLinearVelocity(vel);
+		jumpCount = 1;
+	}
+	else if (jumpCount == 1 && hasJumped && dashCount == 0)
+	{
+		if (currentEffectsAnim != nullptr) currentEffectsAnim->Reset();
+		if (!isEquipped) currentAnim = &jumpAnim;
+		else currentAnim = &armorJumpAnim;
+		currentAnim->ResetLoopCount();
+		currentAnim->Reset();
+		currentEffectsAnim = &jumpEffectAnim;
+		isJumping = true;
+		vel = b2Vec2(vel.x, -8.2f);
+		pbody->body->SetLinearVelocity(vel);
+		jumpCount = 2;
+		dashCount = 1;
+	}
+	else if (!ground && !isJumping && !hasJumped && jumpCount == 0 && dashCount == 0)
+	{
+		if (currentEffectsAnim != nullptr) currentEffectsAnim->Reset();
+		if (!isEquipped) currentAnim = &jumpAnim;
+		else currentAnim = &armorJumpAnim;
+		currentAnim->ResetLoopCount();
+		currentAnim->Reset();
+		currentEffectsAnim = &jumpEffectAnim;
+		isJumping = true;
+		vel = b2Vec2(vel.x, -8.2f);
+		pbody->body->SetLinearVelocity(vel);
+		jumpCount = 2;
+		dashCount = 1;
+	}
+}
+
+void Player::DrawPlayer()
+{
+	// draw light
+	app->render->DrawTexture(lightTexture, position.x - 150, position.y - 165, NULL, SDL_FLIP_NONE, 1.0f);
+	SDL_Rect rect = currentAnim->GetCurrentFrame();
+
+	// calculate Y offset
 	int yOffset = 0;
 	if (!isCrouching) yOffset = 0;
 	else yOffset = 10;
 
-	if (wallRight || wallLeft) currentEffectsAnim = &climbEffectAnim;
-	if (isPushing && !canPush) currentEffectsAnim = &dangerEffectAnim;
-
+	// draw player and effects
 	if (isFacingRight)
 	{
 		app->render->DrawTexture(texture, position.x, position.y - yOffset, &rect);
@@ -521,13 +561,76 @@ bool Player::Update(float dt)
 		if (wallRight || wallLeft || (isPushing && !canPush)) app->render->DrawTexture(effectsTexture, position.x + 24, position.y - 32, &currentEffectsAnim->GetCurrentFrame(), SDL_FLIP_HORIZONTAL);
 		else if (isJumping) app->render->DrawTexture(effectsTexture, position.x + 24, position.y + 32, &currentEffectsAnim->GetCurrentFrame(), SDL_FLIP_HORIZONTAL);
 	}
+}
 
-    currentAnim->Update();
-	if (wallRight || wallLeft || isJumping || (isPushing && !canPush)) currentEffectsAnim->Update();
-	//printf("\r jumpcount: %d	ground: %d	isJumping: %d	hadJumped: %d	wall: %d", jumpCount, ground,isJumping,hasJumped,wall);
-	/*printf("\r playerX: %d playerY: %d", position.x, position.y);*/
-	printf("\r cameraX: %d cameraY: %d positionX: %d positionY %d", app->render->camera.x, app->render->camera.y, position.x, position.y);
-    return true;
+// Sets the player to the initial position
+void Player::SetToInitialPosition()
+{
+	if (app->scene->level1Enabled)
+	{
+		app->fade->Fade(1,60);
+	}
+	else if (app->scene->level2Enabled)
+	{
+		app->fade->Fade(2, 60);
+	}
+	else if (app->scene->level3Enabled)
+	{
+		app->fade->Fade(3, 60);
+	}
+}
+
+// Loads the animations
+void Player::LoadAnimations()
+{
+	idleAnim.LoadAnimations("idleAnim", "player");
+	jumpAnim.LoadAnimations("jumpAnim", "player");
+	walkAnim.LoadAnimations("walkAnim", "player");
+	crouchAnim.LoadAnimations("crouchAnim", "player");
+	crouchWalkAnim.LoadAnimations("crouchWalkAnim", "player");
+	fallAnim.LoadAnimations("fallAnim", "player");
+	wallAnim.LoadAnimations("wallAnim", "player");
+	deadAnim.LoadAnimations("deadAnim", "player");
+
+	armorIdleAnim.LoadAnimations("armorIdleAnim", "player");
+	armorJumpAnim.LoadAnimations("armorJumpAnim", "player");
+	armorWalkAnim.LoadAnimations("armorWalkAnim", "player");
+	armorCrouchAnim.LoadAnimations("armorCrouchAnim", "player");
+	armorCrouchWalkAnim.LoadAnimations("armorCrouchWalkAnim", "player");
+	armorFallAnim.LoadAnimations("armorFallAnim", "player");
+	armorDeadAnim.LoadAnimations("armorDeadAnim", "player");
+	attack1Anim.LoadAnimations("attack1Anim", "player");
+	attack2Anim.LoadAnimations("attack2Anim", "player");
+	attack3Anim.LoadAnimations("attack3Anim", "player");
+	attackJumpAnim.LoadAnimations("attackJumpAnim", "player");
+	pushAnim.LoadAnimations("pushAnim", "player");
+	swordAnim.LoadAnimations("swordAnim", "player");
+	doorAnim.LoadAnimations("doorAnim", "player");
+	drinkAnim.LoadAnimations("drinkAnim", "player");
+
+	climbEffectAnim.LoadAnimations("climbEffectAnim", "player");
+	jumpEffectAnim.LoadAnimations("jumpEffectAnim", "player");
+	dangerEffectAnim.LoadAnimations("dangerEffectAnim", "player");
+}
+
+// Toggles the god mode
+void Player::ToggleGodMode()
+{
+	godMode = !godMode;
+
+	if (godMode)
+	{
+		pbody->body->GetFixtureList()->SetSensor(true);
+		pbody->body->SetGravityScale(0.0f);
+		pbody->body->SetLinearVelocity({ 0, 0 });
+		currentAnim = &idleAnim;
+	}
+	else
+	{
+		pbody->body->GetFixtureList()->SetSensor(false);
+		pbody->body->SetGravityScale(1.0f);
+	}
+
 }
 
 bool Player::CleanUp()
@@ -536,6 +639,7 @@ bool Player::CleanUp()
 	return true;
 }
 
+// Handles the collision
 void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 
 	switch (physB->ctype)
@@ -567,7 +671,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		break;
 	case ColliderType::SPIKE:
 		LOG("Collision SPIKE");
-		if(!godMode && !isDead) isDead = true;
+		if (!godMode && !isDead) isDead = true;
 		break;
 	case ColliderType::JUMP:
 		LOG("Collision JUMP");
@@ -576,9 +680,9 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		break;
 	case ColliderType::CAMERA:
 		LOG("Collision CAMERA");
-		if ((app->scene->cameraIdx == 0 && isFacingRight) 
+		if ((app->scene->cameraIdx == 0 && isFacingRight)
 			|| (app->scene->cameraIdx == 3 && position.x < 1400 && position.y > 5200)
-			|| (app->scene->cameraIdx == 4 && position.x > 2000 && position.x < 2430 && position.y < 5200) 
+			|| (app->scene->cameraIdx == 4 && position.x > 2000 && position.x < 2430 && position.y < 5200)
 			|| (app->scene->cameraIdx == 5 && position.x > 3200 && position.x < 3430 && position.y > 3515)
 			|| (app->scene->cameraIdx == 6 && position.x > 3760 && position.x < 4000 && position.y > 2716)
 			|| (app->scene->cameraIdx == 7 && position.x > 3800 && position.x < 4150 && position.y > 2075 && position.y < 2300)
@@ -612,73 +716,6 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 	case ColliderType::UNKNOWN:
 		LOG("Collision UNKNOWN");
 		break;
-	}
-
-}
-
-void Player::SetToInitialPosition()
-{
-	if (app->scene->level1Enabled)
-	{
-		app->fade->Fade(1,60);
-	}
-	else if (app->scene->level2Enabled)
-	{
-		app->fade->Fade(2, 60);
-	}
-	else if (app->scene->level3Enabled)
-	{
-		app->fade->Fade(3, 60);
-	}
-}
-
-void Player::LoadAnimations()
-{
-	idleAnim.LoadAnimations("idleAnim", "player");
-	jumpAnim.LoadAnimations("jumpAnim", "player");
-	walkAnim.LoadAnimations("walkAnim", "player");
-	crouchAnim.LoadAnimations("crouchAnim", "player");
-	crouchWalkAnim.LoadAnimations("crouchWalkAnim", "player");
-	fallAnim.LoadAnimations("fallAnim", "player");
-	wallAnim.LoadAnimations("wallAnim", "player");
-	deadAnim.LoadAnimations("deadAnim", "player");
-
-	armorIdleAnim.LoadAnimations("armorIdleAnim", "player");
-	armorJumpAnim.LoadAnimations("armorJumpAnim", "player");
-	armorWalkAnim.LoadAnimations("armorWalkAnim", "player");
-	armorCrouchAnim.LoadAnimations("armorCrouchAnim", "player");
-	armorCrouchWalkAnim.LoadAnimations("armorCrouchWalkAnim", "player");
-	armorFallAnim.LoadAnimations("armorFallAnim", "player");
-	armorDeadAnim.LoadAnimations("armorDeadAnim", "player");
-	attack1Anim.LoadAnimations("attack1Anim", "player");
-	attack2Anim.LoadAnimations("attack2Anim", "player");
-	attack3Anim.LoadAnimations("attack3Anim", "player");
-	attackJumpAnim.LoadAnimations("attackJumpAnim", "player");
-	pushAnim.LoadAnimations("pushAnim", "player");
-	swordAnim.LoadAnimations("swordAnim", "player");
-	doorAnim.LoadAnimations("doorAnim", "player");
-	drinkAnim.LoadAnimations("drinkAnim", "player");
-
-	climbEffectAnim.LoadAnimations("climbEffectAnim", "player");
-	jumpEffectAnim.LoadAnimations("jumpEffectAnim", "player");
-	dangerEffectAnim.LoadAnimations("dangerEffectAnim", "player");
-}
-
-void Player::ToggleGodMode()
-{
-	godMode = !godMode;
-
-	if (godMode)
-	{
-		pbody->body->GetFixtureList()->SetSensor(true);
-		pbody->body->SetGravityScale(0.0f);
-		pbody->body->SetLinearVelocity({ 0, 0 });
-		currentAnim = &idleAnim;
-	}
-	else
-	{
-		pbody->body->GetFixtureList()->SetSensor(false);
-		pbody->body->SetGravityScale(1.0f);
 	}
 
 }
