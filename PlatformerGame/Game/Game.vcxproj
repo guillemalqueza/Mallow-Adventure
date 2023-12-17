@@ -104,6 +104,7 @@
     <ClCompile Include="Source\Key.cpp" />
     <ClCompile Include="Source\Jumper.cpp" />
     <ClCompile Include="Source\LockDoor.cpp" />
+    <ClCompile Include="Source\LogObstacle.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\App.cpp" />
     <ClCompile Include="Source\Audio.cpp" />
@@ -132,6 +133,7 @@
     <ClInclude Include="Source\Key.h" />
     <ClInclude Include="Source\Jumper.h" />
     <ClInclude Include="Source\LockDoor.h" />
+    <ClInclude Include="Source\LogObstacle.h" />
     <ClInclude Include="Source\Map.h" />
     <ClInclude Include="Source\Obstacle.h" />
     <ClInclude Include="Source\ParticleManager.h" />

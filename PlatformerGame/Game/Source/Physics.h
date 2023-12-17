@@ -24,12 +24,13 @@ enum bodyType {
 };
 
 enum class ColliderType {
-	PLAYER, 
+	PLAYER,
 	KEY,
 	EQUIPMENT_AREA,
 	EQUIPMENT,
 	CHEST,
 	CHEST_AREA,
+	LOG_OBSTACLE,
 	PLATFORM,
 	WALL,
 	L_WALL,

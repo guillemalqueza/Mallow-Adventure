@@ -81,6 +81,9 @@
     <ClCompile Include="Source\Chest.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
+    <ClCompile Include="Source\LogObstacle.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\App.h" />
@@ -193,6 +196,9 @@
       <Filter>Entities</Filter>
     </ClInclude>
     <ClInclude Include="Source\Chest.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\LogObstacle.h">
       <Filter>Entities</Filter>
     </ClInclude>
   </ItemGroup>

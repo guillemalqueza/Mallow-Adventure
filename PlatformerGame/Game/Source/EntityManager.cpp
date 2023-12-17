@@ -12,6 +12,7 @@
 #include "Equipment.h"
 #include "Obstacle.h"
 #include "Chest.h"
+#include "LogObstacle.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -119,6 +120,9 @@ Entity* EntityManager::CreateEntity(EntityType type)
 		break;
 	case EntityType::CHEST:
 		entity = new Chest();
+		break;
+	case EntityType::LOG_OBSTACLE:
+		entity = new LogObstacle();
 		break;
 	default:
 		break;

@@ -20,6 +20,7 @@ enum class EntityType
 	SKELETON,
 	GHOST,
 	OBSTACLE,
+	LOG_OBSTACLE,
 	UNKNOWN
 };
 
