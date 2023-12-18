@@ -44,6 +44,7 @@
 		<skeleton x="2200" y="4875" texturepath="Assets/Textures/enemy_skeleton.png" speed="0.2f" open="false"/>
 		<skeleton x="3700" y="3423" texturepath="Assets/Textures/enemy_skeleton.png" speed="0.2f" open="false"/>
 		<skeleton x="3266" y="2300" texturepath="Assets/Textures/enemy_skeleton.png" speed="0.2f" open="true"/>
+		<ghost x="3808" y="2976" texturepath="Assets/Textures/enemy_ghost.png" speed="0.2f"/>
 		<ghost x="5920" y="2150" texturepath="Assets/Textures/enemy_ghost.png" speed="0.2f"/>
 		<key x="704" y="632" texturepath="Assets/Textures/key.png"/>
 		<jumper x="4880" y="634" texturepath="Assets/Textures/jumper.png"/>
@@ -268,6 +269,20 @@
 				<animation x="500" y="704" w="100" h="64"/>
 				<animation x="600" y="704" w="100" h="64"/>
 			</drinkAnim>
+
+			<landJumpAnim loop="false" speed="0.3f">
+				<animation x="0" y="1600" w="100" h="64"/>
+				<animation x="100" y="1600" w="100" h="64"/>
+				<animation x="200" y="1600" w="100" h="64"/>
+				<animation x="300" y="1600" w="100" h="64"/>
+			</landJumpAnim>
+
+			<armorLandJumpAnim loop="false" speed="0.3f">
+				<animation x="0" y="1664" w="100" h="64"/>
+				<animation x="100" y="1664" w="100" h="64"/>
+				<animation x="200" y="1664" w="100" h="64"/>
+				<animation x="300" y="1664" w="100" h="64"/>
+			</armorLandJumpAnim>
 			
 			<!--Player Effects-->
 

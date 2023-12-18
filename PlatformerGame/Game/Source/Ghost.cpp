@@ -25,7 +25,7 @@ bool Ghost::Awake() {
 	texturePath = parameters.attribute("texturepath").as_string();
 	speed = parameters.attribute("speed").as_float();
 	summonPosition.x = parameters.attribute("x").as_int() - 100;
-	summonPosition.y = parameters.attribute("y").as_int() - 150;
+	summonPosition.y = parameters.attribute("y").as_int() - 100;
 
 	return true;
 }
@@ -54,7 +54,6 @@ bool Ghost::Start() {
 
 bool Ghost::Update(float dt)
 {
-	LOG("POSITION X: %i, POSITION Y: %i", position.x, position.y);
 	playerTilePos = app->map->WorldToMap(app->scene->player->position.x + 50, app->scene->player->position.y);
 
 	//ghost

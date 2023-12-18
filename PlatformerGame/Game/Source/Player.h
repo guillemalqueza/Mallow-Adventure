@@ -67,9 +67,9 @@ public:
 	int potionDrinkFxId;
 
 	Animation* currentAnim;
-	Animation idleAnim, jumpAnim, walkAnim, crouchAnim, crouchWalkAnim, fallAnim, wallAnim, deadAnim,
+	Animation idleAnim, jumpAnim, walkAnim, crouchAnim, crouchWalkAnim, fallAnim, wallAnim, deadAnim,landJumpAnim,
 				armorIdleAnim, armorJumpAnim, armorWalkAnim, armorCrouchAnim, armorCrouchWalkAnim, armorFallAnim, armorDeadAnim, 
-				attack1Anim, attack2Anim, attack3Anim, attackJumpAnim, pushAnim, swordAnim, doorAnim, drinkAnim;
+				attack1Anim, attack2Anim, attack3Anim, attackJumpAnim, pushAnim, swordAnim, doorAnim, drinkAnim, armorLandJumpAnim;
 
 	Animation* currentEffectsAnim;
 	Animation climbEffectAnim, jumpEffectAnim, dangerEffectAnim;
@@ -88,6 +88,7 @@ public:
 	bool wallEnd = false;
 	float previousY = 0.0f;
 	bool hasJumped = false;
+	bool isLanding = false;
 	bool isRunning = false;
 	bool isDashing = false;
 	bool canDash = true;

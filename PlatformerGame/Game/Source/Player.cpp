@@ -75,7 +75,7 @@ bool Player::Update(float dt)
 
 	if (!isDead)
 	{
-		if (!isJumping && !isCrouching && !isAttacking && !activeSword && !enterDoor && !isDrinking)
+		if (!isJumping && !isCrouching && !isAttacking && !activeSword && !enterDoor && !isDrinking && !isLanding)
 		{
 			if (!isEquipped) currentAnim = &idleAnim;
 			else currentAnim = &armorIdleAnim;
@@ -299,6 +299,7 @@ bool Player::Update(float dt)
 			if (position.y != previousY && !wallLeft && !wallRight)
 			{
 				ground = false;
+				isLanding = true;
 
 				if (pbody->body->GetLinearVelocity().y > 0)
 				{
@@ -333,9 +334,28 @@ bool Player::Update(float dt)
 				currentAnim->Reset();
 			}
 
+			if (isLanding)
+			{
+				if ((currentAnim == &landJumpAnim || currentAnim == &armorLandJumpAnim) && currentAnim->HasFinished())
+				{
+					isLanding = false;
+				}
+			}
+
+
 			if (activeSword && currentAnim->HasFinished()) activeSword = false;
 
 			if (isDrinking && currentAnim->HasFinished()) isDrinking = false;
+
+			if (previousY == position.y && isLanding && currentAnim == &fallAnim)
+			{
+
+				if (!isEquipped) currentAnim = &landJumpAnim;
+				else if (isEquipped) currentAnim = &armorLandJumpAnim;
+
+				currentAnim->ResetLoopCount();
+				currentAnim->Reset();
+			}
 		
 			previousY = position.y;
 
@@ -449,7 +469,10 @@ void Player::ClimbDown()
 
 void Player::LeftMovement()
 {
+	if (ground && isLanding) isLanding = false;
+
 	if (!isDashing) vel.x = -speed * dt;
+
 	if (!isJumping && !wallLeft && !wallRight)
 	{
 		if (isCrouching)
@@ -481,7 +504,10 @@ void Player::LeftMovement()
 
 void Player::RightMovement()
 {
+	if (ground && isLanding) isLanding = false;
+
 	if (!isDashing) vel.x = speed * dt;
+
 	if (!isJumping && !wallLeft && !wallRight)
 	{
 		if (isCrouching)
@@ -652,39 +678,6 @@ void Player::SetToInitialPosition()
 	}
 }
 
-// Loads the animations
-void Player::LoadAnimations()
-{
-	idleAnim.LoadAnimations("idleAnim", "player");
-	jumpAnim.LoadAnimations("jumpAnim", "player");
-	walkAnim.LoadAnimations("walkAnim", "player");
-	crouchAnim.LoadAnimations("crouchAnim", "player");
-	crouchWalkAnim.LoadAnimations("crouchWalkAnim", "player");
-	fallAnim.LoadAnimations("fallAnim", "player");
-	wallAnim.LoadAnimations("wallAnim", "player");
-	deadAnim.LoadAnimations("deadAnim", "player");
-
-	armorIdleAnim.LoadAnimations("armorIdleAnim", "player");
-	armorJumpAnim.LoadAnimations("armorJumpAnim", "player");
-	armorWalkAnim.LoadAnimations("armorWalkAnim", "player");
-	armorCrouchAnim.LoadAnimations("armorCrouchAnim", "player");
-	armorCrouchWalkAnim.LoadAnimations("armorCrouchWalkAnim", "player");
-	armorFallAnim.LoadAnimations("armorFallAnim", "player");
-	armorDeadAnim.LoadAnimations("armorDeadAnim", "player");
-	attack1Anim.LoadAnimations("attack1Anim", "player");
-	attack2Anim.LoadAnimations("attack2Anim", "player");
-	attack3Anim.LoadAnimations("attack3Anim", "player");
-	attackJumpAnim.LoadAnimations("attackJumpAnim", "player");
-	pushAnim.LoadAnimations("pushAnim", "player");
-	swordAnim.LoadAnimations("swordAnim", "player");
-	doorAnim.LoadAnimations("doorAnim", "player");
-	drinkAnim.LoadAnimations("drinkAnim", "player");
-
-	climbEffectAnim.LoadAnimations("climbEffectAnim", "player");
-	jumpEffectAnim.LoadAnimations("jumpEffectAnim", "player");
-	dangerEffectAnim.LoadAnimations("dangerEffectAnim", "player");
-}
-
 // Toggles the god mode
 void Player::ToggleGodMode()
 {
@@ -726,7 +719,22 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		ground = true;
 		jumpCount = 0;
 		dashCount = 0;
-		hasJumped = false;
+
+		if (hasJumped)
+		{
+			hasJumped = false;
+			isLanding = true;
+		}
+
+		if (isLanding)
+		{
+			if (!isEquipped) currentAnim = &landJumpAnim;
+			else if (isEquipped) currentAnim = &armorLandJumpAnim;
+
+			currentAnim->ResetLoopCount();
+			currentAnim->Reset();
+		}
+		
 		isJumping = false;
 		wallLeft = false;
 		wallRight = false;
@@ -790,4 +798,39 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		break;
 	}
 
+}
+
+// Loads the animations
+void Player::LoadAnimations()
+{
+	idleAnim.LoadAnimations("idleAnim", "player");
+	jumpAnim.LoadAnimations("jumpAnim", "player");
+	walkAnim.LoadAnimations("walkAnim", "player");
+	crouchAnim.LoadAnimations("crouchAnim", "player");
+	crouchWalkAnim.LoadAnimations("crouchWalkAnim", "player");
+	fallAnim.LoadAnimations("fallAnim", "player");
+	wallAnim.LoadAnimations("wallAnim", "player");
+	deadAnim.LoadAnimations("deadAnim", "player");
+	landJumpAnim.LoadAnimations("landJumpAnim", "player");
+
+	armorIdleAnim.LoadAnimations("armorIdleAnim", "player");
+	armorJumpAnim.LoadAnimations("armorJumpAnim", "player");
+	armorWalkAnim.LoadAnimations("armorWalkAnim", "player");
+	armorCrouchAnim.LoadAnimations("armorCrouchAnim", "player");
+	armorCrouchWalkAnim.LoadAnimations("armorCrouchWalkAnim", "player");
+	armorFallAnim.LoadAnimations("armorFallAnim", "player");
+	armorDeadAnim.LoadAnimations("armorDeadAnim", "player");
+	attack1Anim.LoadAnimations("attack1Anim", "player");
+	attack2Anim.LoadAnimations("attack2Anim", "player");
+	attack3Anim.LoadAnimations("attack3Anim", "player");
+	attackJumpAnim.LoadAnimations("attackJumpAnim", "player");
+	pushAnim.LoadAnimations("pushAnim", "player");
+	swordAnim.LoadAnimations("swordAnim", "player");
+	doorAnim.LoadAnimations("doorAnim", "player");
+	drinkAnim.LoadAnimations("drinkAnim", "player");
+	armorLandJumpAnim.LoadAnimations("armorLandJumpAnim", "player");
+
+	climbEffectAnim.LoadAnimations("climbEffectAnim", "player");
+	jumpEffectAnim.LoadAnimations("jumpEffectAnim", "player");
+	dangerEffectAnim.LoadAnimations("dangerEffectAnim", "player");
 }
