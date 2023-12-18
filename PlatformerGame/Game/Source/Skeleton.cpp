@@ -38,7 +38,7 @@ bool Skeleton::Start() {
 	pbody->ctype = ColliderType::SKELETON;
 	pbody->listener = this;
 
-	enemyPbody = app->physics->CreateRectangleSensor(position.x, position.y, 30, 54, bodyType::KINEMATIC);
+	enemyPbody = app->physics->CreateRectangleSensor(position.x, position.y, 30, 54, bodyType::DYNAMIC);
 	enemyPbody->ctype = ColliderType::ENEMY;
 	enemyPbody->listener = this;
 
@@ -200,11 +200,14 @@ void Skeleton::Move(const iPoint& origin, const iPoint& destination)
 
 void Skeleton::OnCollision(PhysBody* physA, PhysBody* physB)
 {
-	switch (physB->ctype)
+	if (physA->ctype == ColliderType::ENEMY )
 	{
-		case ColliderType::SWORD:
-			health -= 50;
-			break;
+		switch (physB->ctype)
+		{
+			case ColliderType::SWORD:
+				health -= 50;
+				break;
+		}
 	}
 }
 
