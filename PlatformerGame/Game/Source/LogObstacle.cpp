@@ -31,7 +31,7 @@ bool LogObstacle::Start() {
 
 	//initilize textures
 	texture = app->tex->Load(texturePath);
-	pbody = app->physics->CreateRectangle(position.x + 240, position.y + 200, 25, 130, bodyType::DYNAMIC);
+	pbody = app->physics->CreateRectangle(position.x + 270, position.y + 200, 100, 130, bodyType::DYNAMIC);
 	pbody->body->SetGravityScale(0);
 	pbody->ctype = ColliderType::LOG_OBSTACLE;
 	pbody->listener = this;
@@ -71,7 +71,7 @@ bool LogObstacle::Update(float dt)
 	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 124;
 	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 120;
 
-	app->render->DrawTexture(texture, position.x, position.y, &currentAnim->GetCurrentFrame());
+	app->render->DrawTexture(texture, position.x - 30, position.y, &currentAnim->GetCurrentFrame());
 
 	currentAnim->Update();
 	return true;
