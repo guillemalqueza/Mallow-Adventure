@@ -35,27 +35,31 @@ bool LogObstacle::Start() {
 	pbody->body->SetGravityScale(0);
 	pbody->ctype = ColliderType::LOG_OBSTACLE;
 	pbody->listener = this;
+	pbody->body->SetFixedRotation(true);
 
 	logIdleAnim.LoadAnimations("logIdleAnim", "log");
 	logDownAnim.LoadAnimations("logDownAnim", "log");
 	logDownIdle.LoadAnimations("logDownIdle", "log");
 	currentAnim = &logIdleAnim;
 
+	initialPosition.x = (pbody->body->GetTransform().p.x);
+	initialPosition.y = (pbody->body->GetTransform().p.y);
+
 	return true;
 }
 
 bool LogObstacle::Update(float dt)
 {
+	pbody->body->SetTransform(initialPosition, 0);
+
 	if(app->input->GetKey(SDL_SCANCODE_H) == KEY_DOWN) health -= 1;
 	if (health <= 0 && logUp) {
 		currentAnim= &logDownAnim;
 		logUp = false;
-		LOG("LOG DOWN");	
 	}
 	if (!logUp && currentAnim == &logDownAnim && currentAnim->HasFinished()) {
 		pbody->body->SetActive(false);
 		currentAnim = &logDownIdle;
-		LOG("LOG DOWN IDLE");
 	}
 
 	if (!logUp && app->scene->player->position.x > (position.x + 100) && !changeLevel)
@@ -86,5 +90,4 @@ void LogObstacle::OnCollision(PhysBody* physA, PhysBody* physB)
 		health -= 1;
 		break;
 	}
-	
 }

@@ -42,13 +42,12 @@ bool Obstacle::Start() {
 bool Obstacle::Update(float dt)
 {
 
-	if (app->scene->player->canPush && app->scene->player->isPushing && pbody->body->GetType() != b2_dynamicBody) pbody->body->SetType(b2BodyType::b2_dynamicBody);
-	else if ((!app->scene->player->isPushing || app->scene->player->isJumping) && pbody->body->GetType() != b2_staticBody) pbody->body->SetType(b2BodyType::b2_staticBody);
+	if (app->scene->player->canPush && pbody->body->GetType() != b2_dynamicBody) pbody->body->SetType(b2BodyType::b2_dynamicBody);
 
 	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 16;
 	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 16;
 
-	app->render->DrawTexture(texture, position.x - 16, position.y - 16 - 15);
+	app->render->DrawTexture(texture, position.x - 26, position.y - 16 - 15);
 
 	return true;
 }
@@ -60,8 +59,9 @@ bool Obstacle::CleanUp()
 
 void Obstacle::OnCollision(PhysBody* physA, PhysBody* physB)
 {
-	switch (physB->ctype)
-	{
-
+	if (physA->ctype == ColliderType::OBSTACLE && physB->ctype == ColliderType::PLATFORM && position.y > 2400) {
+		pbody->body->SetActive(false);
+		app->physics->world->DestroyBody(pbody->body);
+		app->entityManager->DestroyEntity(this);
 	}
 }

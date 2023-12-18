@@ -85,7 +85,7 @@ void Chest::OnCollision(PhysBody* physA, PhysBody* physB)
 		{
 		case ColliderType::PLAYER:
 			LOG("Collision PLAYER");
-			if (!isPicked)
+			if (!isPicked && app->scene->player->canOpen)
 			{
 				pbody->body->SetActive(false);
 				app->scene->player->canPush = true;
