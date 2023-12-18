@@ -251,7 +251,7 @@ void Scene::UpdateCameraShake()
 void Scene::StartLevel1()
 {
 	player->enterDoor = false;
-	player->pbody->body->SetTransform(b2Vec2(player->initialTransform.p.x, player->initialTransform.p.y), 0);
+	player->pbody->body->SetTransform(b2Vec2(PIXEL_TO_METERS(level1SpawnPoint.x), PIXEL_TO_METERS(level1SpawnPoint.y)), 0);
 	if (cameraIdx != 0 && cameraIdx != 1) changingLevel = true;
 	cameraInitialized = true;
 	cameraIdx = 0;
@@ -268,7 +268,7 @@ void Scene::StartLevel1()
 void Scene::StartLevel2()
 {
 	player->enterDoor = false;
-	player->pbody->body->SetTransform(b2Vec2(PIXEL_TO_METERS(4120), PIXEL_TO_METERS(830)), 0);
+	player->pbody->body->SetTransform(b2Vec2(PIXEL_TO_METERS(level2SpawnPoint.x), PIXEL_TO_METERS(level2SpawnPoint.y)), 0);
 	if (cameraIdx != 2) changingLevel = true;
 	cameraInitialized = true;
 	cameraIdx = 2;
@@ -284,7 +284,7 @@ void Scene::StartLevel2()
 void Scene::StartLevel3()
 {
 	player->enterDoor = false;
-	player->pbody->body->SetTransform(b2Vec2(PIXEL_TO_METERS(320), PIXEL_TO_METERS(5824)), 0);
+	player->pbody->body->SetTransform(b2Vec2(PIXEL_TO_METERS(level3SpawnPoint.x), PIXEL_TO_METERS(level3SpawnPoint.y)), 0);
 	if (cameraIdx != 3) changingLevel = true;
 	cameraInitialized = true;
 	cameraIdx = 3;
@@ -319,6 +319,10 @@ bool Scene::LoadState(pugi::xml_node node)
 	cameraY = cameraNode.attribute("cameraY").as_int();
 	cameraIdx = cameraNode.attribute("cameraIdx").as_int();
 	cameraInitialized = cameraNode.attribute("cameraInitialized").as_bool();
+
+	if (level1Enabled) level1SpawnPoint = player->position;
+	else if (level2Enabled) level2SpawnPoint = player->position;
+	else if (level3Enabled) level3SpawnPoint = player->position;
 
 	player->SetToInitialPosition();
 

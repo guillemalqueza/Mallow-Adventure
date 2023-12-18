@@ -89,6 +89,10 @@ private:
 	int playerX, playerY, cameraX, cameraY;
 	bool changingLevel = false;
 
+	iPoint level1SpawnPoint = { 400, 991 };
+	iPoint level2SpawnPoint = { 4120, 830 };
+	iPoint level3SpawnPoint = { 320, 5824 };
+
 };
 
 #endif // __SCENE_H__
