@@ -36,7 +36,7 @@ public:
 	bool chestIdleWaiting = false;
 	float followTimer = 0.0f;
 	float acceleration = 1.0f;
-
+	int chestAudioFxId;
 
 private:
 

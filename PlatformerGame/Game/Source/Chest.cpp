@@ -22,6 +22,7 @@ bool Chest::Awake() {
 	position.x = parameters.attribute("x").as_int();
 	position.y = parameters.attribute("y").as_int();
 	texturePath = parameters.attribute("texturepath").as_string();
+	chestAudioFxId = app->audio->LoadFx(parameters.child("chestAudio").attribute("path").as_string());
 
 	return true;
 }
@@ -54,6 +55,7 @@ bool Chest::Update(float dt)
 	if (isPicked)	OnPicked();
 	if (chestArea) {
 		currentAnim = &chestOpenAnim;
+		app->audio->PlayFx(chestAudioFxId);
 		OnSensor();
 	}
 	if (currentAnim == &chestOpenAnim && currentAnim->HasFinished())

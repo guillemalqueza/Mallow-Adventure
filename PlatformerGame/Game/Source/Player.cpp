@@ -29,6 +29,15 @@ bool Player::Awake() {
 	effectsTexturePath = parameters.attribute("effectsTexture").as_string();
 	speed = parameters.attribute("speed").as_float();
 	pickCoinFxId = app->audio->LoadFx(parameters.child("itemAudio").attribute("path").as_string());
+	swordAudio1FxId = app->audio->LoadFx(parameters.child("swordAudio1").attribute("path").as_string());
+	swordAudio2FxId = app->audio->LoadFx(parameters.child("swordAudio2").attribute("path").as_string());
+	swordAudio3FxId = app->audio->LoadFx(parameters.child("swordAudio3").attribute("path").as_string());
+	swordAudio4FxId = app->audio->LoadFx(parameters.child("swordAudio4").attribute("path").as_string());
+	jumpAudio1FxId = app->audio->LoadFx(parameters.child("jumpAudio1").attribute("path").as_string());
+	jumpAudio2FxId = app->audio->LoadFx(parameters.child("jumpAudio2").attribute("path").as_string());
+	jumpAudio3FxId = app->audio->LoadFx(parameters.child("jumpAudio3").attribute("path").as_string());
+	jumpAudio4FxId = app->audio->LoadFx(parameters.child("jumpAudio4").attribute("path").as_string());
+	potionDrinkFxId = app->audio->LoadFx(parameters.child("potionDrinkAudio").attribute("path").as_string());
 	return true;
 }
 
@@ -200,7 +209,7 @@ bool Player::Update(float dt)
 			if (app->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN && !isAttacking && isEquipped && !activeSword && !enterDoor && !isDrinking)
 			{
 				isAttacking = true;
-
+				app->audio->PlayFx(swordAudio4FxId);
 				currentAnim = &attack3Anim;
 				currentAnim->ResetLoopCount();
 				currentAnim->Reset();
@@ -221,6 +230,20 @@ bool Player::Update(float dt)
 					else pbodySword = app->physics->CreateRectangleSensor(position.x, position.y + 20, 25, 25, bodyType::KINEMATIC);
 					pbodySword->ctype = ColliderType::SWORD;
 					attackBodyCreated = true;
+					int random = rand() % 3;
+					switch (random)
+					{
+						case 0:
+							app->audio->PlayFx(swordAudio1FxId);
+							break;
+						case 1:
+							app->audio->PlayFx(swordAudio2FxId);
+							break;
+						case 2:
+							app->audio->PlayFx(swordAudio3FxId);
+							break;
+					}
+
 				}
 				else if (currentAnim == &attackJumpAnim && currentAnim->GetCurrentFrameCount() >= 2 && !attackBodyCreated)
 				{
@@ -305,6 +328,7 @@ bool Player::Update(float dt)
 			if (canPush && isDrinking && currentAnim != &drinkAnim)
 			{
 				currentAnim = &drinkAnim;
+				app->audio->PlayFx(potionDrinkFxId);
 				currentAnim->ResetLoopCount();
 				currentAnim->Reset();
 			}
@@ -506,6 +530,22 @@ void Player::Jump()
 		vel = b2Vec2(vel.x, -8.2f);
 		pbody->body->SetLinearVelocity(vel);
 		jumpCount = 1;
+		int random = rand() % 4;
+		switch (random)
+		{
+		case 0:
+			app->audio->PlayFx(jumpAudio1FxId);
+			break;
+		case 1:
+			app->audio->PlayFx(jumpAudio2FxId);
+			break;
+		case 2:
+			app->audio->PlayFx(jumpAudio3FxId);
+			break;
+		case 3:
+			app->audio->PlayFx(jumpAudio4FxId);
+			break;
+		}
 	}
 	else if (jumpCount == 1 && hasJumped && dashCount == 0)
 	{
@@ -520,6 +560,22 @@ void Player::Jump()
 		pbody->body->SetLinearVelocity(vel);
 		jumpCount = 2;
 		dashCount = 1;
+		int random = rand() % 4;
+		switch (random)
+		{
+		case 0:
+			app->audio->PlayFx(jumpAudio1FxId);
+			break;
+		case 1:
+			app->audio->PlayFx(jumpAudio2FxId);
+			break;
+		case 2:
+			app->audio->PlayFx(jumpAudio3FxId);
+			break;
+		case 3:
+			app->audio->PlayFx(jumpAudio4FxId);
+			break;
+		}
 	}
 	else if (!ground && !isJumping && !hasJumped && jumpCount == 0 && dashCount == 0)
 	{
@@ -534,6 +590,22 @@ void Player::Jump()
 		pbody->body->SetLinearVelocity(vel);
 		jumpCount = 2;
 		dashCount = 1;
+		int random = rand() % 4;
+		switch (random)
+		{
+		case 0:
+			app->audio->PlayFx(jumpAudio1FxId);
+			break;
+		case 1:
+			app->audio->PlayFx(jumpAudio2FxId);
+			break;
+		case 2:
+			app->audio->PlayFx(jumpAudio3FxId);
+			break;
+		case 3:
+			app->audio->PlayFx(jumpAudio4FxId);
+			break;
+		}
 	}
 }
 

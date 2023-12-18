@@ -56,6 +56,15 @@ public:
 	PhysBody* pbody;
 	PhysBody* pbodySword = NULL;
 	int pickCoinFxId;
+	int swordAudio1FxId;
+	int swordAudio2FxId;
+	int swordAudio3FxId;
+	int swordAudio4FxId;
+	int jumpAudio1FxId;
+	int jumpAudio2FxId;
+	int jumpAudio3FxId;
+	int jumpAudio4FxId;
+	int potionDrinkFxId;
 
 	Animation* currentAnim;
 	Animation idleAnim, jumpAnim, walkAnim, crouchAnim, crouchWalkAnim, fallAnim, wallAnim, deadAnim,
