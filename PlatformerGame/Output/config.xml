@@ -43,6 +43,8 @@
 			<landAudio1 path="Assets/Audio/Fx/land1_fx.wav"/>
 			<landAudio2 path="Assets/Audio/Fx/land2_fx.wav"/>
 
+			<deathAudio path="Assets/Audio/Fx/player_death_fx.wav"/>
+
 		</player>
 		<skeleton x="2200" y="4875" texturepath="Assets/Textures/enemy_skeleton.png" speed="0.2f" open="false"/>
 		<skeleton x="3700" y="3423" texturepath="Assets/Textures/enemy_skeleton.png" speed="0.2f" open="false"/>
@@ -65,7 +67,10 @@
 		</lockDoor>
 		<background texturepath="Assets/Maps/background.png"/>
 		<background2 texturepath="Assets/Maps/background_lvl_2.png"/>
-		<equipment x="5200" y="34" texturepath="Assets/Textures/spritesheet_sword.png"/>
+		<equipment x="5200" y="34" texturepath="Assets/Textures/spritesheet_sword.png">
+			<equipmentReleaseAudio path="Assets/Audio/Fx/equipment_release.wav"/>
+			<equipmentPickUpAudio path="Assets/Audio/Fx/equipment_pickup_fx.wav"/>
+		</equipment>
 		<chest x="2972" y="2234" texturepath="Assets/Textures/chest_spritesheet.png">
 			<chestAudio path="Assets/Audio/Fx/chest_magic_open_fx.wav"/>
 		</chest>

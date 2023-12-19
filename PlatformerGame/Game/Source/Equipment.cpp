@@ -22,6 +22,8 @@ bool Equipment::Awake() {
 	position.x = parameters.attribute("x").as_int();
 	position.y = parameters.attribute("y").as_int();
 	texturePath = parameters.attribute("texturepath").as_string();
+	equipmentReleaseFxId = app->audio->LoadFx(parameters.child("equipmentReleaseAudio").attribute("path").as_string());
+	equipmentPickUpFxId = app->audio->LoadFx(parameters.child("equipmentPickUpAudio").attribute("path").as_string());
 
 	return true;
 }
@@ -60,6 +62,7 @@ bool Equipment::Update(float dt)
 	{
 		currentAnim= &equipmentAnimIdle;
 	}
+	if (currentAnim == &equipmentAnim && currentAnim->GetCurrentFrameCount() >= 17) 	app->audio->PlayFx(app->scene->player->swordAudio2FxId);
 
 
 	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 90;
@@ -114,11 +117,13 @@ void Equipment::OnPicked()
 	currentAnim = &equipmentWithoutSword;
 	//app->entityManager->DestroyEntity(this);
 	//app->physics->world->DestroyBody(pbody->body);
+	app->audio->PlayFx(equipmentPickUpFxId);
 	isPicked = false;
 }
 
 void Equipment::OnSensor()
 {
 	app->physics->world->DestroyBody(pbody2->body);
+	app->audio->PlayFx(equipmentReleaseFxId);
 	equipmentArea = false;
 }

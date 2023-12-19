@@ -67,6 +67,7 @@ public:
 	int potionDrinkFxId;
 	int land1FxId;
 	int land2FxId;
+	int deathAudioFxId;
 
 	Animation* currentAnim;
 	Animation idleAnim, jumpAnim, walkAnim, crouchAnim, crouchWalkAnim, fallAnim, wallAnim, deadAnim,landJumpAnim,
