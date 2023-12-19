@@ -23,6 +23,10 @@ bool LogObstacle::Awake() {
 	position.x = parameters.attribute("x").as_int();
 	position.y = parameters.attribute("y").as_int();
 	texturePath = parameters.attribute("texturepath").as_string();
+	logAudioKnock1FxId = app->audio->LoadFx(parameters.child("logAudioKnock1").attribute("path").as_string());
+	logAudioKnock2FxId = app->audio->LoadFx(parameters.child("logAudioKnock2").attribute("path").as_string());
+	logAudioKnock3FxId = app->audio->LoadFx(parameters.child("logAudioKnock3").attribute("path").as_string());
+	logAudioBreakFxId = app->audio->LoadFx(parameters.child("logAudioBreak").attribute("path").as_string());
 
 	return true;
 }
@@ -88,6 +92,11 @@ void LogObstacle::OnCollision(PhysBody* physA, PhysBody* physB)
 	{
 		case ColliderType::SWORD:
 		health -= 1;
+		if (health == 3) app->audio->PlayFx(logAudioKnock1FxId);
+		if (health == 2) app->audio->PlayFx(logAudioKnock2FxId);
+		if (health == 1) app->audio->PlayFx(logAudioKnock3FxId);
+		if (health <= 0) app->audio->PlayFx(logAudioBreakFxId);
+
 		break;
 	}
 }

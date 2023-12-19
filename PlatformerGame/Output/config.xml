@@ -70,7 +70,12 @@
 			<chestAudio path="Assets/Audio/Fx/chest_magic_open_fx.ogg"/>
 		</chest>
 		<obstacle x="5170" y="2255" texturepath="Assets/Textures/rock.png"/>
-		<log x="7700" y="340" texturepath="Assets/Textures/log_spritesheet.png"/>
+		<log x="7700" y="340" texturepath="Assets/Textures/log_spritesheet.png">
+			<logAudioKnock1 path="Assets/Audio/Fx/log_knock1_fx.ogg"/>
+			<logAudioKnock2 path="Assets/Audio/Fx/log_knock2_fx.ogg"/>
+			<logAudioKnock3 path="Assets/Audio/Fx/log_knock3_fx.ogg"/>
+			<logAudioBreak path="Assets/Audio/Fx/log_break_fx.ogg"/>
+		</log>
 	</scene>
 
 	<animations>

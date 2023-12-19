@@ -32,9 +32,13 @@ public:
 	bool isPicked = false;
 	float followTimer = 0.0f;
 	float acceleration = 1.0f;
-	int health = 3;
+	int health = 4;
 	bool logUp = true;
 	bool changeLevel = false;
+	int logAudioKnock1FxId;
+	int logAudioKnock2FxId;
+	int logAudioKnock3FxId;
+	int logAudioBreakFxId;
 
 
 private:
