@@ -219,9 +219,14 @@ bool Player::Update(float dt)
 
 			if (destroyAttackBody)
 			{
-				pbodySword->body->GetWorld()->DestroyBody(pbodySword->body);
-				pbodySword = NULL;
-				destroyAttackBody = false;
+				if (pbodySword != NULL)
+				{
+					pbodySword->body->GetWorld()->DestroyBody(pbodySword->body);
+					pbodySword = NULL;
+					destroyAttackBody = false;
+					attackBodyCreated = false;
+				}
+				
 			}
 
 			if (isAttacking)
@@ -274,8 +279,7 @@ bool Player::Update(float dt)
 				{
 					isAttacking = false;
 					attackBodyCreated = false;
-
-					if (pbodySword != NULL) destroyAttackBody = true;
+					destroyAttackBody = true;
 				}
 			}
 
@@ -473,6 +477,8 @@ void Player::LeftMovement()
 {
 	if (ground && isLanding) isLanding = false;
 
+	if (pbodySword != NULL) destroyAttackBody = true;
+
 	if (!isDashing) vel.x = -speed * dt;
 
 	if (!isJumping && !wallLeft && !wallRight)
@@ -507,6 +513,8 @@ void Player::LeftMovement()
 void Player::RightMovement()
 {
 	if (ground && isLanding) isLanding = false;
+
+	if (pbodySword != NULL) destroyAttackBody = true;
 
 	if (!isDashing) vel.x = speed * dt;
 
@@ -544,6 +552,8 @@ void Player::Jump()
 	isPushing = false;
 	wallLeft = false;
 	wallRight = false;
+
+	if (pbodySword != NULL) destroyAttackBody = true;
 
 	if (!isJumping && !hasJumped && ground && jumpCount == 0)
 	{
