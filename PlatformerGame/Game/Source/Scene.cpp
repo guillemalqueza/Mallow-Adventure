@@ -251,7 +251,7 @@ void Scene::UpdateCameraShake()
 void Scene::StartLevel1()
 {
 	player->enterDoor = false;
-	player->pbody->body->SetTransform(b2Vec2(PIXEL_TO_METERS(level1SpawnPoint.x), PIXEL_TO_METERS(level1SpawnPoint.y)), 0);
+	player->pbody->body->SetTransform(b2Vec2(PIXEL_TO_METERS(level1SpawnPoint.x + 1), PIXEL_TO_METERS(level1SpawnPoint.y + 1)), 0);
 	if (cameraIdx != 0 && cameraIdx != 1) changingLevel = true;
 	cameraInitialized = true;
 	cameraIdx = 0;
@@ -268,7 +268,7 @@ void Scene::StartLevel1()
 void Scene::StartLevel2()
 {
 	player->enterDoor = false;
-	player->pbody->body->SetTransform(b2Vec2(PIXEL_TO_METERS(level2SpawnPoint.x), PIXEL_TO_METERS(level2SpawnPoint.y)), 0);
+	player->pbody->body->SetTransform(b2Vec2(PIXEL_TO_METERS(level2SpawnPoint.x + 1), PIXEL_TO_METERS(level2SpawnPoint.y + 1)), 0);
 	if (cameraIdx != 2) changingLevel = true;
 	cameraInitialized = true;
 	cameraIdx = 2;
@@ -284,7 +284,7 @@ void Scene::StartLevel2()
 void Scene::StartLevel3()
 {
 	player->enterDoor = false;
-	player->pbody->body->SetTransform(b2Vec2(PIXEL_TO_METERS(level3SpawnPoint.x), PIXEL_TO_METERS(level3SpawnPoint.y)), 0);
+	player->pbody->body->SetTransform(b2Vec2(PIXEL_TO_METERS(level3SpawnPoint.x + 1), PIXEL_TO_METERS(level3SpawnPoint.y + 1)), 0);
 	if (cameraIdx != 3) changingLevel = true;
 	cameraInitialized = true;
 	cameraIdx = 3;
@@ -306,6 +306,9 @@ bool Scene::LoadState(pugi::xml_node node)
 	pugi::xml_node playerStatesNode = node.child("player").child("playerStates");
 	player->isDead = playerStatesNode.attribute("isDead").as_bool();
 	player->isEquipped = playerStatesNode.attribute("isEquipped").as_bool();
+	player->wallLeft = playerStatesNode.attribute("wallLeft").as_bool();
+	player->wallRight = playerStatesNode.attribute("wallRight").as_bool();
+	player->ground = playerStatesNode.attribute("ground").as_bool();
 	pugi::xml_node playerItemsNode = node.child("player").child("playerItems");
 	player->keys = playerItemsNode.attribute("keys").as_int();
 
@@ -339,6 +342,9 @@ bool Scene::SaveState(pugi::xml_node node)
 	pugi::xml_node playerStatesNode = node.child("player").append_child("playerStates");
 	playerStatesNode.append_attribute("isDead").set_value(player->isDead);
 	playerStatesNode.append_attribute("isEquipped").set_value(player->isEquipped);
+	playerStatesNode.append_attribute("wallLeft").set_value(player->wallLeft);
+	playerStatesNode.append_attribute("wallRight").set_value(player->wallRight);
+	playerStatesNode.append_attribute("ground").set_value(player->ground);
 	pugi::xml_node playerItemsNode = node.child("player").append_child("playerItems");
 	playerItemsNode.append_attribute("keys").set_value(player->keys);
 

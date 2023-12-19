@@ -60,6 +60,9 @@ bool Player::Start() {
 	pbody->listener = this;
 	pbody->ctype = ColliderType::PLAYER;
 
+	playerPbody = app->physics->CreateRectangleSensor(position.x + 50, position.y, 24, 60, bodyType::DYNAMIC);
+	playerPbody->ctype = ColliderType::PLAYER_BODY;
+
 	initialTransform = pbody->body->GetTransform();
 
 	return true;
@@ -109,7 +112,7 @@ bool Player::Update(float dt)
 				ClimbUp();
 			}
 
-			if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT && !activeSword && !enterDoor && !isDrinking)
+			if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT && !activeSword && !enterDoor && !isDrinking)	
 			{
 				ClimbDown();
 			}
@@ -367,6 +370,7 @@ bool Player::Update(float dt)
 
 			if (!isJumping && !wallLeft && !wallRight && !isDashing) vel.y = -GRAVITY_Y;
 			pbody->body->SetLinearVelocity(vel);
+			playerPbody->body->SetTransform({ pbody->body->GetPosition().x, pbody->body->GetPosition().y - PIXEL_TO_METERS(10) }, 0);
 		}
 		else
 		{
@@ -390,6 +394,7 @@ bool Player::Update(float dt)
 			}
 
 			pbody->body->SetLinearVelocity(vel);
+			playerPbody->body->SetTransform({ pbody->body->GetPosition().x, pbody->body->GetPosition().y - PIXEL_TO_METERS(10) }, 0);
 		}
 
 		position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 50;

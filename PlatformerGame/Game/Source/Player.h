@@ -50,11 +50,14 @@ public:
 	const char* texturePath;
 	const char* lightTexturePath;
 	const char* effectsTexturePath;
+
 	SDL_Texture* texture = NULL;
 	SDL_Texture* effectsTexture = NULL;
 	SDL_Texture* lightTexture;
 	PhysBody* pbody;
 	PhysBody* pbodySword = NULL;
+	PhysBody* playerPbody;
+
 	int pickCoinFxId;
 	int swordAudio1FxId;
 	int swordAudio2FxId;
