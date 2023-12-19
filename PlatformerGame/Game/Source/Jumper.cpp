@@ -22,6 +22,8 @@ bool Jumper::Awake() {
 	position.x = parameters.attribute("x").as_int();
 	position.y = parameters.attribute("y").as_int();
 	texturePath = parameters.attribute("texturepath").as_string();
+	jumperAudio1FxId = app->audio->LoadFx(parameters.child("boingAudio1").attribute("path").as_string());
+	jumperAudio2FxId = app->audio->LoadFx(parameters.child("boingAudio2").attribute("path").as_string());
 
 	return true;
 }
@@ -52,6 +54,17 @@ bool Jumper::Update(float dt)
 	{
 		currentAnim->Reset();
 		currentAnim = &jumperAnim;
+		int random = rand() % 2;
+		switch (random)
+		{
+			case 0:
+				app->audio->PlayFx(jumperAudio1FxId);
+				break;
+			case 1:
+				app->audio->PlayFx(jumperAudio2FxId);
+				break;
+
+		}
 		isActivated = false;
 	}
 

@@ -28,6 +28,8 @@ public:
 public:
 
 	bool isActivated = false;
+	int jumperAudio1FxId;
+	int jumperAudio2FxId;
 
 private:
 

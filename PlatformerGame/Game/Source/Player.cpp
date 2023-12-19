@@ -38,6 +38,8 @@ bool Player::Awake() {
 	jumpAudio3FxId = app->audio->LoadFx(parameters.child("jumpAudio3").attribute("path").as_string());
 	jumpAudio4FxId = app->audio->LoadFx(parameters.child("jumpAudio4").attribute("path").as_string());
 	potionDrinkFxId = app->audio->LoadFx(parameters.child("potionDrinkAudio").attribute("path").as_string());
+	land1FxId = app->audio->LoadFx(parameters.child("landAudio1").attribute("path").as_string());
+	land2FxId = app->audio->LoadFx(parameters.child("landAudio2").attribute("path").as_string());
 	return true;
 }
 
@@ -728,8 +730,32 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 
 		if (isLanding)
 		{
-			if (!isEquipped) currentAnim = &landJumpAnim;
-			else if (isEquipped) currentAnim = &armorLandJumpAnim;
+			if (!isEquipped) {
+				currentAnim = &landJumpAnim;
+				int random = rand() % 2;
+				switch (random)
+				{
+					case 0:
+						app->audio->PlayFx(land1FxId);
+						break;
+					case 1:
+						app->audio->PlayFx(land2FxId);
+						break;
+				}
+			}
+			else if (isEquipped) {
+				currentAnim = &armorLandJumpAnim;
+				int random = rand() % 2;
+				switch (random)
+				{
+				case 0:
+					app->audio->PlayFx(land1FxId);
+					break;
+				case 1:
+					app->audio->PlayFx(land2FxId);
+					break;
+				}
+			}
 
 			currentAnim->ResetLoopCount();
 			currentAnim->Reset();

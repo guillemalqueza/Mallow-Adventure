@@ -29,6 +29,7 @@ public:
 public:
 
 	bool isActivated = false;
+	int doorAudioFxId;
 
 private:
 

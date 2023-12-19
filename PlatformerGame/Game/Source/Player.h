@@ -65,6 +65,8 @@ public:
 	int jumpAudio3FxId;
 	int jumpAudio4FxId;
 	int potionDrinkFxId;
+	int land1FxId;
+	int land2FxId;
 
 	Animation* currentAnim;
 	Animation idleAnim, jumpAnim, walkAnim, crouchAnim, crouchWalkAnim, fallAnim, wallAnim, deadAnim,landJumpAnim,

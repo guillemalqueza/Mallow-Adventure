@@ -23,6 +23,7 @@ bool LockDoor::Awake() {
 	position.x = parameters.attribute("x").as_int();
 	position.y = parameters.attribute("y").as_int();
 	texturePath = parameters.attribute("texturepath").as_string();
+	doorAudioFxId = app->audio->LoadFx(parameters.child("doorAudio").attribute("path").as_string());
 
 	return true;
 }
@@ -52,6 +53,7 @@ bool LockDoor::Update(float dt)
 	{
 		isActivated = false;
 		currentAnim = &doorOpenAnim;
+		app->audio->PlayFx(doorAudioFxId);
 	}
 
 	if (currentAnim == &doorOpenAnim && currentAnim->HasFinished())
