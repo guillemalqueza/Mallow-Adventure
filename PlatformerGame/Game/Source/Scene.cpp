@@ -251,7 +251,7 @@ void Scene::UpdateCameraShake()
 void Scene::StartLevel1()
 {
 	player->enterDoor = false;
-	player->pbody->body->SetTransform(b2Vec2(PIXEL_TO_METERS(level1SpawnPoint.x + 1), PIXEL_TO_METERS(level1SpawnPoint.y + 1)), 0);
+	player->pbody->body->SetTransform(b2Vec2(PIXEL_TO_METERS(level1SpawnPoint.x + 1), PIXEL_TO_METERS(level1SpawnPoint.y)), 0);
 	if (cameraIdx != 0 && cameraIdx != 1) changingLevel = true;
 	cameraInitialized = true;
 	cameraIdx = 0;

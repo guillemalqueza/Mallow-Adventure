@@ -33,6 +33,7 @@ bool Player::Awake() {
 	swordAudio2FxId = app->audio->LoadFx(parameters.child("swordAudio2").attribute("path").as_string());
 	swordAudio3FxId = app->audio->LoadFx(parameters.child("swordAudio3").attribute("path").as_string());
 	swordAudio4FxId = app->audio->LoadFx(parameters.child("swordAudio4").attribute("path").as_string());
+	swordAudio5FxId = app->audio->LoadFx(parameters.child("swordAudio5").attribute("path").as_string());
 	jumpAudio1FxId = app->audio->LoadFx(parameters.child("jumpAudio1").attribute("path").as_string());
 	jumpAudio2FxId = app->audio->LoadFx(parameters.child("jumpAudio2").attribute("path").as_string());
 	jumpAudio3FxId = app->audio->LoadFx(parameters.child("jumpAudio3").attribute("path").as_string());
@@ -196,7 +197,10 @@ bool Player::Update(float dt)
 			{
 				isAttacking = true;
 				
-				if (isJumping) currentAnim = &attackJumpAnim;
+				if (isJumping) {
+					currentAnim = &attackJumpAnim; 
+					app->audio->PlayFx(swordAudio5FxId);
+				}
 				else if (firstAttack)
 				{
 					currentAnim = &attack1Anim;

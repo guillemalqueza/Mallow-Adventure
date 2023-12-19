@@ -25,7 +25,12 @@ bool Skeleton::Awake() {
 	texturePath = parameters.attribute("texturepath").as_string();
 	speed = parameters.attribute("speed").as_float();
 	open = parameters.attribute("open").as_bool();
-
+	attackAudio1FxId = app->audio->LoadFx(parameters.child("attackAudio1").attribute("path").as_string());
+	attackAudio2FxId = app->audio->LoadFx(parameters.child("attackAudio2").attribute("path").as_string());
+	attackAudio3FxId = app->audio->LoadFx(parameters.child("attackAudio3").attribute("path").as_string());
+	hurtAudioFxId = app->audio->LoadFx(parameters.child("hittedAudio1").attribute("path").as_string());
+	deathAudioFxId = app->audio->LoadFx(parameters.child("deadAudio1").attribute("path").as_string());
+		
 	return true;
 }
 
@@ -74,6 +79,18 @@ bool Skeleton::Update(float dt)
 			{
 				isAttacking = true;
 				currentAnim = &skeletonAttackAnim;
+				int random = rand() % 3;
+				switch (random){
+				case 0:
+					app->audio->PlayFx(attackAudio1FxId);
+					break;
+				case 1:
+					app->audio->PlayFx(attackAudio2FxId);
+					break;
+				case 2:
+					app->audio->PlayFx(attackAudio3FxId);
+					break;
+				}
 				currentAnim->ResetLoopCount();
 				currentAnim->Reset();
 				velocity = { 0, -GRAVITY_Y };
@@ -141,6 +158,7 @@ bool Skeleton::Update(float dt)
 		currentAnim = &skeletonDeadAnim;
 		velocity = { 0, 0 };
 		isDead = true;
+		app->audio->PlayFx(deathAudioFxId);
 		pbody->body->SetActive(false);
 		enemyPbody->body->SetActive(false);
 	}

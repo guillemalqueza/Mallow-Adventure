@@ -63,6 +63,7 @@ public:
 	int swordAudio2FxId;
 	int swordAudio3FxId;
 	int swordAudio4FxId;
+	int swordAudio5FxId;
 	int jumpAudio1FxId;
 	int jumpAudio2FxId;
 	int jumpAudio3FxId;

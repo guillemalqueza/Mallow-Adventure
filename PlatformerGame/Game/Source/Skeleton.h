@@ -37,6 +37,12 @@ public:
 	bool isFacingRight = false;
 	iPoint originPos;
 	b2Vec2 velocity;
+	int attackAudio1FxId;
+	int attackAudio2FxId;
+	int attackAudio3FxId;
+	int hurtAudioFxId;
+	int deathAudioFxId;
+
 
 private:
 

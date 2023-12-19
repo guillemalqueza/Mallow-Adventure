@@ -1,5 +1,3 @@
-- ataque salto player
-- enemigos (skeleton atack,dmg)
 - ghost summon
 - subir pared
 - diferentes caminar
