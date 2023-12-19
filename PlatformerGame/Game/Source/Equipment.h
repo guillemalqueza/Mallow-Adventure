@@ -36,7 +36,8 @@ public:
 	bool equipmentIdleWaiting = false;
 	float followTimer = 0.0f;
 	float acceleration = 1.0f;
-
+	int equipmentReleaseFxId;
+	int equipmentPickUpFxId;
 
 private:
 

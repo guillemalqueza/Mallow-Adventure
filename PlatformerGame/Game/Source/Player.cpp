@@ -40,6 +40,7 @@ bool Player::Awake() {
 	potionDrinkFxId = app->audio->LoadFx(parameters.child("potionDrinkAudio").attribute("path").as_string());
 	land1FxId = app->audio->LoadFx(parameters.child("landAudio1").attribute("path").as_string());
 	land2FxId = app->audio->LoadFx(parameters.child("landAudio2").attribute("path").as_string());
+	deathAudioFxId = app->audio->LoadFx(parameters.child("deathAudio").attribute("path").as_string());
 	return true;
 }
 
@@ -406,12 +407,14 @@ bool Player::Update(float dt)
 		if (!isEquipped && currentAnim!= &deadAnim)
 		{
 			currentAnim = &deadAnim;
+			app->audio->PlayFx(deathAudioFxId);
 			currentAnim->ResetLoopCount();
 			currentAnim->Reset();
 		}
 		else if (isEquipped && currentAnim != &armorDeadAnim)
 		{
 			currentAnim = &armorDeadAnim;
+			app->audio->PlayFx(deathAudioFxId);
 			currentAnim->ResetLoopCount();
 			currentAnim->Reset();
 		}
