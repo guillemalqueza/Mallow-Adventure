@@ -107,6 +107,7 @@ bool Scene::Update(float dt)
 	playerX = player->position.x;
 	playerY = player->position.y;
 
+	// Camera positions
 	if (cameraIdx == 0) SetCameraPosition(56, 760 - (windowH / 2));
 	else if (cameraIdx == 1) SetCameraPosition(2460 - (windowW / 2), 575 - (windowH / 2));
 	else if (cameraIdx == 2) SetCameraPosition(player->position.x - (windowW / 2), player->position.y + 60 - (windowH / 2));
@@ -138,9 +139,34 @@ bool Scene::Update(float dt)
 		changingLevel = false;
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) app->fade->Fade(1,60);
-	if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) app->fade->Fade(2, 60);
-	if (app->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN) app->fade->Fade(3, 60);
+	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN || levelToLoadIdx == 1)
+	{
+		levelToLoadIdx = 0;
+		player->wallLeft = false;
+		player->wallRight = false;
+		cameraIdx = 0;
+		level1SpawnPoint = { 400, 991 };
+		app->fade->Fade(1, 60);
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN || levelToLoadIdx == 2)
+	{
+		levelToLoadIdx = 0;
+		player->wallLeft = false;
+		player->wallRight = false;
+		cameraIdx = 2;
+		level2SpawnPoint = { 4120, 830 };
+		app->fade->Fade(2, 60);
+	}
+	if (app->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN || levelToLoadIdx == 3)
+	{
+		levelToLoadIdx = 0;
+		player->wallLeft = false;
+		player->wallRight = false;
+		cameraIdx = 3;
+		level3SpawnPoint = { 320, 5824 };
+		app->fade->Fade(3, 60);
+	}
 
 	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) app->SaveRequest();
 	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) app->LoadRequest();
@@ -256,8 +282,6 @@ void Scene::StartLevel1()
 	player->pbody->body->SetTransform(b2Vec2(PIXEL_TO_METERS(level1SpawnPoint.x + 1), PIXEL_TO_METERS(level1SpawnPoint.y)), 0);
 	if (cameraIdx != 0 && cameraIdx != 1) changingLevel = true;
 	cameraInitialized = true;
-	cameraIdx = 0;
-	cameraInitialized = true;
 	level1Enabled = true;
 	level2Enabled = false;
 	level3Enabled = false;
@@ -273,7 +297,6 @@ void Scene::StartLevel2()
 	player->pbody->body->SetTransform(b2Vec2(PIXEL_TO_METERS(level2SpawnPoint.x + 1), PIXEL_TO_METERS(level2SpawnPoint.y + 1)), 0);
 	if (cameraIdx != 2) changingLevel = true;
 	cameraInitialized = true;
-	cameraIdx = 2;
 	level2Enabled = true;
 	level1Enabled = false;
 	level3Enabled = false;
@@ -289,7 +312,6 @@ void Scene::StartLevel3()
 	player->pbody->body->SetTransform(b2Vec2(PIXEL_TO_METERS(level3SpawnPoint.x + 1), PIXEL_TO_METERS(level3SpawnPoint.y + 1)), 0);
 	if (cameraIdx != 3) changingLevel = true;
 	cameraInitialized = true;
-	cameraIdx = 3;
 	level3Enabled = true;
 	level1Enabled = false;
 	level2Enabled = false;

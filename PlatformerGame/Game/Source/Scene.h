@@ -65,6 +65,7 @@ public:
 	bool level3Enabled = false;
 
 	List<Entity*> skeletonsList;
+	int levelToLoadIdx = 0;
 
 private:
 	SDL_Texture* backgroundTexture;

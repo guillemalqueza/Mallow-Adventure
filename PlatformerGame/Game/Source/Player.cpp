@@ -692,15 +692,15 @@ void Player::SetToInitialPosition()
 {
 	if (app->scene->level1Enabled)
 	{
-		app->fade->Fade(1,60);
+		app->scene->levelToLoadIdx = 1;
 	}
 	else if (app->scene->level2Enabled)
 	{
-		app->fade->Fade(2, 60);
+		app->scene->levelToLoadIdx = 2;
 	}
 	else if (app->scene->level3Enabled)
 	{
-		app->fade->Fade(3, 60);
+		app->scene->levelToLoadIdx = 3;
 	}
 }
 
