@@ -28,6 +28,7 @@ bool Ghost::Awake() {
 	summonPosition.y = parameters.attribute("y").as_int() - 100;
 	ghostSummonFxId = app->audio->LoadFx(parameters.child("ghostSummonAudio").attribute("path").as_string());
 	lightTexturePath = parameters.attribute("lightTexture").as_string();
+	bigLightTexturePath = parameters.attribute("bigLightTexture").as_string();
 
 	return true;
 }
@@ -38,6 +39,7 @@ bool Ghost::Start() {
 	texture = app->tex->Load(texturePath);
 	pathTexture = app->tex->Load("Assets/Textures/path.png");
 	lightTexture = app->tex->Load(lightTexturePath);
+	bigLightTexture = app->tex->Load(bigLightTexturePath);
 	pbody = app->physics->CreateCircle(position.x, position.y, 20, bodyType::DYNAMIC);
 	pbody->ctype = ColliderType::GHOST;
 	pbody->listener = this;
@@ -76,6 +78,10 @@ bool Ghost::Update(float dt)
 		position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y);
 	}
 
+	// draw light
+	app->render->DrawTexture(bigLightTexture, position.x - 80, position.y - 200);
+
+	//draw ghost
 	SDL_Rect rect = currentAnim->GetCurrentFrame();
 	if (isFacingRight) app->render->DrawTexture(texture, position.x - 110, position.y - 130, &rect);
 	else app->render->DrawTexture(texture, position.x - 110, position.y - 130, &rect, SDL_FLIP_HORIZONTAL);

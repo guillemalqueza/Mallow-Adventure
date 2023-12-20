@@ -54,9 +54,11 @@ private:
 
 	SDL_Texture* texture;
 	SDL_Texture* lightTexture;
+	SDL_Texture* bigLightTexture;
 	SDL_Texture* pathTexture;
 	const char* texturePath;
-	const char* lightTexturePath;;
+	const char* lightTexturePath;
+	const char* bigLightTexturePath;
 	PhysBody* pbody;
 	PhysBody* summonPbody;
 	b2Transform initialTransform, initialSummonTransform;
