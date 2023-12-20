@@ -42,6 +42,23 @@ bool Player::Awake() {
 	land1FxId = app->audio->LoadFx(parameters.child("landAudio1").attribute("path").as_string());
 	land2FxId = app->audio->LoadFx(parameters.child("landAudio2").attribute("path").as_string());
 	deathAudioFxId = app->audio->LoadFx(parameters.child("deathAudio").attribute("path").as_string());
+	stoneWalkAudio1FxId = app->audio->LoadFx(parameters.child("stoneWalkAudio1").attribute("path").as_string());
+	stoneWalkAudio2FxId = app->audio->LoadFx(parameters.child("stoneWalkAudio2").attribute("path").as_string());
+	stoneWalkAudio3FxId = app->audio->LoadFx(parameters.child("stoneWalkAudio3").attribute("path").as_string());
+	stoneWalkAudio4FxId = app->audio->LoadFx(parameters.child("stoneWalkAudio4").attribute("path").as_string());
+	stoneWalkAudio5FxId = app->audio->LoadFx(parameters.child("stoneWalkAudio5").attribute("path").as_string());
+	stoneWalkAudio6FxId = app->audio->LoadFx(parameters.child("stoneWalkAudio6").attribute("path").as_string());
+	snowWalkAudio1FxId = app->audio->LoadFx(parameters.child("snowWalkAudio1").attribute("path").as_string());
+	snowWalkAudio2FxId = app->audio->LoadFx(parameters.child("snowWalkAudio2").attribute("path").as_string());
+	snowWalkAudio3FxId = app->audio->LoadFx(parameters.child("snowWalkAudio3").attribute("path").as_string());
+	snowWalkAudio4FxId = app->audio->LoadFx(parameters.child("snowWalkAudio4").attribute("path").as_string());
+	climbAudio1FxId = app->audio->LoadFx(parameters.child("climbAudio1").attribute("path").as_string());
+	climbAudio2FxId = app->audio->LoadFx(parameters.child("climbAudio2").attribute("path").as_string());
+	climbAudio3FxId = app->audio->LoadFx(parameters.child("climbAudio3").attribute("path").as_string());
+	climbAudio4FxId = app->audio->LoadFx(parameters.child("climbAudio4").attribute("path").as_string());
+	climbAudio5FxId = app->audio->LoadFx(parameters.child("climbAudio5").attribute("path").as_string());
+	climbAudio6FxId = app->audio->LoadFx(parameters.child("climbAudio6").attribute("path").as_string());
+
 	return true;
 }
 
@@ -52,6 +69,8 @@ bool Player::Start() {
 	lightTexture = app->tex->Load(lightTexturePath);
 	effectsTexture = app->tex->Load(effectsTexturePath);
 	LoadAnimations();
+
+
 
 	if (!isEquipped) currentAnim = &idleAnim;
 	else currentAnim = &armorIdleAnim;
@@ -94,6 +113,7 @@ bool Player::Update(float dt)
 
 		if (!godMode)
 		{
+			walkSound();
 			//idle wall keys
 			if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_IDLE && !ground 
 				&& (wallLeft || wallRight) && !activeSword && !isDrinking)
@@ -887,4 +907,79 @@ void Player::LoadAnimations()
 	climbEffectAnim.LoadAnimations("climbEffectAnim", "player");
 	jumpEffectAnim.LoadAnimations("jumpEffectAnim", "player");
 	dangerEffectAnim.LoadAnimations("dangerEffectAnim", "player");
+}
+
+void Player::walkSound(){
+	if (currentAnim == &walkAnim || currentAnim == &armorWalkAnim || currentAnim == &crouchWalkAnim || currentAnim == &armorCrouchWalkAnim) {
+		if (app->scene->level1Enabled) {
+			int random = rand() % 6;
+			switch (random)
+			{
+			case 0:
+				app->audio->PlayFx(stoneWalkAudio1FxId);
+				break;
+			case 1:
+				app->audio->PlayFx(stoneWalkAudio2FxId);
+				break;
+			case 2:
+				app->audio->PlayFx(stoneWalkAudio3FxId);
+				break;
+			case 3:
+				app->audio->PlayFx(stoneWalkAudio4FxId);
+				break;
+			case 4:
+				app->audio->PlayFx(stoneWalkAudio5FxId);
+				break;
+			case 5:
+				app->audio->PlayFx(stoneWalkAudio6FxId);
+				break;
+			}
+
+		}
+		else if (app->scene->level2Enabled || app->scene->level3Enabled) {
+			int random = rand() % 4;
+			switch (random)
+			{
+			case 0:
+				app->audio->PlayFx(snowWalkAudio1FxId);
+				break;
+			case 1:
+				app->audio->PlayFx(snowWalkAudio2FxId);
+				break;
+			case 2:
+				app->audio->PlayFx(snowWalkAudio3FxId);
+				break;
+			case 3:
+				app->audio->PlayFx(snowWalkAudio4FxId);
+				break;
+			}
+		}
+	}
+
+	//climb sound
+	if (currentAnim == &wallAnim && (app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)) {
+		
+		int random = rand() % 6;
+		switch (random)
+		{
+		case 0:
+			app->audio->PlayFx(climbAudio1FxId);
+			break;
+		case 1:
+			app->audio->PlayFx(climbAudio2FxId);
+			break;
+		case 2:
+			app->audio->PlayFx(climbAudio3FxId);
+			break;
+		case 3:
+			app->audio->PlayFx(climbAudio4FxId);
+			break;
+		case 4:
+			app->audio->PlayFx(climbAudio5FxId);
+			break;
+		case 5:
+			app->audio->PlayFx(climbAudio6FxId);
+			break;
+		}
+	}	
 }

@@ -26,6 +26,7 @@ bool Ghost::Awake() {
 	speed = parameters.attribute("speed").as_float();
 	summonPosition.x = parameters.attribute("x").as_int() - 100;
 	summonPosition.y = parameters.attribute("y").as_int() - 100;
+	ghostSummonFxId = app->audio->LoadFx(parameters.child("ghostSummonAudio").attribute("path").as_string());
 
 	return true;
 }
@@ -72,6 +73,11 @@ bool Ghost::Update(float dt)
 	
 	//ghost summon
 	summonTilePos = app->map->WorldToMap(summonPosition.x, summonPosition.y);
+
+	if (currentSummonAnim == &ghostSummonAppearAnim && currentSummonAnim->GetCurrentFrameCount() == 1)
+	{
+		app->audio->PlayFx(ghostSummonFxId);
+	}
 
 	distance = playerTilePos.DistanceTo(summonTilePos);
 

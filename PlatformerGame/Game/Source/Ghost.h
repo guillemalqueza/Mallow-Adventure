@@ -36,6 +36,7 @@ public:
 	bool isFacingRight = false;
 	bool isSummonFacingRight = false;
 	bool isSummonFollowing = false;
+	int ghostSummonFxId;
 
 	iPoint originPos;
 	b2Vec2 velocity;

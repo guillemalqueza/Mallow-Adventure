@@ -62,8 +62,7 @@ bool Equipment::Update(float dt)
 	{
 		currentAnim= &equipmentAnimIdle;
 	}
-	if (currentAnim == &equipmentAnim && currentAnim->GetCurrentFrameCount() >= 17) 	app->audio->PlayFx(app->scene->player->swordAudio2FxId);
-
+	if (currentAnim == &equipmentAnim && currentAnim->GetCurrentFrameCount() >= 17) app->audio->PlayFx(app->scene->player->swordAudio2FxId);
 
 	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 90;
 	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 120;

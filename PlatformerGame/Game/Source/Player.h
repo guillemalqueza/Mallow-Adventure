@@ -6,6 +6,7 @@
 #include "Physics.h"
 #include "Animation.h"
 #include "SDL/include/SDL.h"
+#include "SDL_mixer/include/SDL_mixer.h"
 
 struct SDL_Texture;
 
@@ -45,6 +46,8 @@ public:
 
 	void ClimbDown();
 
+	void walkSound();
+
 public:
 	float speed = 0.2f;
 	const char* texturePath;
@@ -59,19 +62,14 @@ public:
 	PhysBody* playerPbody;
 
 	int pickCoinFxId;
-	int swordAudio1FxId;
-	int swordAudio2FxId;
-	int swordAudio3FxId;
-	int swordAudio4FxId;
-	int swordAudio5FxId;
-	int jumpAudio1FxId;
-	int jumpAudio2FxId;
-	int jumpAudio3FxId;
-	int jumpAudio4FxId;
+	int swordAudio1FxId, swordAudio2FxId, swordAudio3FxId, swordAudio4FxId, swordAudio5FxId;
+	int jumpAudio1FxId, jumpAudio2FxId, jumpAudio3FxId, jumpAudio4FxId;
 	int potionDrinkFxId;
-	int land1FxId;
-	int land2FxId;
+	int land1FxId, land2FxId;
 	int deathAudioFxId;
+	int stoneWalkAudio1FxId, stoneWalkAudio2FxId, stoneWalkAudio3FxId, stoneWalkAudio4FxId, stoneWalkAudio5FxId, stoneWalkAudio6FxId;
+	int snowWalkAudio1FxId, snowWalkAudio2FxId, snowWalkAudio3FxId, snowWalkAudio4FxId;
+	int climbAudio1FxId, climbAudio2FxId, climbAudio3FxId, climbAudio4FxId, climbAudio5FxId, climbAudio6FxId;
 
 	Animation* currentAnim;
 	Animation idleAnim, jumpAnim, walkAnim, crouchAnim, crouchWalkAnim, fallAnim, wallAnim, deadAnim,landJumpAnim,

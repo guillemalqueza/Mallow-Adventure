@@ -19,7 +19,7 @@
 
 	<audio>
 		<music volume="128"/>
-		<fx volume="128"/>
+		<fx volume="200"/>
 	</audio>
 
 	<scene>
@@ -46,6 +46,24 @@
 
 			<deathAudio path="Assets/Audio/Fx/player_death_fx.wav"/>
 
+			<stoneWalkAudio1 path="Assets/Audio/Fx/stone_walk1_fx.wav"/>
+			<stoneWalkAudio2 path="Assets/Audio/Fx/stone_walk2_fx.wav"/>
+			<stoneWalkAudio3 path="Assets/Audio/Fx/stone_walk3_fx.wav"/>
+			<stoneWalkAudio4 path="Assets/Audio/Fx/stone_walk4_fx.wav"/>
+			<stoneWalkAudio5 path="Assets/Audio/Fx/stone_walk5_fx.wav"/>
+			<stoneWalkAudio6 path="Assets/Audio/Fx/stone_walk6_fx.wav"/>
+
+			<snowWalkAudio1 path="Assets/Audio/Fx/snow_walk1_fx.wav"/>
+			<snowWalkAudio2 path="Assets/Audio/Fx/snow_walk2_fx.wav"/>
+			<snowWalkAudio3 path="Assets/Audio/Fx/snow_walk3_fx.wav"/>
+			<snowWalkAudio4 path="Assets/Audio/Fx/snow_walk4_fx.wav"/>
+
+			<climbAudio1 path="Assets/Audio/Fx/climb1_fx.wav"/>
+			<climbAudio2 path="Assets/Audio/Fx/climb2_fx.wav"/>
+			<climbAudio3 path="Assets/Audio/Fx/climb3_fx.wav"/>
+			<climbAudio4 path="Assets/Audio/Fx/climb4_fx.wav"/>
+			<climbAudio5 path="Assets/Audio/Fx/climb5_fx.wav"/>
+			<climbAudio6 path="Assets/Audio/Fx/climb6_fx.wav"/>
 		</player>
 		<skeleton x="2200" y="4875" texturepath="Assets/Textures/enemy_skeleton.png" speed="0.2f" open="false">
 			<attackAudio1 path="Assets/Audio/Fx/skeleton_attack1_fx.wav"/>
@@ -68,8 +86,12 @@
 			<hittedAudio1 path="Assets/Audio/Fx/skeleton_hitted_fx.wav"/>
 			<deadAudio1 path="Assets/Audio/Fx/skeleton_dead_fx.wav"/>
 		</skeleton>
-		<ghost x="3808" y="2976" texturepath="Assets/Textures/enemy_ghost.png" speed="0.2f"/>
-		<ghost x="5920" y="2150" texturepath="Assets/Textures/enemy_ghost.png" speed="0.2f"/>
+		<ghost x="3808" y="2976" texturepath="Assets/Textures/enemy_ghost.png" speed="0.2f">
+			<ghostSummonAudio path="Assets/Audio/Fx/ghost_summon_fx.wav"/>
+		</ghost>
+		<ghost x="5920" y="2150" texturepath="Assets/Textures/enemy_ghost.png" speed="0.2f">
+			<ghostSummonAudio path="Assets/Audio/Fx/ghost_summon_fx.wav"/>
+		</ghost>
 		<key x="704" y="632" texturepath="Assets/Textures/key.png"/>
 		<jumper x="4880" y="634" texturepath="Assets/Textures/jumper.png">
 			<boingAudio1 path="Assets/Audio/Fx/boing1_fx.wav"/>
