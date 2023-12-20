@@ -115,6 +115,7 @@ public:
 	bool isPlayingWallSound = false;
 	bool isPlayingWalk1Sound = false;
 	bool isPlayingWalk2Sound = false;
+	bool revived = false;
 
 	bool lastKeyPressA = false;
 	bool lastKeyPressD = false;

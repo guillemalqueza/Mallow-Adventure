@@ -88,7 +88,7 @@
 			<deadAudio1 path="Assets/Audio/Fx/skeleton_dead_fx.wav"/>
 		</skeleton>
 
-		<skeleton x="3700" y="3423" texturepath="Assets/Textures/enemy_skeleton.png" speed="0.2f" open="false">
+		<skeleton x="3750" y="3423" texturepath="Assets/Textures/enemy_skeleton.png" speed="0.2f" open="false">
 			<attackAudio1 path="Assets/Audio/Fx/skeleton_attack1_fx.wav"/>
 			<attackAudio2 path="Assets/Audio/Fx/skeleton_attack2_fx.wav"/>
 			<attackAudio3 path="Assets/Audio/Fx/skeleton_attack3_fx.wav"/>

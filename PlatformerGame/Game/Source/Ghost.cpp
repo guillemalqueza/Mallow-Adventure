@@ -42,7 +42,7 @@ bool Ghost::Start() {
 	pathTexture = app->tex->Load("Assets/Textures/path.png");
 	lightTexture = app->tex->Load(lightTexturePath);
 	bigLightTexture = app->tex->Load(bigLightTexturePath);
-	pbody = app->physics->CreateCircle(position.x, position.y, 20, bodyType::DYNAMIC);
+	pbody = app->physics->CreateCircle(position.x, position.y, 20, bodyType::STATIC);
 	pbody->ctype = ColliderType::GHOST;
 	pbody->listener = this;
 
@@ -94,6 +94,7 @@ bool Ghost::Update(float dt)
 
 	distance = playerTilePos.DistanceTo(summonTilePos);
 
+	// spawn summon
 	if (distance < 18 && !summonSpawned)
 	{
 		currentAnim = &ghostSummonAnim;
@@ -106,6 +107,7 @@ bool Ghost::Update(float dt)
 		app->audio->PlayFx(ghostSummonFxId);
 	}
 
+	// move summon to player
 	if (distance < 10)
 	{
 		app->map->pathfinding->CreatePath(summonTilePos, playerTilePos, true);
@@ -134,19 +136,20 @@ bool Ghost::Update(float dt)
 	}
 	else if (summonSpawned && isSummonFollowing)
 	{
+		// idle movement
 		const int idleDistance = 2;
 
 		if (summonPosition.x >= initialIdlePosition.x + idleDistance * 32)
 		{
-			isFacingRight = false;
+			isSummonFacingRight = false;
 		}
 		else if (summonPosition.x <= initialIdlePosition.x - idleDistance * 32)
 		{
-			isFacingRight = true;
+			isSummonFacingRight = true;
 		}
 
-		velocity.x = isFacingRight ? 1 : -1;
-		velocity.y = isFacingRight ? -1 : 1;
+		velocity.x = isSummonFacingRight ? 1 : -1;
+		velocity.y = isSummonFacingRight ? -1 : 1;
 
 		summonPosition.x += velocity.x;
 		summonPosition.y += velocity.y;
@@ -174,6 +177,7 @@ bool Ghost::Update(float dt)
 		if (isSummonFacingRight) app->render->DrawTexture(lightTexture, summonPosition.x - 60, summonPosition.y - 50);
 		else app->render->DrawTexture(lightTexture, summonPosition.x - 50, summonPosition.y - 50);
 
+		// draw summon
 		SDL_Rect summonRect = currentSummonAnim->GetCurrentFrame();
 		if (isSummonFollowing)
 		{
@@ -188,6 +192,7 @@ bool Ghost::Update(float dt)
 		currentSummonAnim->Update();
 	}
 
+	// draw path
 	if (app->physics->debug)
 	{
 		const DynArray<iPoint>* path = app->map->pathfinding->GetLastPath();
@@ -235,7 +240,6 @@ void Ghost::Move(const iPoint& origin, const iPoint& destination) {
 
 	float xDiff = destination.x - origin.x;
 	float yDiff = destination.y - origin.y;
-
 
 	velocity.x = (xDiff < 0) ? -2 : (xDiff > 0) ? 2 : 0;
 	velocity.y = (yDiff < 0) ? -2 : (yDiff > 0) ? 2 : 0;

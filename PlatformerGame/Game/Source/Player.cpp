@@ -28,6 +28,8 @@ bool Player::Awake() {
 	lightTexturePath = parameters.attribute("lightTexture").as_string();
 	effectsTexturePath = parameters.attribute("effectsTexture").as_string();
 	speed = parameters.attribute("speed").as_float();
+
+	// load audio
 	pickCoinFxId = app->audio->LoadFx(parameters.child("itemAudio").attribute("path").as_string());
 	swordAudio1FxId = app->audio->LoadFx(parameters.child("swordAudio1").attribute("path").as_string());
 	swordAudio2FxId = app->audio->LoadFx(parameters.child("swordAudio2").attribute("path").as_string());
@@ -103,7 +105,11 @@ bool Player::Update(float dt)
 	//godmode
 	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) ToggleGodMode();
 
-	if (health <= 0) isDead = true;
+	if (health <= 0 && !isDead)
+	{
+		isDead = true;
+		revived = false;
+	}
 
 	if (!isDead)
 	{
@@ -404,7 +410,8 @@ bool Player::Update(float dt)
 			playerPbody->body->SetTransform({ pbody->body->GetPosition().x, pbody->body->GetPosition().y - PIXEL_TO_METERS(10) }, 0);
 		}
 		else
-		{
+		{	
+			//god mode
 			vel.SetZero();
 
 			if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
@@ -433,6 +440,7 @@ bool Player::Update(float dt)
 	}
 	else
 	{
+		// death
 		pbody->body->SetLinearVelocity({0, 0});
 		if (!isEquipped && currentAnim!= &deadAnim)
 		{
@@ -448,8 +456,20 @@ bool Player::Update(float dt)
 			currentAnim->ResetLoopCount();
 			currentAnim->Reset();
 		}
-		if (!isEquipped && currentAnim == &deadAnim && currentAnim->HasFinished()) SetToInitialPosition();
-		else if (isEquipped && currentAnim == &armorDeadAnim && currentAnim->HasFinished()) SetToInitialPosition();
+		if (!isEquipped && currentAnim == &deadAnim && currentAnim->HasFinished() && !revived)
+		{
+			SetToInitialPosition();
+			revived = true;
+			health = 120;
+			isDead = false;
+		}
+		else if (isEquipped && currentAnim == &armorDeadAnim && currentAnim->HasFinished() && !revived)
+		{
+			SetToInitialPosition();
+			revived = true;
+			health = 120;
+			isDead = false;
+		}
 	}
 
 	if (app->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN) isEquipped = !isEquipped;
@@ -829,7 +849,11 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		break;
 	case ColliderType::SPIKE:
 		LOG("Collision SPIKE");
-		if (!godMode && !isDead) isDead = true;
+		if (!godMode && !isDead)
+		{
+			isDead = true;
+			revived = false;
+		}
 		break;
 	case ColliderType::JUMP:
 		LOG("Collision JUMP");
@@ -855,7 +879,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 			|| (app->scene->cameraIdx == 6 && position.x > 3200 && position.x < 3430 && position.y < 3515)
 			|| (app->scene->cameraIdx == 7 && position.x > 3760 && position.x < 4000 && position.y < 2716 && position.y > 2400)
 			|| (app->scene->cameraIdx == 8 && position.x > 3800 && position.x < 4150 && position.y < 2030)
-			|| (app->scene->cameraIdx == 9 && position.x > 5040))
+			|| (app->scene->cameraIdx == 9 && position.x > 5040 && !isFacingRight))
 		{
 			app->scene->cameraIdx--;
 			app->scene->cameraInitialized = true;
@@ -934,42 +958,13 @@ void Player::walkSound(){
 	if(!isPlayingWalk1Sound) app->audio->PauseFx(stoneWalkAudioAllFxId);
 	if(!isPlayingWalk2Sound) app->audio->PauseFx(snowWalkAudioAllFxId);
 
-	////climb sound
-	//if (currentAnim == &wallAnim && (app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)) {
-	//	
-	//	int random = rand() % 6;
-	//	switch (random)
-	//	{
-	//	case 0:
-	//		app->audio->PlayFx(climbAudio1FxId);
-	//		break;
-	//	case 1:
-	//		app->audio->PlayFx(climbAudio2FxId);
-	//		break;
-	//	case 2:
-	//		app->audio->PlayFx(climbAudio3FxId);
-	//		break;
-	//	case 3:
-	//		app->audio->PlayFx(climbAudio4FxId);
-	//		break;
-	//	case 4:
-	//		app->audio->PlayFx(climbAudio5FxId);
-	//		break;
-	//	case 5:
-	//		app->audio->PlayFx(climbAudio6FxId);
-	//		break;
-	//	}
-	//}	
-
-
-	
 
 	if (currentAnim == &wallAnim && (app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) && !isPlayingWallSound) {
 
 		app->audio->PlayFx(climbAudioAllFxId, -1);
 		isPlayingWallSound = true;
 	}
-	else if (currentAnim == &wallAnim && app->input->GetKey(SDL_SCANCODE_UP) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_IDLE && isPlayingWallSound)
+	else if ((currentAnim == &wallAnim && app->input->GetKey(SDL_SCANCODE_UP) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_IDLE && isPlayingWallSound) || currentAnim != &wallAnim)
 	{
 		app->audio->PauseFx(climbAudioAllFxId);
 		isPlayingWallSound = false;

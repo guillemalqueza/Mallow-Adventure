@@ -63,6 +63,7 @@ bool Skeleton::Update(float dt)
 
 		distance = playerTilePos.DistanceTo(skeletonTilePos);
 
+		// destroy attack body
 		if (destroyAttackBody)
 		{
 			if (pbodySword != NULL) pbodySword->body->GetWorld()->DestroyBody(pbodySword->body);
@@ -70,6 +71,7 @@ bool Skeleton::Update(float dt)
 			destroyAttackBody = false;
 		}
 
+		// move to player
 		if (distance < 10)
 		{
 			app->map->pathfinding->CreatePath(skeletonTilePos, playerTilePos);
@@ -77,6 +79,7 @@ bool Skeleton::Update(float dt)
 
 			if (distance < 3 && !isAttacking)
 			{
+				// attack
 				isAttacking = true;
 				hasAttacked = true;
 				currentAnim = &skeletonAttackAnim;
@@ -99,7 +102,7 @@ bool Skeleton::Update(float dt)
 			}
 			else if (distance >= 3 && !isAttacking)
 			{
-				
+				// move
 				if (path->Count() > 1) {
 					nextTilePath = { path->At(1)->x, path->At(1)->y };
 					Move(skeletonTilePos, nextTilePath);
@@ -108,6 +111,7 @@ bool Skeleton::Update(float dt)
 			}
 			else if (!isAttacking)
 			{
+				// idle
 				currentAnim = &skeletonIdleAnim;
 				velocity = { 0, -GRAVITY_Y };
 				app->map->pathfinding->ClearLastPath();
@@ -115,6 +119,7 @@ bool Skeleton::Update(float dt)
 		}
 		else
 		{
+			// idle movement
 			const int idleDistance = 3;
 
 			if (position.x >= initialIdlePosition + idleDistance * 32)
@@ -138,10 +143,11 @@ bool Skeleton::Update(float dt)
 
 		if (isAttacking)
 		{
+			// create attack body
 			if (currentAnim == &skeletonAttackAnim && currentAnim->GetCurrentFrameCount() >= 4 && !attackBodyCreated)
 			{
-				if (isFacingRight) pbodySword = app->physics->CreateRectangleSensor(position.x + 50, position.y - 20, 30, 30, bodyType::STATIC);
-				else pbodySword = app->physics->CreateRectangleSensor(position.x - 50, position.y - 20, 30, 30, bodyType::STATIC);
+				if (isFacingRight) pbodySword = app->physics->CreateRectangleSensor(position.x + 50, position.y - 20, 40, 30, bodyType::STATIC);
+				else pbodySword = app->physics->CreateRectangleSensor(position.x - 50, position.y - 20, 40, 30, bodyType::STATIC);
 				pbodySword->ctype = ColliderType::ENEMY_SWORD;
 				pbodySword->listener = this;
 				attackBodyCreated = true;
@@ -158,6 +164,7 @@ bool Skeleton::Update(float dt)
 		}
 	}
 
+	// dead
 	if (health <= 0 && !isDead)
 	{
 		currentAnim = &skeletonDeadAnim;
@@ -174,6 +181,7 @@ bool Skeleton::Update(float dt)
 		if (path == app->map->pathfinding->GetLastPath()) app->map->pathfinding->ClearLastPath();
 	}
 
+	// open chest
 	if (isDead && open)
 	{
 		app->scene->player->canOpen = true;
@@ -257,7 +265,7 @@ void Skeleton::OnCollision(PhysBody* physA, PhysBody* physB)
 		switch (physB->ctype)
 		{
 			case ColliderType::PLAYER_BODY:
-				if (app->scene->player->health > 0 && !hasAttacked) app->scene->player->health -= 1;
+				if (app->scene->player->health > 0 && !hasAttacked) app->scene->player->health -= 20;
 				break;
 		}
 	}
