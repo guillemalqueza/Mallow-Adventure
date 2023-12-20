@@ -102,12 +102,18 @@
 			<boingAudio1 path="Assets/Audio/Fx/boing1_fx.wav"/>
 			<boingAudio2 path="Assets/Audio/Fx/boing2_fx.wav"/>
 		</jumper>
+		<jumper x="4896" y="2330" texturepath="Assets/Textures/jumper.png">
+			<boingAudio1 path="Assets/Audio/Fx/boing1_fx.wav"/>
+			<boingAudio2 path="Assets/Audio/Fx/boing2_fx.wav"/>
+		</jumper>
 		<crumblingPlatform x="5900" y="500" texturepath="Assets/Textures/crumbling_platform.png"/>
 		<crumblingPlatform x="6050" y="550" texturepath="Assets/Textures/crumbling_platform.png"/>
 		<crumblingPlatform x="6200" y="600" texturepath="Assets/Textures/crumbling_platform.png"/>
 		<crumblingPlatform x="4416" y="2560" texturepath="Assets/Textures/crumbling_platform2.png"/>
 		<crumblingPlatform x="4544" y="2528" texturepath="Assets/Textures/crumbling_platform2.png"/>
 		<crumblingPlatform x="4672" y="2464" texturepath="Assets/Textures/crumbling_platform2.png"/>
+		<crumblingPlatform x="4544" y="1952" texturepath="Assets/Textures/crumbling_platform2.png"/>
+		<crumblingPlatform x="4800" y="2032" texturepath="Assets/Textures/crumbling_platform2.png"/>
 		<lockDoor x="3200" y="190" texturepath="Assets/Textures/lock_door.png">
 			<doorAudio path="Assets/Audio/Fx/open_door_fx.wav"/>
 		</lockDoor>

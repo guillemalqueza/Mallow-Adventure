@@ -7,24 +7,24 @@
 	<physics />
 	<scene>
 		<player>
-			<playerPosition x="1520" y="4991" />
-			<playerStates isDead="false" isEquipped="false" wallLeft="false" wallRight="false" ground="true" />
+			<playerPosition x="4103" y="2184" />
+			<playerStates isDead="false" isEquipped="false" wallLeft="false" wallRight="true" ground="false" />
 			<playerItems keys="0" />
 		</player>
 		<sceneConfig>
 			<currentLevel level1="false" level2="false" level3="true" />
-			<cameraProperties cameraX="1100" cameraY="4400" cameraIdx="4" cameraInitialized="true" cameraIdx="4" />
+			<cameraProperties cameraX="2800" cameraY="1800" cameraIdx="7" cameraInitialized="true" cameraIdx="7" />
 		</sceneConfig>
 		<skeleton1>
-			<skeletonPosition x="2292" y="4875" />
+			<skeletonPosition x="2218" y="4875" />
 			<skeletonStates isDead="false" health="100" />
 		</skeleton1>
 		<skeleton2>
-			<skeletonPosition x="3791" y="3467" />
+			<skeletonPosition x="3721" y="3467" />
 			<skeletonStates isDead="false" health="100" />
 		</skeleton2>
 		<skeleton3>
-			<skeletonPosition x="3357" y="2347" />
+			<skeletonPosition x="3345" y="2347" />
 			<skeletonStates isDead="false" health="100" />
 		</skeleton3>
 	</scene>
@@ -33,6 +33,6 @@
 	<particlemanager />
 	<fadetoblack />
 	<renderer>
-		<camera x="-1076" y="-4400" />
+		<camera x="-2800" y="-1800" />
 	</renderer>
 </game_state>
