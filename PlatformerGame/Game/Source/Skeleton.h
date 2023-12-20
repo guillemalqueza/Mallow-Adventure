@@ -6,6 +6,8 @@
 #include "Physics.h"
 #include "SDL/include/SDL.h"
 #include "Animation.h"
+#include "Point.h"
+#include "DynArray.h"
 
 struct SDL_Texture;
 
@@ -26,6 +28,8 @@ public:
 
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 
+	void ResetEntity();
+
 	void LoadAnimations();
 
 	void Move(const iPoint& origin, const iPoint& destination);
@@ -42,8 +46,6 @@ public:
 	int attackAudio3FxId;
 	int hurtAudioFxId;
 	int deathAudioFxId;
-
-
 private:
 
 	Animation* currentAnim;
@@ -68,9 +70,11 @@ private:
 
 	float distance;
 	int health = 100;
-	bool isDead = false;
+	bool hasAttacked = false;
 
 	int initialIdlePosition;
+
+	const DynArray<iPoint>* path;
 };
 
 #endif // __SKELETON_H__

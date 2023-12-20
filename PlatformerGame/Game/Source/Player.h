@@ -100,7 +100,6 @@ public:
 	bool isDashing = false;
 	bool canDash = true;
 	bool jumper = false;
-	bool isDead = false;
 	bool isEquipped = false;
 	bool isAttacking = false;
 	bool firstAttack = true;

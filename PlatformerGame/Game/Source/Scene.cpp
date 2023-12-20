@@ -48,6 +48,8 @@ bool Scene::Awake(pugi::xml_node& config)
 	CreateEntities(config, "chest", EntityType::CHEST);
 	CreateEntities(config, "log", EntityType::LOG_OBSTACLE);
 
+	app->entityManager->GetSkeletons(skeletonsList);
+
 	if (config.child("player")) {
 		player = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER);
 		player->parameters = config.child("player");
@@ -322,6 +324,23 @@ bool Scene::LoadState(pugi::xml_node node)
 	cameraY = cameraNode.attribute("cameraY").as_int();
 	cameraIdx = cameraNode.attribute("cameraIdx").as_int();
 	cameraInitialized = cameraNode.attribute("cameraInitialized").as_bool();
+	cameraIdx = cameraNode.attribute("cameraIdx").as_int();
+
+	//enemies
+	for (int skeletonCount = 0; skeletonCount < skeletonsList.Count(); skeletonCount++) {
+		std::string count = std::to_string(skeletonCount + 1);
+
+		Entity* skeleton = skeletonsList.At(skeletonCount)->data;
+
+		pugi::xml_node skeletonPositionNode = node.append_child(("skeleton" + count).c_str()).append_child("skeletonPosition");
+		skeleton->position.x = skeletonPositionNode.attribute("x").as_int();
+		skeleton->position.y = skeletonPositionNode.attribute("y").as_int();
+		pugi::xml_node skeletonStatesNode = node.append_child(("skeleton" + count).c_str()).append_child("skeletonStates");
+		skeleton->isDead = skeletonStatesNode.attribute("isDead").as_bool();
+		skeleton->health = skeletonStatesNode.attribute("health").as_int();
+
+		if (!skeleton->isDead) skeleton->ResetEntity();
+	}
 
 	if (level1Enabled) level1SpawnPoint = player->position;
 	else if (level2Enabled) level2SpawnPoint = player->position;
@@ -358,7 +377,21 @@ bool Scene::SaveState(pugi::xml_node node)
 	cameraNode.append_attribute("cameraY").set_value(cameraY);
 	cameraNode.append_attribute("cameraIdx").set_value(cameraIdx);
 	cameraNode.append_attribute("cameraInitialized").set_value(cameraInitialized);
+	cameraNode.append_attribute("cameraIdx").set_value(cameraIdx);
 
+	//enemies
+	for (int skeletonCount = 0; skeletonCount < skeletonsList.Count(); skeletonCount++) {
+		std::string count = std::to_string(skeletonCount + 1);
+
+		Entity* skeleton = skeletonsList.At(skeletonCount)->data;
+
+		pugi::xml_node skeletonPositionNode = node.append_child(("skeleton" + count).c_str()).append_child("skeletonPosition");
+		skeletonPositionNode.append_attribute("x").set_value(skeleton->position.x);
+		skeletonPositionNode.append_attribute("y").set_value(skeleton->position.y);
+		pugi::xml_node skeletonStatesNode = node.append_child(("skeleton" + count).c_str()).append_child("skeletonStates");
+		skeletonStatesNode.append_attribute("isDead").set_value(skeleton->isDead);
+		skeletonStatesNode.append_attribute("health").set_value(skeleton->health);
+	}
 
 	return true;
 }

@@ -33,6 +33,8 @@ public:
 
 	void AddEntity(Entity* entity);
 
+	void GetSkeletons(List<Entity*>& skeletonsList) const;
+
 public:
 
 	List<Entity*> entities;

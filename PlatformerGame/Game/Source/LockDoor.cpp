@@ -46,8 +46,8 @@ bool LockDoor::Start() {
 
 bool LockDoor::Update(float dt)
 {
-	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 192/2;
-	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 128/2;
+	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 192 / 2;
+	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 128 / 2;
 
 	if (isActivated)
 	{
@@ -56,9 +56,14 @@ bool LockDoor::Update(float dt)
 		app->audio->PlayFx(doorAudioFxId);
 	}
 
+	if (currentAnim == &doorOpenAnim && currentAnim->GetCurrentFrameCount() >= 4 && !fade)
+	{
+		fade = true;
+		app->fade->Fade(2, 60);
+	}
+
 	if (currentAnim == &doorOpenAnim && currentAnim->HasFinished())
 	{
-		app->fade->Fade(2, 60);
 		app->physics->world->DestroyBody(pbody->body);
 		app->entityManager->DestroyEntity(this);
 	}

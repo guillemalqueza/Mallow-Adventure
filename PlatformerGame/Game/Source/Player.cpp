@@ -80,6 +80,8 @@ bool Player::Update(float dt)
 	//godmode
 	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) ToggleGodMode();
 
+	if (health <= 0) isDead = true;
+
 	if (!isDead)
 	{
 		if (!isJumping && !isCrouching && !isAttacking && !activeSword && !enterDoor && !isDrinking && !isLanding)
@@ -744,44 +746,48 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		jumpCount = 0;
 		dashCount = 0;
 
-		if (hasJumped)
+		if (!godMode)
 		{
-			hasJumped = false;
-			isLanding = true;
-		}
+			if (hasJumped)
+			{
+				hasJumped = false;
+				isLanding = true;
+			}
 
-		if (isLanding)
-		{
-			if (!isEquipped) {
-				currentAnim = &landJumpAnim;
-				int random = rand() % 2;
-				switch (random)
-				{
+			if (isLanding)
+			{
+				if (!isEquipped) {
+					currentAnim = &landJumpAnim;
+					int random = rand() % 2;
+					switch (random)
+					{
+						case 0:
+							app->audio->PlayFx(land1FxId);
+							break;
+						case 1:
+							app->audio->PlayFx(land2FxId);
+							break;
+					}
+				}
+				else if (isEquipped) {
+					currentAnim = &armorLandJumpAnim;
+					int random = rand() % 2;
+					switch (random)
+					{
 					case 0:
 						app->audio->PlayFx(land1FxId);
 						break;
 					case 1:
 						app->audio->PlayFx(land2FxId);
 						break;
+					}
 				}
-			}
-			else if (isEquipped) {
-				currentAnim = &armorLandJumpAnim;
-				int random = rand() % 2;
-				switch (random)
-				{
-				case 0:
-					app->audio->PlayFx(land1FxId);
-					break;
-				case 1:
-					app->audio->PlayFx(land2FxId);
-					break;
-				}
-			}
 
-			currentAnim->ResetLoopCount();
-			currentAnim->Reset();
+				currentAnim->ResetLoopCount();
+				currentAnim->Reset();
+			}
 		}
+		
 		
 		isJumping = false;
 		wallLeft = false;

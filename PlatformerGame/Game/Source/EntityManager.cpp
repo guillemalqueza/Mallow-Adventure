@@ -164,3 +164,18 @@ bool EntityManager::Update(float dt)
 
 	return ret;
 }
+
+void EntityManager::GetSkeletons(List<Entity*>& skeletonsList) const
+{
+	skeletonsList.Clear();
+
+	ListItem<Entity*>* entity;
+
+	for (entity = entities.start; entity != NULL; entity = entity->next)
+	{
+		if (entity->data->type == EntityType::SKELETON)
+		{
+			skeletonsList.Add(entity->data);
+		}
+	}
+}

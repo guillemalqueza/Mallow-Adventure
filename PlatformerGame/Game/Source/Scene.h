@@ -64,6 +64,8 @@ public:
 	bool level2Enabled = false;
 	bool level3Enabled = false;
 
+	List<Entity*> skeletonsList;
+
 private:
 	SDL_Texture* backgroundTexture;
 	SDL_Texture* backgroundTexture2;

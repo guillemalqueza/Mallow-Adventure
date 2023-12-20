@@ -86,6 +86,10 @@ public:
 	
 	};
 
+	virtual void Entity::ResetEntity() {
+
+	};
+
 public:
 
 	SString name;
@@ -97,6 +101,9 @@ public:
 	// want our Entity class, maybe it's not renderable...
 	iPoint position;       
 	bool renderable = true;
+
+	bool isDead = false;
+	int health = 100;
 };
 
 #endif // __ENTITY_H__

@@ -6,7 +6,6 @@
 #include "Render.h"
 #include "Scene.h"
 #include "Log.h"
-#include "Point.h"
 #include "Physics.h"
 #include "EntityManager.h"
 #include "Map.h"
@@ -66,7 +65,7 @@ bool Skeleton::Update(float dt)
 
 		if (destroyAttackBody)
 		{
-			pbodySword->body->GetWorld()->DestroyBody(pbodySword->body);
+			if (pbodySword != NULL) pbodySword->body->GetWorld()->DestroyBody(pbodySword->body);
 			pbodySword = NULL;
 			destroyAttackBody = false;
 		}
@@ -74,10 +73,12 @@ bool Skeleton::Update(float dt)
 		if (distance < 10)
 		{
 			app->map->pathfinding->CreatePath(skeletonTilePos, playerTilePos);
+			path = app->map->pathfinding->GetLastPath();
 
 			if (distance < 3 && !isAttacking)
 			{
 				isAttacking = true;
+				hasAttacked = true;
 				currentAnim = &skeletonAttackAnim;
 				int random = rand() % 3;
 				switch (random){
@@ -98,7 +99,7 @@ bool Skeleton::Update(float dt)
 			}
 			else if (distance >= 3 && !isAttacking)
 			{
-				const DynArray<iPoint>* path = app->map->pathfinding->GetLastPath();
+				
 				if (path->Count() > 1) {
 					nextTilePath = { path->At(1)->x, path->At(1)->y };
 					Move(skeletonTilePos, nextTilePath);
@@ -131,6 +132,8 @@ bool Skeleton::Update(float dt)
 
 			currentAnim = &skeletonWalkAnim;
 
+			if (path == app->map->pathfinding->GetLastPath()) app->map->pathfinding->ClearLastPath();
+
 		}
 
 		if (isAttacking)
@@ -140,12 +143,14 @@ bool Skeleton::Update(float dt)
 				if (isFacingRight) pbodySword = app->physics->CreateRectangleSensor(position.x + 50, position.y - 20, 30, 30, bodyType::STATIC);
 				else pbodySword = app->physics->CreateRectangleSensor(position.x - 50, position.y - 20, 30, 30, bodyType::STATIC);
 				pbodySword->ctype = ColliderType::ENEMY_SWORD;
+				pbodySword->listener = this;
 				attackBodyCreated = true;
 			}
 
 			if (currentAnim == &skeletonAttackAnim && currentAnim->GetCurrentFrameCount() >= 9 && attackBodyCreated)
 			{
 				isAttacking = false;
+				hasAttacked = false;
 				attackBodyCreated = false;
 
 				if (pbodySword != NULL) destroyAttackBody = true;
@@ -159,8 +164,14 @@ bool Skeleton::Update(float dt)
 		velocity = { 0, 0 };
 		isDead = true;
 		app->audio->PlayFx(deathAudioFxId);
+		if (isAttacking)
+		{
+			isAttacking = false;
+			destroyAttackBody = true;
+		}
 		pbody->body->SetActive(false);
 		enemyPbody->body->SetActive(false);
+		if (path == app->map->pathfinding->GetLastPath()) app->map->pathfinding->ClearLastPath();
 	}
 
 	if (isDead && open)
@@ -189,6 +200,11 @@ bool Skeleton::Update(float dt)
 			iPoint pos = app->map->MapToWorld(path->At(i)->x, path->At(i)->y);
 			app->render->DrawTexture(pathTexture, pos.x, pos.y);
 		}
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
+	{
+		ResetEntity();
 	}
 
 	return true;
@@ -227,6 +243,24 @@ void Skeleton::OnCollision(PhysBody* physA, PhysBody* physB)
 				break;
 		}
 	}
+
+	if (physA->ctype == ColliderType::ENEMY_SWORD)
+	{
+		switch (physB->ctype)
+		{
+			case ColliderType::PLAYER_BODY:
+				if (app->scene->player->health > 0 && !hasAttacked) app->scene->player->health -= 1;
+				break;
+		}
+	}
+}
+
+void Skeleton::ResetEntity()
+{
+	health = 100;
+	isDead = false;
+	pbody->body->SetActive(true);
+	enemyPbody->body->SetActive(true);
 }
 
 void Skeleton::LoadAnimations()
