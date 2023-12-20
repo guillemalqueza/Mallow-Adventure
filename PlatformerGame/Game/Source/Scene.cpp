@@ -139,31 +139,31 @@ bool Scene::Update(float dt)
 		changingLevel = false;
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN || levelToLoadIdx == 1)
+	if ((app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN || levelToLoadIdx == 1) && app->fade->fadeFinished)
 	{
 		levelToLoadIdx = 0;
 		player->wallLeft = false;
 		player->wallRight = false;
-		cameraIdx = 0;
+		newCameraIdx = 0;
 		level1SpawnPoint = { 400, 991 };
 		app->fade->Fade(1, 60);
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN || levelToLoadIdx == 2)
+	if ((app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN || levelToLoadIdx == 2) && app->fade->fadeFinished)
 	{
 		levelToLoadIdx = 0;
 		player->wallLeft = false;
 		player->wallRight = false;
-		cameraIdx = 2;
+		newCameraIdx = 2;
 		level2SpawnPoint = { 4120, 830 };
 		app->fade->Fade(2, 60);
 	}
-	if (app->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN || levelToLoadIdx == 3)
+	if ((app->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN || levelToLoadIdx == 3) && app->fade->fadeFinished)
 	{
 		levelToLoadIdx = 0;
 		player->wallLeft = false;
 		player->wallRight = false;
-		cameraIdx = 3;
+		newCameraIdx = 3;
 		level3SpawnPoint = { 320, 5824 };
 		app->fade->Fade(3, 60);
 	}
@@ -282,6 +282,7 @@ void Scene::StartLevel1()
 	player->pbody->body->SetTransform(b2Vec2(PIXEL_TO_METERS(level1SpawnPoint.x + 1), PIXEL_TO_METERS(level1SpawnPoint.y)), 0);
 	if (cameraIdx != 0 && cameraIdx != 1) changingLevel = true;
 	cameraInitialized = true;
+	cameraIdx = newCameraIdx;
 	level1Enabled = true;
 	level2Enabled = false;
 	level3Enabled = false;
@@ -297,6 +298,7 @@ void Scene::StartLevel2()
 	player->pbody->body->SetTransform(b2Vec2(PIXEL_TO_METERS(level2SpawnPoint.x + 1), PIXEL_TO_METERS(level2SpawnPoint.y + 1)), 0);
 	if (cameraIdx != 2) changingLevel = true;
 	cameraInitialized = true;
+	cameraIdx = newCameraIdx;
 	level2Enabled = true;
 	level1Enabled = false;
 	level3Enabled = false;
@@ -312,6 +314,7 @@ void Scene::StartLevel3()
 	player->pbody->body->SetTransform(b2Vec2(PIXEL_TO_METERS(level3SpawnPoint.x + 1), PIXEL_TO_METERS(level3SpawnPoint.y + 1)), 0);
 	if (cameraIdx != 3) changingLevel = true;
 	cameraInitialized = true;
+	cameraIdx = newCameraIdx;
 	level3Enabled = true;
 	level1Enabled = false;
 	level2Enabled = false;
@@ -346,7 +349,7 @@ bool Scene::LoadState(pugi::xml_node node)
 	cameraY = cameraNode.attribute("cameraY").as_int();
 	cameraIdx = cameraNode.attribute("cameraIdx").as_int();
 	cameraInitialized = cameraNode.attribute("cameraInitialized").as_bool();
-	cameraIdx = cameraNode.attribute("cameraIdx").as_int();
+	newCameraIdx = cameraNode.attribute("cameraIdx").as_int();
 
 	//enemies
 	for (int skeletonCount = 0; skeletonCount < skeletonsList.Count(); skeletonCount++) {

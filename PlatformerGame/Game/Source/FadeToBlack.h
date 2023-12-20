@@ -30,6 +30,9 @@ public:
 	// After the first step, the modules should be switched
 	bool Fade(int cameraIdx, float frames = 60);
 
+public:
+	bool fadeFinished = true;
+
 private:
 
 	enum Fade_Step
