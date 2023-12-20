@@ -24,11 +24,13 @@ bool Ghost::Awake() {
 	position.y = parameters.attribute("y").as_int();
 	texturePath = parameters.attribute("texturepath").as_string();
 	speed = parameters.attribute("speed").as_float();
-	summonPosition.x = parameters.attribute("x").as_int() - 100;
-	summonPosition.y = parameters.attribute("y").as_int() - 100;
+	summonPosition.x = parameters.attribute("x").as_int() - 200;
+	summonPosition.y = parameters.attribute("y").as_int();
 	ghostSummonFxId = app->audio->LoadFx(parameters.child("ghostSummonAudio").attribute("path").as_string());
 	lightTexturePath = parameters.attribute("lightTexture").as_string();
 	bigLightTexturePath = parameters.attribute("bigLightTexture").as_string();
+
+	initialIdlePosition = summonPosition;
 
 	return true;
 }
@@ -90,16 +92,24 @@ bool Ghost::Update(float dt)
 	//ghost summon
 	summonTilePos = app->map->WorldToMap(summonPosition.x, summonPosition.y);
 
-	if (currentSummonAnim == &ghostSummonAppearAnim && currentSummonAnim->GetCurrentFrameCount() == 1)
+	distance = playerTilePos.DistanceTo(summonTilePos);
+
+	if (distance < 18 && !summonSpawned)
 	{
+		currentAnim = &ghostSummonAnim;
+		currentAnim->ResetLoopCount();
+		currentAnim->Reset();
+		currentSummonAnim = &ghostSummonAppearAnim;
+		currentSummonAnim->ResetLoopCount();
+		currentSummonAnim->Reset();
+		summonSpawned = true;
 		app->audio->PlayFx(ghostSummonFxId);
 	}
-
-	distance = playerTilePos.DistanceTo(summonTilePos);
 
 	if (distance < 10)
 	{
 		app->map->pathfinding->CreatePath(summonTilePos, playerTilePos, true);
+		path = app->map->pathfinding->GetLastPath();
 
 		if (distance < 2)
 		{
@@ -122,8 +132,32 @@ bool Ghost::Update(float dt)
 			app->map->pathfinding->ClearLastPath();
 		}
 	}
+	else if (summonSpawned && isSummonFollowing)
+	{
+		const int idleDistance = 2;
 
-	if (currentSummonAnim == &ghostSummonAppearAnim && currentSummonAnim->HasFinished())
+		if (summonPosition.x >= initialIdlePosition.x + idleDistance * 32)
+		{
+			isFacingRight = false;
+		}
+		else if (summonPosition.x <= initialIdlePosition.x - idleDistance * 32)
+		{
+			isFacingRight = true;
+		}
+
+		velocity.x = isFacingRight ? 1 : -1;
+		velocity.y = isFacingRight ? -1 : 1;
+
+		summonPosition.x += velocity.x;
+		summonPosition.y += velocity.y;
+
+		currentSummonAnim = &ghostSummonIdleAnim;
+
+		if (path == app->map->pathfinding->GetLastPath()) app->map->pathfinding->ClearLastPath();
+
+	}
+
+	if (currentSummonAnim == &ghostSummonAppearAnim && currentSummonAnim->HasFinished() && summonSpawned)
 	{
 		isSummonFollowing = true;
 		currentSummonAnim = &ghostSummonIdleAnim;
@@ -134,22 +168,25 @@ bool Ghost::Update(float dt)
 
 	summonPbody->body->SetLinearVelocity(velocity);
 
-	// draw light
-	if (isSummonFacingRight) app->render->DrawTexture(lightTexture, summonPosition.x - 60, summonPosition.y - 50);
-	else app->render->DrawTexture(lightTexture, summonPosition.x - 50, summonPosition.y - 50);
+	if (summonSpawned)
+	{
+		// draw light
+		if (isSummonFacingRight) app->render->DrawTexture(lightTexture, summonPosition.x - 60, summonPosition.y - 50);
+		else app->render->DrawTexture(lightTexture, summonPosition.x - 50, summonPosition.y - 50);
 
-	SDL_Rect summonRect = currentSummonAnim->GetCurrentFrame();
-	if (isSummonFollowing)
-	{
-		if (isSummonFacingRight) app->render->DrawTexture(texture, summonPosition.x - 100, summonPosition.y - 90, &summonRect, SDL_FLIP_NONE, 1.0f, -90);
-		else app->render->DrawTexture(texture, summonPosition.x - 100, summonPosition.y - 90, &summonRect, SDL_FLIP_HORIZONTAL, 1.0f, 90);
+		SDL_Rect summonRect = currentSummonAnim->GetCurrentFrame();
+		if (isSummonFollowing)
+		{
+			if (isSummonFacingRight) app->render->DrawTexture(texture, summonPosition.x - 100, summonPosition.y - 90, &summonRect, SDL_FLIP_NONE, 1.0f, -90);
+			else app->render->DrawTexture(texture, summonPosition.x - 100, summonPosition.y - 90, &summonRect, SDL_FLIP_HORIZONTAL, 1.0f, 90);
+		}
+		else
+		{
+			if (isSummonFacingRight) app->render->DrawTexture(texture, summonPosition.x - 100, summonPosition.y - 90, &summonRect);
+			else app->render->DrawTexture(texture, summonPosition.x - 100, summonPosition.y - 90, &summonRect, SDL_FLIP_HORIZONTAL);
+		}
+		currentSummonAnim->Update();
 	}
-	else
-	{
-		if (isSummonFacingRight) app->render->DrawTexture(texture, summonPosition.x - 100, summonPosition.y - 90, &summonRect);
-		else app->render->DrawTexture(texture, summonPosition.x - 100, summonPosition.y - 90, &summonRect, SDL_FLIP_HORIZONTAL);
-	}
-	currentSummonAnim->Update();
 
 	if (app->physics->debug)
 	{

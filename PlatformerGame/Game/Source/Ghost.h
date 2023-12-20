@@ -6,6 +6,8 @@
 #include "Physics.h"
 #include "SDL/include/SDL.h"
 #include "Animation.h"
+#include "Point.h"
+#include "DynArray.h"
 
 struct SDL_Texture;
 
@@ -69,6 +71,11 @@ private:
 	iPoint nextTilePath;
 
 	float distance;
+	bool summonSpawned = false;
+
+	iPoint initialIdlePosition;
+
+	const DynArray<iPoint>* path;
 };
 
 #endif // __GHOST_H__
