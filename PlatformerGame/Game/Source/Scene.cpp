@@ -65,6 +65,10 @@ bool Scene::Awake(pugi::xml_node& config)
 
 	configNode = config;
 
+	level1Music = config.child("music").child("level1Music").attribute("path").as_string();
+	level2Music = config.child("music").child("level2Music").attribute("path").as_string();
+	level3Music = config.child("music").child("level3Music").attribute("path").as_string();
+
 	return ret;
 }
 
@@ -89,7 +93,7 @@ bool Scene::Start()
 	app->render->camera.x = -32;
 	app->render->camera.y = -286;
 
-	app->audio->PlayMusic("Assets/Audio/Music/prologue.ogg", 0.0f);
+	app->audio->PlayMusic(level1Music, 0.0f);
 
 	return true;
 }
@@ -320,7 +324,7 @@ void Scene::StartLevel2()
 	player->isDead = false;
 	app->map->mapIdx = 2;
 	app->map->UpdateMapSize();
-	app->audio->PlayMusic("Assets/Audio/Music/first_steps.ogg", 0.0f);
+	app->audio->PlayMusic(level2Music, 0.0f);
 }
 
 void Scene::StartLevel3()
@@ -336,7 +340,7 @@ void Scene::StartLevel3()
 	player->isDead = false;
 	app->map->mapIdx = 3;
 	app->map->UpdateMapSize();
-	app->audio->PlayMusic("Assets/Audio/Music/resurrections.ogg", 0.0f);
+	app->audio->PlayMusic(level3Music, 0.0f);
 }	
 
 bool Scene::LoadState(pugi::xml_node node)

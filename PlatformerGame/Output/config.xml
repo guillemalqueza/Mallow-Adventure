@@ -25,6 +25,15 @@
 	<scene>
 		<!-- Scene -->
 		<map path="Assets/Maps/" name="MapTemplate.tmx"/>
+
+		<!-- Music -->
+		<music>
+			<level1Music path="Assets/Audio/Music/prologue.ogg"/>
+			<level2Music path="Assets/Audio/Music/first_steps.ogg"/>
+			<level3Music path="Assets/Audio/Music/resurrections.ogg"/>
+		</music>
+
+		<!-- Player -->
 		<player x="400" y="991" texturepath="Assets/Textures/player.png" lightTexture = "Assets/Textures/player_light.png" effectsTexture="Assets/Textures/effects.png" speed="0.2f">
 			<itemAudio path="Assets/Audio/Fx/coin_pickup.wav"/>
 
@@ -70,6 +79,7 @@
 			<climbAudioAll path="Assets/Audio/Fx/climb_all_fx.wav"/>
 
 		</player>
+		<!-- Skeletons -->
 		<skeleton x="2200" y="4875" texturepath="Assets/Textures/enemy_skeleton.png" speed="0.2f" open="false">
 			<attackAudio1 path="Assets/Audio/Fx/skeleton_attack1_fx.wav"/>
 			<attackAudio2 path="Assets/Audio/Fx/skeleton_attack2_fx.wav"/>
@@ -77,6 +87,7 @@
 			<hittedAudio1 path="Assets/Audio/Fx/skeleton_hitted_fx.wav"/>
 			<deadAudio1 path="Assets/Audio/Fx/skeleton_dead_fx.wav"/>
 		</skeleton>
+
 		<skeleton x="3700" y="3423" texturepath="Assets/Textures/enemy_skeleton.png" speed="0.2f" open="false">
 			<attackAudio1 path="Assets/Audio/Fx/skeleton_attack1_fx.wav"/>
 			<attackAudio2 path="Assets/Audio/Fx/skeleton_attack2_fx.wav"/>
@@ -84,6 +95,7 @@
 			<hittedAudio1 path="Assets/Audio/Fx/skeleton_hitted_fx.wav"/>
 			<deadAudio1 path="Assets/Audio/Fx/skeleton_dead_fx.wav"/>
 		</skeleton>
+
 		<skeleton x="3266" y="2300" texturepath="Assets/Textures/enemy_skeleton.png" speed="0.2f" open="true">
 			<attackAudio1 path="Assets/Audio/Fx/skeleton_attack1_fx.wav"/>
 			<attackAudio2 path="Assets/Audio/Fx/skeleton_attack2_fx.wav"/>
@@ -91,13 +103,20 @@
 			<hittedAudio1 path="Assets/Audio/Fx/skeleton_hitted_fx.wav"/>
 			<deadAudio1 path="Assets/Audio/Fx/skeleton_dead_fx.wav"/>
 		</skeleton>
-		<ghost x="3808" y="2976" texturepath="Assets/Textures/enemy_ghost.png" lightTexture="Assets/Textures/ghost_shadow.png" speed="0.2f">
+
+		<!-- Ghosts -->
+		<ghost x="3808" y="2976" texturepath="Assets/Textures/enemy_ghost.png" lightTexture="Assets/Textures/ghost_shadow.png" bigLightTexture="Assets/Textures/big_ghost_shadow.png" speed="0.2f">
 			<ghostSummonAudio path="Assets/Audio/Fx/ghost_summon_fx.wav"/>
 		</ghost>
-		<ghost x="5920" y="2150" texturepath="Assets/Textures/enemy_ghost.png" lightTexture="Assets/Textures/ghost_shadow.png" speed="0.2f">
+		
+		<ghost x="5920" y="2150" texturepath="Assets/Textures/enemy_ghost.png" lightTexture="Assets/Textures/ghost_shadow.png" bigLightTexture="Assets/Textures/big_ghost_shadow.png" speed="0.2f">
 			<ghostSummonAudio path="Assets/Audio/Fx/ghost_summon_fx.wav"/>
 		</ghost>
+
+		<!-- Key -->
 		<key x="704" y="632" texturepath="Assets/Textures/key.png"/>
+
+		<!-- Jumpers -->
 		<jumper x="4880" y="634" texturepath="Assets/Textures/jumper.png">
 			<boingAudio1 path="Assets/Audio/Fx/boing1_fx.wav"/>
 			<boingAudio2 path="Assets/Audio/Fx/boing2_fx.wav"/>
@@ -106,6 +125,8 @@
 			<boingAudio1 path="Assets/Audio/Fx/boing1_fx.wav"/>
 			<boingAudio2 path="Assets/Audio/Fx/boing2_fx.wav"/>
 		</jumper>
+
+		<!-- Crumbling Platforms -->
 		<crumblingPlatform x="5900" y="500" texturepath="Assets/Textures/crumbling_platform.png"/>
 		<crumblingPlatform x="6050" y="550" texturepath="Assets/Textures/crumbling_platform.png"/>
 		<crumblingPlatform x="6200" y="600" texturepath="Assets/Textures/crumbling_platform.png"/>
@@ -114,18 +135,28 @@
 		<crumblingPlatform x="4672" y="2464" texturepath="Assets/Textures/crumbling_platform2.png"/>
 		<crumblingPlatform x="4544" y="1952" texturepath="Assets/Textures/crumbling_platform2.png"/>
 		<crumblingPlatform x="4800" y="2032" texturepath="Assets/Textures/crumbling_platform2.png"/>
+
+		<!-- Door -->
 		<lockDoor x="3200" y="190" texturepath="Assets/Textures/lock_door.png">
 			<doorAudio path="Assets/Audio/Fx/open_door_fx.wav"/>
 		</lockDoor>
+		
+		<!-- Backgrounds -->
 		<background texturepath="Assets/Maps/background.png"/>
 		<background2 texturepath="Assets/Maps/background_lvl_2.png"/>
+
+		<!-- Equipment -->
 		<equipment x="5200" y="34" texturepath="Assets/Textures/spritesheet_sword.png">
 			<equipmentReleaseAudio path="Assets/Audio/Fx/equipment_release.wav"/>
 			<equipmentPickUpAudio path="Assets/Audio/Fx/equipment_pickup_fx.wav"/>
 		</equipment>
+
+		<!-- Chest -->
 		<chest x="2972" y="2234" texturepath="Assets/Textures/chest_spritesheet.png">
 			<chestAudio path="Assets/Audio/Fx/chest_magic_open_fx.wav"/>
 		</chest>
+
+		<!-- Obstacles -->
 		<obstacle x="5170" y="2255" texturepath="Assets/Textures/rock.png"/>
 		<log x="7700" y="340" texturepath="Assets/Textures/log_spritesheet.png">
 			<logAudioKnock1 path="Assets/Audio/Fx/log_knock1_fx.wav"/>

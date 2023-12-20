@@ -70,6 +70,8 @@ public:
 
 	int levelToLoadIdx = 0;
 
+	const char* level1Music, *level2Music, *level3Music;
+
 private:
 	SDL_Texture* backgroundTexture;
 	SDL_Texture* backgroundTexture2;
