@@ -53,8 +53,10 @@ private:
 	Animation ghostSummonIdleAnim, ghostSummonAppearAnim, ghostSummonDeathAnim;
 
 	SDL_Texture* texture;
+	SDL_Texture* lightTexture;
 	SDL_Texture* pathTexture;
 	const char* texturePath;
+	const char* lightTexturePath;;
 	PhysBody* pbody;
 	PhysBody* summonPbody;
 	b2Transform initialTransform, initialSummonTransform;

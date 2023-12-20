@@ -27,6 +27,7 @@ bool Ghost::Awake() {
 	summonPosition.x = parameters.attribute("x").as_int() - 100;
 	summonPosition.y = parameters.attribute("y").as_int() - 100;
 	ghostSummonFxId = app->audio->LoadFx(parameters.child("ghostSummonAudio").attribute("path").as_string());
+	lightTexturePath = parameters.attribute("lightTexture").as_string();
 
 	return true;
 }
@@ -36,6 +37,7 @@ bool Ghost::Start() {
 	//initilize textures
 	texture = app->tex->Load(texturePath);
 	pathTexture = app->tex->Load("Assets/Textures/path.png");
+	lightTexture = app->tex->Load(lightTexturePath);
 	pbody = app->physics->CreateCircle(position.x, position.y, 20, bodyType::DYNAMIC);
 	pbody->ctype = ColliderType::GHOST;
 	pbody->listener = this;
@@ -63,8 +65,16 @@ bool Ghost::Update(float dt)
 		currentAnim = &ghostIdleAnim;
 	}
 
-	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x);
-	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y);
+	if (setLoadPosition)
+	{
+		pbody->body->SetTransform({ PIXEL_TO_METERS(position.x), PIXEL_TO_METERS(position.y) }, 0);
+		setLoadPosition = false;
+	}
+	else
+	{
+		position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x);
+		position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y);
+	}
 
 	SDL_Rect rect = currentAnim->GetCurrentFrame();
 	if (isFacingRight) app->render->DrawTexture(texture, position.x - 110, position.y - 130, &rect);
@@ -117,6 +127,10 @@ bool Ghost::Update(float dt)
 	summonPosition.y = METERS_TO_PIXELS(summonPbody->body->GetTransform().p.y);
 
 	summonPbody->body->SetLinearVelocity(velocity);
+
+	// draw light
+	if (isSummonFacingRight) app->render->DrawTexture(lightTexture, summonPosition.x - 60, summonPosition.y - 50);
+	else app->render->DrawTexture(lightTexture, summonPosition.x - 50, summonPosition.y - 50);
 
 	SDL_Rect summonRect = currentSummonAnim->GetCurrentFrame();
 	if (isSummonFollowing)

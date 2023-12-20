@@ -66,6 +66,8 @@ public:
 	bool level3Enabled = false;
 
 	List<Entity*> skeletonsList;
+	List<Entity*> ghostsList;
+
 	int levelToLoadIdx = 0;
 
 private:

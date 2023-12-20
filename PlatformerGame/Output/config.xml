@@ -91,10 +91,10 @@
 			<hittedAudio1 path="Assets/Audio/Fx/skeleton_hitted_fx.wav"/>
 			<deadAudio1 path="Assets/Audio/Fx/skeleton_dead_fx.wav"/>
 		</skeleton>
-		<ghost x="3808" y="2976" texturepath="Assets/Textures/enemy_ghost.png" speed="0.2f">
+		<ghost x="3808" y="2976" texturepath="Assets/Textures/enemy_ghost.png" lightTexture="Assets/Textures/ghost_shadow.png" speed="0.2f">
 			<ghostSummonAudio path="Assets/Audio/Fx/ghost_summon_fx.wav"/>
 		</ghost>
-		<ghost x="5920" y="2150" texturepath="Assets/Textures/enemy_ghost.png" speed="0.2f">
+		<ghost x="5920" y="2150" texturepath="Assets/Textures/enemy_ghost.png" lightTexture="Assets/Textures/ghost_shadow.png" speed="0.2f">
 			<ghostSummonAudio path="Assets/Audio/Fx/ghost_summon_fx.wav"/>
 		</ghost>
 		<key x="704" y="632" texturepath="Assets/Textures/key.png"/>
