@@ -46,6 +46,7 @@ bool FadeToBlack::Update(float dt)
 		if (frameCount <= 0)
 		{
 			currentStep = Fade_Step::NONE;
+			fadeFinished = true;
 		}
 		if (!activated)
 		{
@@ -87,6 +88,7 @@ bool FadeToBlack::Fade(int levelIdx, float frames)
 		ret = true;
 	}
 	activated = false;
+	fadeFinished = false;
 
 	return ret;
 }

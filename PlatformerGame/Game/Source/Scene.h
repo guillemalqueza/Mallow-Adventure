@@ -59,12 +59,14 @@ public:
 
 	Player* player;	
 	int cameraIdx = 0;
+	int newCameraIdx = 0;
 	bool cameraInitialized = true;
 	bool level1Enabled = true;
 	bool level2Enabled = false;
 	bool level3Enabled = false;
 
 	List<Entity*> skeletonsList;
+	int levelToLoadIdx = 0;
 
 private:
 	SDL_Texture* backgroundTexture;
