@@ -71,6 +71,10 @@ public:
 	int snowWalkAudio1FxId, snowWalkAudio2FxId, snowWalkAudio3FxId, snowWalkAudio4FxId;
 	int climbAudio1FxId, climbAudio2FxId, climbAudio3FxId, climbAudio4FxId, climbAudio5FxId, climbAudio6FxId;
 
+	int stoneWalkAudioAllFxId;
+	int snowWalkAudioAllFxId;
+	int climbAudioAllFxId;
+
 	Animation* currentAnim;
 	Animation idleAnim, jumpAnim, walkAnim, crouchAnim, crouchWalkAnim, fallAnim, wallAnim, deadAnim,landJumpAnim,
 				armorIdleAnim, armorJumpAnim, armorWalkAnim, armorCrouchAnim, armorCrouchWalkAnim, armorFallAnim, armorDeadAnim, 
@@ -108,6 +112,9 @@ public:
 	bool isDrinking = false;
 	bool canPush = false;
 	bool canOpen = false;
+	bool isPlayingWallSound = false;
+	bool isPlayingWalk1Sound = false;
+	bool isPlayingWalk2Sound = false;
 
 	bool lastKeyPressA = false;
 	bool lastKeyPressD = false;

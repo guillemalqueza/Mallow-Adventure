@@ -64,6 +64,11 @@
 			<climbAudio4 path="Assets/Audio/Fx/climb4_fx.wav"/>
 			<climbAudio5 path="Assets/Audio/Fx/climb5_fx.wav"/>
 			<climbAudio6 path="Assets/Audio/Fx/climb6_fx.wav"/>
+
+			<stoneWalkAudioAll path="Assets/Audio/Fx/stone_walk_all_fx.wav"/>
+			<snowWalkAudioAll path="Assets/Audio/Fx/snow_walk_all_fx.wav"/>
+			<climbAudioAll path="Assets/Audio/Fx/climb_all_fx.wav"/>
+
 		</player>
 		<skeleton x="2200" y="4875" texturepath="Assets/Textures/enemy_skeleton.png" speed="0.2f" open="false">
 			<attackAudio1 path="Assets/Audio/Fx/skeleton_attack1_fx.wav"/>

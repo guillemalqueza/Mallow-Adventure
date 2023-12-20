@@ -168,6 +168,9 @@
     <Xml Include="..\Output\config.xml" />
     <Xml Include="..\Output\save_game.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <Media Include="..\Output\Assets\Audio\Fx\stone_walk2_fx.wav" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -226,4 +226,9 @@
     <Xml Include="..\Output\config.xml" />
     <Xml Include="..\Output\save_game.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <Media Include="..\Output\Assets\Audio\Fx\stone_walk2_fx.wav">
+      <Filter>Entities</Filter>
+    </Media>
+  </ItemGroup>
 </Project>
