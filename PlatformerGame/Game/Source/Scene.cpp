@@ -11,6 +11,8 @@
 #include "Defs.h"
 #include "Log.h"
 
+using namespace std;
+
 Scene::Scene() : Module()
 {
 	name.Create("scene");
@@ -142,30 +144,43 @@ bool Scene::Update(float dt)
 	if ((app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN || levelToLoadIdx == 1) && app->fade->fadeFinished)
 	{
 		levelToLoadIdx = 0;
-		player->wallLeft = false;
-		player->wallRight = false;
-		newCameraIdx = 0;
-		level1SpawnPoint = { 400, 991 };
+		if (!isLoading)
+		{
+			player->wallLeft = false;
+			player->wallRight = false;
+			newCameraIdx = 0;
+			level1SpawnPoint = { 400, 991 };
+		}
 		app->fade->Fade(1, 60);
+		isLoading = false;
 	}
 
 	if ((app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN || levelToLoadIdx == 2) && app->fade->fadeFinished)
 	{
 		levelToLoadIdx = 0;
-		player->wallLeft = false;
-		player->wallRight = false;
-		newCameraIdx = 2;
-		level2SpawnPoint = { 4120, 830 };
+		if (!isLoading)
+		{
+			player->wallLeft = false;
+			player->wallRight = false;
+			newCameraIdx = 2;
+			level2SpawnPoint = { 4120, 830 };
+		}
 		app->fade->Fade(2, 60);
+		isLoading = false;
 	}
 	if ((app->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN || levelToLoadIdx == 3) && app->fade->fadeFinished)
 	{
 		levelToLoadIdx = 0;
-		player->wallLeft = false;
-		player->wallRight = false;
-		newCameraIdx = 3;
-		level3SpawnPoint = { 320, 5824 };
+		
+		if (!isLoading)
+		{	
+			player->wallLeft = false;
+			player->wallRight = false;
+			newCameraIdx = 3;		
+			level3SpawnPoint = { 320, 5824 };
+		}
 		app->fade->Fade(3, 60);
+		isLoading = false;
 	}
 
 	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) app->SaveRequest();
@@ -353,26 +368,26 @@ bool Scene::LoadState(pugi::xml_node node)
 
 	//enemies
 	for (int skeletonCount = 0; skeletonCount < skeletonsList.Count(); skeletonCount++) {
-		std::string count = std::to_string(skeletonCount + 1);
 
 		Entity* skeleton = skeletonsList.At(skeletonCount)->data;
 
-		pugi::xml_node skeletonPositionNode = node.append_child(("skeleton" + count).c_str()).append_child("skeletonPosition");
+		pugi::xml_node skeletonPositionNode = node.child(("skeleton" + to_string(skeletonCount + 1)).c_str()).child("skeletonPosition");
 		skeleton->position.x = skeletonPositionNode.attribute("x").as_int();
 		skeleton->position.y = skeletonPositionNode.attribute("y").as_int();
-		pugi::xml_node skeletonStatesNode = node.append_child(("skeleton" + count).c_str()).append_child("skeletonStates");
+		pugi::xml_node skeletonStatesNode = node.child(("skeleton" + to_string(skeletonCount + 1)).c_str()).child("skeletonStates");
 		skeleton->isDead = skeletonStatesNode.attribute("isDead").as_bool();
 		skeleton->health = skeletonStatesNode.attribute("health").as_int();
 
 		if (!skeleton->isDead) skeleton->ResetEntity();
+		skeleton->setLoadPosition = true;
 	}
 
 	if (level1Enabled) level1SpawnPoint = player->position;
 	else if (level2Enabled) level2SpawnPoint = player->position;
 	else if (level3Enabled) level3SpawnPoint = player->position;
 
+	isLoading = true;
 	player->SetToInitialPosition();
-
 
 	return true;
 }
@@ -406,14 +421,13 @@ bool Scene::SaveState(pugi::xml_node node)
 
 	//enemies
 	for (int skeletonCount = 0; skeletonCount < skeletonsList.Count(); skeletonCount++) {
-		std::string count = std::to_string(skeletonCount + 1);
 
 		Entity* skeleton = skeletonsList.At(skeletonCount)->data;
 
-		pugi::xml_node skeletonPositionNode = node.append_child(("skeleton" + count).c_str()).append_child("skeletonPosition");
+		pugi::xml_node skeletonPositionNode = node.append_child(("skeleton" + to_string(skeletonCount + 1)).c_str()).append_child("skeletonPosition");
 		skeletonPositionNode.append_attribute("x").set_value(skeleton->position.x);
 		skeletonPositionNode.append_attribute("y").set_value(skeleton->position.y);
-		pugi::xml_node skeletonStatesNode = node.append_child(("skeleton" + count).c_str()).append_child("skeletonStates");
+		pugi::xml_node skeletonStatesNode = node.child(("skeleton" + to_string(skeletonCount + 1)).c_str()).append_child("skeletonStates");
 		skeletonStatesNode.append_attribute("isDead").set_value(skeleton->isDead);
 		skeletonStatesNode.append_attribute("health").set_value(skeleton->health);
 	}

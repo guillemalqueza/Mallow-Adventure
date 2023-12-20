@@ -92,6 +92,7 @@ private:
 
 	int playerX, playerY, cameraX, cameraY;
 	bool changingLevel = false;
+	bool isLoading = false;
 
 	iPoint level1SpawnPoint = { 400, 991 };
 	iPoint level2SpawnPoint = { 4120, 830 };

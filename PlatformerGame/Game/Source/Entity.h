@@ -104,6 +104,7 @@ public:
 
 	bool isDead = false;
 	int health = 100;
+	bool setLoadPosition = false;
 };
 
 #endif // __ENTITY_H__

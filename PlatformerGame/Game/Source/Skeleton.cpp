@@ -180,8 +180,16 @@ bool Skeleton::Update(float dt)
 		open = false;
 	}
 
-	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x);
-	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y);
+	if (setLoadPosition)
+	{
+		pbody->body->SetTransform({ PIXEL_TO_METERS(position.x), PIXEL_TO_METERS(position.y) }, 0);
+		setLoadPosition = false;
+	}
+	else
+	{ 
+		position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x);
+		position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y);
+	}
 
 	pbody->body->SetLinearVelocity(velocity);
 	enemyPbody->body->SetTransform({ pbody->body->GetPosition().x, pbody->body->GetPosition().y - PIXEL_TO_METERS(10) }, 0);
