@@ -103,7 +103,7 @@ bool Player::Update(float dt)
 
 	if (!isDead)
 	{
-		if (!isJumping && !isCrouching && !isAttacking && !activeSword && !enterDoor && !isDrinking && !isLanding)
+		if (!isJumping && !isCrouching && !isAttacking && !activeSword && !enterDoor && !isDrinking && !isLanding && !wallLeft && !wallRight)
 		{
 			if (!isEquipped) currentAnim = &idleAnim;
 			else currentAnim = &armorIdleAnim;
@@ -910,76 +910,87 @@ void Player::LoadAnimations()
 }
 
 void Player::walkSound(){
-	if (currentAnim == &walkAnim || currentAnim == &armorWalkAnim || currentAnim == &crouchWalkAnim || currentAnim == &armorCrouchWalkAnim) {
-		if (app->scene->level1Enabled) {
-			int random = rand() % 6;
-			switch (random)
-			{
-			case 0:
-				app->audio->PlayFx(stoneWalkAudio1FxId);
-				break;
-			case 1:
-				app->audio->PlayFx(stoneWalkAudio2FxId);
-				break;
-			case 2:
-				app->audio->PlayFx(stoneWalkAudio3FxId);
-				break;
-			case 3:
-				app->audio->PlayFx(stoneWalkAudio4FxId);
-				break;
-			case 4:
-				app->audio->PlayFx(stoneWalkAudio5FxId);
-				break;
-			case 5:
-				app->audio->PlayFx(stoneWalkAudio6FxId);
-				break;
-			}
+	//if (currentAnim == &walkAnim || currentAnim == &armorWalkAnim || currentAnim == &crouchWalkAnim || currentAnim == &armorCrouchWalkAnim) {
+	//	if (app->scene->level1Enabled) {
+	//		int random = rand() % 6;
+	//		switch (random)
+	//		{
+	//		case 0:
+	//			app->audio->PlayFx(stoneWalkAudio1FxId);
+	//			break;
+	//		case 1:
+	//			app->audio->PlayFx(stoneWalkAudio2FxId);
+	//			break;
+	//		case 2:
+	//			app->audio->PlayFx(stoneWalkAudio3FxId);
+	//			break;
+	//		case 3:
+	//			app->audio->PlayFx(stoneWalkAudio4FxId);
+	//			break;
+	//		case 4:
+	//			app->audio->PlayFx(stoneWalkAudio5FxId);
+	//			break;
+	//		case 5:
+	//			app->audio->PlayFx(stoneWalkAudio6FxId);
+	//			break;
+	//		}
 
-		}
-		else if (app->scene->level2Enabled || app->scene->level3Enabled) {
-			int random = rand() % 4;
-			switch (random)
-			{
-			case 0:
-				app->audio->PlayFx(snowWalkAudio1FxId);
-				break;
-			case 1:
-				app->audio->PlayFx(snowWalkAudio2FxId);
-				break;
-			case 2:
-				app->audio->PlayFx(snowWalkAudio3FxId);
-				break;
-			case 3:
-				app->audio->PlayFx(snowWalkAudio4FxId);
-				break;
-			}
-		}
+	//	}
+	//	else if (app->scene->level2Enabled || app->scene->level3Enabled) {
+	//		int random = rand() % 4;
+	//		switch (random)
+	//		{
+	//		case 0:
+	//			app->audio->PlayFx(snowWalkAudio1FxId);
+	//			break;
+	//		case 1:
+	//			app->audio->PlayFx(snowWalkAudio2FxId);
+	//			break;
+	//		case 2:
+	//			app->audio->PlayFx(snowWalkAudio3FxId);
+	//			break;
+	//		case 3:
+	//			app->audio->PlayFx(snowWalkAudio4FxId);
+	//			break;
+	//		}
+	//	}
+	//}
+
+	////climb sound
+	//if (currentAnim == &wallAnim && (app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)) {
+	//	
+	//	int random = rand() % 6;
+	//	switch (random)
+	//	{
+	//	case 0:
+	//		app->audio->PlayFx(climbAudio1FxId);
+	//		break;
+	//	case 1:
+	//		app->audio->PlayFx(climbAudio2FxId);
+	//		break;
+	//	case 2:
+	//		app->audio->PlayFx(climbAudio3FxId);
+	//		break;
+	//	case 3:
+	//		app->audio->PlayFx(climbAudio4FxId);
+	//		break;
+	//	case 4:
+	//		app->audio->PlayFx(climbAudio5FxId);
+	//		break;
+	//	case 5:
+	//		app->audio->PlayFx(climbAudio6FxId);
+	//		break;
+	//	}
+	//}	
+
+	if (currentAnim == &wallAnim && (app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) && !isPlayingWallSound) {
+
+		app->audio->PlayFx(climbAudio1FxId, -1);
+		isPlayingWallSound = true;
 	}
-
-	//climb sound
-	if (currentAnim == &wallAnim && (app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)) {
-		
-		int random = rand() % 6;
-		switch (random)
-		{
-		case 0:
-			app->audio->PlayFx(climbAudio1FxId);
-			break;
-		case 1:
-			app->audio->PlayFx(climbAudio2FxId);
-			break;
-		case 2:
-			app->audio->PlayFx(climbAudio3FxId);
-			break;
-		case 3:
-			app->audio->PlayFx(climbAudio4FxId);
-			break;
-		case 4:
-			app->audio->PlayFx(climbAudio5FxId);
-			break;
-		case 5:
-			app->audio->PlayFx(climbAudio6FxId);
-			break;
-		}
-	}	
+	else if (currentAnim == &wallAnim && app->input->GetKey(SDL_SCANCODE_UP) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_IDLE && isPlayingWallSound)
+	{
+		app->audio->PauseFx(climbAudio1FxId);
+		isPlayingWallSound = false;
+	}
 }
