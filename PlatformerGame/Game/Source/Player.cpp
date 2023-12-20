@@ -843,8 +843,8 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 			|| (app->scene->cameraIdx == 4 && position.x > 2000 && position.x < 2430 && position.y < 5200)
 			|| (app->scene->cameraIdx == 5 && position.x > 3200 && position.x < 3430 && position.y > 3515)
 			|| (app->scene->cameraIdx == 6 && position.x > 3760 && position.x < 4000 && position.y > 2716)
-			|| (app->scene->cameraIdx == 7 && position.x > 3800 && position.x < 4150 && position.y > 2075 && position.y < 2300)
-			|| (app->scene->cameraIdx == 8 && position.x < 5030 && position.x > 4800))
+			|| (app->scene->cameraIdx == 7 && position.x > 3800 && position.x < 4150 && position.y > 2080 && position.y < 2300)
+			|| (app->scene->cameraIdx == 8 && position.x < 5000 && position.x > 4800))
 		{
 			app->scene->cameraIdx++;
 			app->scene->cameraInitialized = true;
@@ -853,9 +853,9 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 			|| (app->scene->cameraIdx == 4 && position.x < 1400 && position.y < 5200)
 			|| (app->scene->cameraIdx == 5 && position.x < 2000 && position.x < 2430 && position.y > 5200)
 			|| (app->scene->cameraIdx == 6 && position.x > 3200 && position.x < 3430 && position.y < 3515)
-			|| (app->scene->cameraIdx == 7 && position.x > 3760 && position.x < 4000 && position.y < 2716)
-			|| (app->scene->cameraIdx == 8 && position.x > 3800 && position.x < 4150 && position.y < 2075)
-			|| (app->scene->cameraIdx == 9 && position.x > 5070))
+			|| (app->scene->cameraIdx == 7 && position.x > 3760 && position.x < 4000 && position.y < 2716 && position.y > 2400)
+			|| (app->scene->cameraIdx == 8 && position.x > 3800 && position.x < 4150 && position.y < 2030)
+			|| (app->scene->cameraIdx == 9 && position.x > 5040))
 		{
 			app->scene->cameraIdx--;
 			app->scene->cameraInitialized = true;
