@@ -225,6 +225,7 @@ bool Player::Update(float dt)
 				}
 			}
 
+			// attack 1
 			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN && !isAttacking && isEquipped && !activeSword && !enterDoor && !isDrinking)
 			{
 				isAttacking = true;
@@ -247,7 +248,8 @@ bool Player::Update(float dt)
 				currentAnim->ResetLoopCount();
 				currentAnim->Reset();
 			}
-			
+
+			// attack 2
 			if (app->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN && !isAttacking && isEquipped && !activeSword && !enterDoor && !isDrinking)
 			{
 				isAttacking = true;
@@ -269,6 +271,7 @@ bool Player::Update(float dt)
 				
 			}
 
+			// attack logic
 			if (isAttacking)
 			{
 				if ((currentAnim == &attack1Anim || currentAnim == &attack2Anim) && currentAnim->GetCurrentFrameCount() >= 1 && !attackBodyCreated)

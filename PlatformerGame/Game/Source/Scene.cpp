@@ -78,8 +78,7 @@ bool Scene::Start()
 	// NOTE: We have to avoid the use of paths in the code, we will move it later to a config file
 	backgroundTexture = app->tex->Load(configNode.child("background").attribute("texturepath").as_string());
 	backgroundTexture2 = app->tex->Load(configNode.child("background2").attribute("texturepath").as_string());
-	//Music is commented so that you can add your own music
-	//app->audio->PlayMusic("Assets/Audio/Music/music_spy.ogg");
+
 
 	//Get the size of the window
 	app->win->GetWindowSize(windowW, windowH);
@@ -231,6 +230,7 @@ void Scene::SetCameraPosition(int x, int y)
 
 void Scene::ClampCamera()
 {
+	// Clamp camera
 	if (level1Enabled)
 	{
 		if (cameraX < 0) cameraX = 0;
@@ -272,6 +272,7 @@ void Scene::StartCameraShakeY(float duration, float intensity)
 
 void Scene::UpdateCameraShake()
 {
+	// Update camera shake
 	if (shakingCameraX)
 	{
 		if (shakeTimer > 0)
@@ -297,6 +298,7 @@ void Scene::UpdateCameraShake()
 
 void Scene::StartLevel1()
 {
+	// start level 1
 	player->enterDoor = false;
 	player->pbody->body->SetTransform(b2Vec2(PIXEL_TO_METERS(level1SpawnPoint.x + 1), PIXEL_TO_METERS(level1SpawnPoint.y)), 0);
 	if (cameraIdx != 0 && cameraIdx != 1) changingLevel = true;
@@ -313,6 +315,7 @@ void Scene::StartLevel1()
 
 void Scene::StartLevel2()
 {
+	// start level 2
 	player->enterDoor = false;
 	player->pbody->body->SetTransform(b2Vec2(PIXEL_TO_METERS(level2SpawnPoint.x + 1), PIXEL_TO_METERS(level2SpawnPoint.y + 1)), 0);
 	if (cameraIdx != 2) changingLevel = true;
@@ -329,6 +332,7 @@ void Scene::StartLevel2()
 
 void Scene::StartLevel3()
 {
+	// start level 3
 	player->enterDoor = false;
 	player->pbody->body->SetTransform(b2Vec2(PIXEL_TO_METERS(level3SpawnPoint.x + 1), PIXEL_TO_METERS(level3SpawnPoint.y + 1)), 0);
 	if (cameraIdx != 3) changingLevel = true;
