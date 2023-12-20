@@ -34,6 +34,7 @@ public:
 	bool isPicked = false;
 	bool equipmentArea = false;
 	bool equipmentIdleWaiting = false;
+	bool soundPlayed = false;
 	float followTimer = 0.0f;
 	float acceleration = 1.0f;
 	int equipmentReleaseFxId;
