@@ -50,7 +50,7 @@ bool Scene::Awake(pugi::xml_node& config)
 	CreateEntities(config, "chest", EntityType::CHEST);
 	CreateEntities(config, "log", EntityType::LOG_OBSTACLE);
 
-	app->entityManager->GetSkeletons(skeletonsList);
+	app->entityManager->GetEnemies(skeletonsList, ghostsList);
 
 	if (config.child("player")) {
 		player = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER);
@@ -382,6 +382,21 @@ bool Scene::LoadState(pugi::xml_node node)
 		skeleton->setLoadPosition = true;
 	}
 
+	for (int ghostsCount = 0; ghostsCount < ghostsList.Count(); ghostsCount++) {
+
+		Entity* ghost = ghostsList.At(ghostsCount)->data;
+
+		pugi::xml_node skeletonPositionNode = node.child(("ghost" + to_string(ghostsCount + 1)).c_str()).child("ghostPosition");
+		ghost->position.x = skeletonPositionNode.attribute("x").as_int();
+		ghost->position.y = skeletonPositionNode.attribute("y").as_int();
+		pugi::xml_node skeletonStatesNode = node.child(("ghost" + to_string(ghostsCount + 1)).c_str()).child("ghostStates");
+		ghost->isDead = skeletonStatesNode.attribute("isDead").as_bool();
+		ghost->health = skeletonStatesNode.attribute("health").as_int();
+
+		if (!ghost->isDead) ghost->ResetEntity();
+		ghost->setLoadPosition = true;
+	}
+
 	if (level1Enabled) level1SpawnPoint = player->position;
 	else if (level2Enabled) level2SpawnPoint = player->position;
 	else if (level3Enabled) level3SpawnPoint = player->position;
@@ -430,6 +445,18 @@ bool Scene::SaveState(pugi::xml_node node)
 		pugi::xml_node skeletonStatesNode = node.child(("skeleton" + to_string(skeletonCount + 1)).c_str()).append_child("skeletonStates");
 		skeletonStatesNode.append_attribute("isDead").set_value(skeleton->isDead);
 		skeletonStatesNode.append_attribute("health").set_value(skeleton->health);
+	}
+
+	for (int ghostCount = 0; ghostCount < ghostsList.Count(); ghostCount++) {
+
+		Entity* ghost = ghostsList.At(ghostCount)->data;
+
+		pugi::xml_node ghostPositionNode = node.append_child(("ghost" + to_string(ghostCount + 1)).c_str()).append_child("ghostPosition");
+		ghostPositionNode.append_attribute("x").set_value(ghost->position.x);
+		ghostPositionNode.append_attribute("y").set_value(ghost->position.y);
+		pugi::xml_node ghostStatesNode = node.child(("ghost" + to_string(ghostCount + 1)).c_str()).append_child("ghostStates");
+		ghostStatesNode.append_attribute("isDead").set_value(ghost->isDead);
+		ghostStatesNode.append_attribute("health").set_value(ghost->health);
 	}
 
 	return true;

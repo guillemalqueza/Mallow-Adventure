@@ -68,6 +68,7 @@ bool LogObstacle::Update(float dt)
 
 	if (!logUp && app->scene->player->position.x > (position.x + 100) && !changeLevel)
 	{
+		app->scene->newCameraIdx = 3;
 		app->fade->Fade(3, 60);
 		changeLevel = true;
 	}

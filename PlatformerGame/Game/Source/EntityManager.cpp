@@ -165,9 +165,10 @@ bool EntityManager::Update(float dt)
 	return ret;
 }
 
-void EntityManager::GetSkeletons(List<Entity*>& skeletonsList) const
+void EntityManager::GetEnemies(List<Entity*>& skeletonsList, List<Entity*>& ghostsList) const
 {
 	skeletonsList.Clear();
+	ghostsList.Clear();
 
 	ListItem<Entity*>* entity;
 
@@ -176,6 +177,10 @@ void EntityManager::GetSkeletons(List<Entity*>& skeletonsList) const
 		if (entity->data->type == EntityType::SKELETON)
 		{
 			skeletonsList.Add(entity->data);
+		}
+		else if (entity->data->type == EntityType::GHOST)
+		{
+			ghostsList.Add(entity->data);
 		}
 	}
 }
