@@ -34,8 +34,8 @@ bool CrumblingPlatform::Start() {
 	pbody->ctype = ColliderType::PLATFORM;
 	pbody->listener = this;
 
-	platformIdleAnim.LoadAnimations("platformIdleAnim");
-	platformBreakingAnim.LoadAnimations("platformBreakingAnim");
+	platformIdleAnim.LoadAnimations("platformIdleAnim", "platform");
+	platformBreakingAnim.LoadAnimations("platformBreakingAnim", "platform");
 
 	currentAnim = &platformIdleAnim;
 

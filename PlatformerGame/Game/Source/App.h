@@ -20,6 +20,7 @@ class EntityManager;
 class Map;
 class Physics;
 class FadeToBlack;
+class ParticleManager;
 
 class App
 {
@@ -53,6 +54,12 @@ public:
 	const char* GetOrganization() const;
 	float GetDT();
 
+	// Request a save data in an XML file 
+	bool LoadRequest();
+
+	// Request to load data from XML file 
+	bool SaveRequest();
+
 private:
 
 	// Load config file
@@ -73,6 +80,12 @@ private:
 	// Call modules after each loop iteration
 	bool PostUpdate();
 
+	// Reads XML file and loads the data
+	bool LoadFromFile();
+
+	// Sace XML file with modules data
+	bool SaveFromFile();
+
 public:
 
 	// Modules
@@ -86,10 +99,14 @@ public:
 	Map* map;
 	Physics* physics;
 	FadeToBlack* fade;
+	ParticleManager* particleManager;
 
 	uint32 maxFrameDuration = 16;
 	uint32 initialMaxFrameDuration = 16;
 	uint32 capMaxFrameDuration = 32;
+
+	bool loadRequest = false;
+	bool saveRequest = false;
 
 private:
 

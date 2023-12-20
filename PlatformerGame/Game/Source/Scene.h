@@ -3,10 +3,11 @@
 
 #include "Module.h"
 #include "Player.h"
-#include "Item.h"
+#include "Key.h"
 #include "Jumper.h"
 #include "CrumblingPlatform.h"
 #include "LockDoor.h"
+#include <vector>
 
 struct SDL_Texture;
 
@@ -49,13 +50,27 @@ public:
 
 	void UpdateCameraShake();
 
+	bool LoadState(pugi::xml_node node);
+	bool SaveState(pugi::xml_node node);
+
+	void StartLevel3();
 	void StartLevel2();
 	void StartLevel1();
 
 	Player* player;	
 	int cameraIdx = 0;
+	int newCameraIdx = 0;
 	bool cameraInitialized = true;
+	bool level1Enabled = true;
 	bool level2Enabled = false;
+	bool level3Enabled = false;
+
+	List<Entity*> skeletonsList;
+	List<Entity*> ghostsList;
+
+	int levelToLoadIdx = 0;
+
+	const char* level1Music, *level2Music, *level3Music;
 
 private:
 	SDL_Texture* backgroundTexture;
@@ -81,6 +96,12 @@ private:
 
 	int playerX, playerY, cameraX, cameraY;
 	bool changingLevel = false;
+	bool isLoading = false;
+
+	iPoint level1SpawnPoint = { 400, 991 };
+	iPoint level2SpawnPoint = { 4120, 830 };
+	iPoint level3SpawnPoint = { 320, 5824 };
+
 };
 
 #endif // __SCENE_H__

@@ -3,10 +3,16 @@
 #include "App.h"
 #include "Textures.h"
 #include "Scene.h"
-#include "Item.h"
+#include "Key.h"
 #include "Jumper.h"
 #include "CrumblingPlatform.h"
 #include "LockDoor.h"
+#include "Skeleton.h"
+#include "Ghost.h"
+#include "Equipment.h"
+#include "Obstacle.h"
+#include "Chest.h"
+#include "LogObstacle.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -88,8 +94,11 @@ Entity* EntityManager::CreateEntity(EntityType type)
 	case EntityType::PLAYER:
 		entity = new Player();
 		break;
-	case EntityType::ITEM:
-		entity = new Item();
+	case EntityType::KEY:
+		entity = new Key();
+		break;
+	case EntityType::EQUIPMENT:
+		entity = new Equipment();
 		break;
 	case EntityType::JUMPER:
 		entity = new Jumper();
@@ -99,6 +108,21 @@ Entity* EntityManager::CreateEntity(EntityType type)
 		break;
 	case EntityType::LOCK_DOOR:
 		entity = new LockDoor();
+		break;
+	case EntityType::SKELETON:
+		entity = new Skeleton();
+		break;
+	case EntityType::GHOST:
+		entity = new Ghost();
+		break;
+	case EntityType::OBSTACLE:
+		entity = new Obstacle();
+		break;
+	case EntityType::CHEST:
+		entity = new Chest();
+		break;
+	case EntityType::LOG_OBSTACLE:
+		entity = new LogObstacle();
 		break;
 	default:
 		break;
@@ -139,4 +163,24 @@ bool EntityManager::Update(float dt)
 	}
 
 	return ret;
+}
+
+void EntityManager::GetEnemies(List<Entity*>& skeletonsList, List<Entity*>& ghostsList) const
+{
+	skeletonsList.Clear();
+	ghostsList.Clear();
+
+	ListItem<Entity*>* entity;
+
+	for (entity = entities.start; entity != NULL; entity = entity->next)
+	{
+		if (entity->data->type == EntityType::SKELETON)
+		{
+			skeletonsList.Add(entity->data);
+		}
+		else if (entity->data->type == EntityType::GHOST)
+		{
+			ghostsList.Add(entity->data);
+		}
+	}
 }

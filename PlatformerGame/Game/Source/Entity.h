@@ -11,10 +11,16 @@ class PhysBody;
 enum class EntityType
 {
 	PLAYER,
-	ITEM,
+	KEY,
+	EQUIPMENT,
+	CHEST,
 	JUMPER,
 	CRUMBLING_PLATFORM,
 	LOCK_DOOR,
+	SKELETON,
+	GHOST,
+	OBSTACLE,
+	LOG_OBSTACLE,
 	UNKNOWN
 };
 
@@ -76,6 +82,14 @@ public:
 
 	};
 
+	virtual void OnExitCollision(PhysBody* physA, PhysBody* physB) {
+	
+	};
+
+	virtual void Entity::ResetEntity() {
+
+	};
+
 public:
 
 	SString name;
@@ -87,6 +101,10 @@ public:
 	// want our Entity class, maybe it's not renderable...
 	iPoint position;       
 	bool renderable = true;
+
+	bool isDead = false;
+	int health = 100;
+	bool setLoadPosition = false;
 };
 
 #endif // __ENTITY_H__

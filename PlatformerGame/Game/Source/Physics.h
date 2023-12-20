@@ -24,15 +24,31 @@ enum bodyType {
 };
 
 enum class ColliderType {
-	PLAYER, 
-	ITEM,
+	PLAYER,
+	PLAYER_BODY,
+	KEY,
+	EQUIPMENT_AREA,
+	EQUIPMENT,
+	CHEST,
+	CHEST_AREA,
+	LOG_OBSTACLE,
 	PLATFORM,
+	WALL,
 	L_WALL,
 	R_WALL,
+	WALL_END,
+	WALL_DOWN,
 	SPIKE,
 	JUMP,
 	CAMERA,
 	DOOR,
+	SKELETON,
+	GHOST,
+	GHOST_SUMMON,
+	ENEMY,
+	OBSTACLE,
+	SWORD,
+	ENEMY_SWORD,
 	UNKNOWN
 	// ..
 };
@@ -85,7 +101,6 @@ public:
 
 	// Box2D World
 	b2World* world;
-private:
 
 	// Debug mode
 	bool debug;

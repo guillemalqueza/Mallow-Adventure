@@ -8,6 +8,7 @@
 #include "Map.h"
 #include "Physics.h"
 #include "FadeToBlack.h"
+#include "ParticleManager.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -35,6 +36,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	map = new Map();
 	entityManager = new EntityManager();
 	fade = new FadeToBlack();
+	particleManager = new ParticleManager();
 
 
 	// Ordered for awake / Start / Update
@@ -47,6 +49,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(scene);
 	AddModule(map);
 	AddModule(entityManager);
+	AddModule(particleManager);
 	AddModule(fade);
 
 	// Render last to swap buffer
@@ -224,6 +227,16 @@ void App::FinishUpdate()
 		gameTitle.GetString(), framesPerSecond, averageFps, dt, vsync);
 
 	app->win->SetTitle(title);
+
+	if (loadRequest) {
+		loadRequest = false;
+		LoadFromFile();
+	}
+
+	if (saveRequest) {
+		saveRequest = false;
+		SaveFromFile();
+	}
 }
 
 // Call modules before each loop iteration
@@ -341,5 +354,81 @@ const char* App::GetOrganization() const
 float App::GetDT()
 {
 	return dt;
+}
+
+// Request a save data in an XML file 
+bool App::LoadRequest() {
+
+	bool ret = true;
+	loadRequest = true;
+	return ret;
+}
+
+// Request to load data from XML file 
+bool App::SaveRequest() {
+	bool ret = true;
+	saveRequest = true;
+	return true;
+}
+
+bool App::LoadFromFile() {
+
+	bool ret = true;
+
+	pugi::xml_document saveFile;
+	pugi::xml_parse_result result = saveFile.load_file("save_game.xml");
+
+	if (result)
+	{
+		LOG("save_game.xml parsed without errors");
+
+		// Iterates all modules and call the load of each with the part of the XML node that corresponds to the module
+		ListItem<Module*>* item;
+		item = modules.start;
+
+		while (item != NULL && ret == true)
+		{
+			ret = item->data->LoadState(saveFile.child("game_state").child(item->data->name.GetString()));
+			item = item->next;
+		}
+
+	}
+	else
+	{
+		LOG("Error loading save_game.xml: %s", result.description());
+		ret = false;
+	}
+
+
+
+	return ret;
+
+}
+
+bool App::SaveFromFile() {
+
+	bool ret = true;
+
+	pugi::xml_document saveFile;
+	pugi::xml_node gameState = saveFile.append_child("game_state");
+
+	// Iterates all modules and call the save of each with the part of the XML node that corresponds to the module
+	ListItem<Module*>* item;
+	item = modules.start;
+
+	while (item != NULL && ret == true)
+	{
+		pugi::xml_node module = gameState.append_child(item->data->name.GetString());
+		ret = item->data->SaveState(module);
+		item = item->next;
+	}
+
+	ret = saveFile.save_file("save_game.xml");
+
+	if (ret) LOG("Saved");
+	else LOG("Error saving game state");
+
+	return ret;
+
 }
 

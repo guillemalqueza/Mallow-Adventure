@@ -12,6 +12,7 @@ FadeToBlack::FadeToBlack() : Module()
 {
 
 	screenRect = {0, 0, 2000, 2000 };
+	name.Create("fadetoblack");
 }
 
 FadeToBlack::~FadeToBlack()
@@ -45,12 +46,14 @@ bool FadeToBlack::Update(float dt)
 		if (frameCount <= 0)
 		{
 			currentStep = Fade_Step::NONE;
+			fadeFinished = true;
 		}
 		if (!activated)
 		{
 			activated = true;
 			if (levelIdx == 1) app->scene->StartLevel1();
 			else if (levelIdx == 2) app->scene->StartLevel2();
+			else if (levelIdx == 3) app->scene->StartLevel3();
 		}
 	}
 
@@ -85,6 +88,7 @@ bool FadeToBlack::Fade(int levelIdx, float frames)
 		ret = true;
 	}
 	activated = false;
+	fadeFinished = false;
 
 	return ret;
 }

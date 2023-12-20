@@ -30,7 +30,7 @@
     <ClCompile Include="Source\Input.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Item.cpp">
+    <ClCompile Include="Source\Key.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
     <ClCompile Include="Source\Physics.cpp">
@@ -57,8 +57,32 @@
     <ClCompile Include="Source\Textures.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Skeleton.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Ghost.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Pathfinding.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Map.cpp">
-      <Filter>Tools</Filter>
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Equipment.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ParticleManager.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Obstacle.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Chest.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\LogObstacle.cpp">
+      <Filter>Entities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -111,7 +135,7 @@
     <ClInclude Include="Source\Input.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Item.h">
+    <ClInclude Include="Source\Key.h">
       <Filter>Entities</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scene.h">
@@ -147,8 +171,35 @@
     <ClInclude Include="Source\Animation.h">
       <Filter>Modules</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Skeleton.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Ghost.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Pathfinding.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Map.h">
-      <Filter>Tools</Filter>
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PQueue.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Equipment.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ParticleManager.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Obstacle.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Chest.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\LogObstacle.h">
+      <Filter>Entities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -173,5 +224,6 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Output\config.xml" />
+    <Xml Include="..\Output\save_game.xml" />
   </ItemGroup>
 </Project>

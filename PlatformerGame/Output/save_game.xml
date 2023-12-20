@@ -1,12 +1,38 @@
 <?xml version="1.0"?>
-<!-- L02: TODO 4: Create a simulation xml file to read -->
 <game_state>
-	<input />
 	<window />
+	<input />
 	<textures />
 	<audio />
-	<scene />
+	<physics />
+	<scene>
+		<player>
+			<playerPosition x="4103" y="2184" />
+			<playerStates isDead="false" isEquipped="false" wallLeft="false" wallRight="true" ground="false" />
+			<playerItems keys="0" />
+		</player>
+		<sceneConfig>
+			<currentLevel level1="false" level2="false" level3="true" />
+			<cameraProperties cameraX="2800" cameraY="1800" cameraIdx="7" cameraInitialized="true" cameraIdx="7" />
+		</sceneConfig>
+		<skeleton1>
+			<skeletonPosition x="2218" y="4875" />
+			<skeletonStates isDead="false" health="100" />
+		</skeleton1>
+		<skeleton2>
+			<skeletonPosition x="3721" y="3467" />
+			<skeletonStates isDead="false" health="100" />
+		</skeleton2>
+		<skeleton3>
+			<skeletonPosition x="3345" y="2347" />
+			<skeletonStates isDead="false" health="100" />
+		</skeleton3>
+	</scene>
+	<:anonymous />
+	<entitymanager />
+	<particlemanager />
+	<fadetoblack />
 	<renderer>
-		<camera x="0" y="0" />
+		<camera x="-2800" y="-1800" />
 	</renderer>
 </game_state>
