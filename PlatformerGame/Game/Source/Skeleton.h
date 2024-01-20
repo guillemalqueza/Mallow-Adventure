@@ -53,6 +53,7 @@ private:
 
 	SDL_Texture* texture;
 	SDL_Texture* pathTexture;
+	SDL_Texture* healthBarTexture;
 
 	const char* texturePath;
 	PhysBody* pbody;
@@ -75,6 +76,11 @@ private:
 	int initialIdlePosition;
 
 	const DynArray<iPoint>* path;
+
+	SDL_Rect healthBarRect100 = { 0,0,120,32 };
+	SDL_Rect healthBarRect50 = { 0,32,120,32 };
+	SDL_Rect healthBarRect0 = { 0,96,120,32 };
+	SDL_Rect healthBarRect00 = { 0,128,120,32 };
 };
 
 #endif // __SKELETON_H__
