@@ -19,9 +19,6 @@ Key::~Key() {}
 
 bool Key::Awake() {
 
-	position.x = parameters.attribute("x").as_int();
-	position.y = parameters.attribute("y").as_int();
-	texturePath = parameters.attribute("texturepath").as_string();
 
 	return true;
 }
@@ -29,7 +26,9 @@ bool Key::Awake() {
 bool Key::Start() {
 
 	//initilize textures
+	texturePath = parameters.attribute("texturepath").as_string();
 	texture = app->tex->Load(texturePath);
+
 	pbody = app->physics->CreateCircle(position.x + 16, position.y + 16, 16, bodyType::STATIC);
 	pbody->ctype = ColliderType::KEY;
 	pbody->listener = this;

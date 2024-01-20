@@ -146,6 +146,8 @@ private:
 
 	bool CreateColliders();
 	void DestroyAllColliders();
+	bool LoadEntities();
+	void CreateEntities(const char* nodeName, EntityType entityType, iPoint pos);
 
 public: 
 	SString name;
@@ -155,6 +157,9 @@ public:
 	int mapIdx = 1;
 
 	List<PhysBody*> wallEndCollision;
+
+	pugi::xml_document configFile;
+	pugi::xml_node configNode;
 
 private:
 

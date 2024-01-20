@@ -249,6 +249,9 @@ bool Map::Load(SString mapFileName)
         //Create colliders      
         CreateColliders();
 
+        //Load entities
+        LoadEntities();
+
         if (ret == true)
         {
             LOG("Successfully parsed map XML file :%s", mapFileName.GetString());
@@ -562,4 +565,57 @@ void Map::UpdateTileLoadSize()
     endWidth = (playerX + tilesToLoad > endMapWidth) ? endMapWidth : playerX + tilesToLoad;
     startHeight = (playerY - tilesToLoad < startMapHeight) ? startMapHeight : playerY - tilesToLoad;
     endHeight = (playerY + tilesToLoad > endMapHeight) ? endMapHeight : playerY + tilesToLoad;
+}
+
+bool Map::LoadEntities()
+{
+
+    ListItem<MapLayer*>* mapLayerItem;
+    mapLayerItem = mapData.layers.start;
+    bool ret = false;
+
+    pugi::xml_parse_result parseResult = configFile.load_file("config.xml");
+    if (parseResult) configNode = configFile.child("config").child("scene");
+
+    while (mapLayerItem != NULL) {
+
+        if (mapLayerItem->data->name == "Entities") {
+            for (int x = 0; x < mapLayerItem->data->width; x++)
+            {
+                for (int y = 0; y < mapLayerItem->data->height; y++)
+                {
+                    int gid = mapLayerItem->data->Get(x, y);
+                    TileSet* tileset = GetTilesetFromTileId(gid);
+                    SDL_Rect r = tileset->GetRect(gid);
+                    iPoint pos = MapToWorld(x, y);
+
+                    //Keys
+                    if (gid == 4153) CreateEntities("key", EntityType::KEY, pos);
+                    if (gid == 4154) CreateEntities("equipment", EntityType::EQUIPMENT, pos);
+                    if (gid == 4155) CreateEntities("lockDoor", EntityType::LOCK_DOOR, pos);
+                    if (gid == 4156) CreateEntities("jumper", EntityType::JUMPER, pos);
+                    if (gid == 4157) CreateEntities("crumblingPlatform", EntityType::CRUMBLING_PLATFORM, pos);
+                    if (gid == 4158) CreateEntities("skeleton", EntityType::SKELETON, pos);
+                    if (gid == 4159) CreateEntities("ghost", EntityType::GHOST, pos);
+                    if (gid == 4160) CreateEntities("obstacle", EntityType::OBSTACLE, pos);
+                    if (gid == 4161) CreateEntities("chest", EntityType::CHEST, pos);
+                    if (gid == 4162) CreateEntities("log", EntityType::LOG_OBSTACLE, pos);
+                }
+            }
+        }
+        mapLayerItem = mapLayerItem->next;
+
+    }
+
+    return false;
+}
+
+void Map::CreateEntities(const char* nodeName, EntityType entityType, iPoint pos)
+{
+    pugi::xml_node entityNode = configNode.child(nodeName);
+
+    Entity* entity = app->entityManager->CreateEntity(entityType);
+    entity->parameters = entityNode;
+    entity->position = iPoint(pos.x, pos.y);
+    
 }
