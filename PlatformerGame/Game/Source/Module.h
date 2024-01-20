@@ -6,6 +6,7 @@
 #include "PugiXml/src/pugixml.hpp"
 
 class App;
+class GuiControl;
 
 class Module
 {
@@ -74,6 +75,11 @@ public:
 			active = false;
 			CleanUp();
 		}
+	}
+
+	virtual bool OnGuiMouseClickEvent(GuiControl* control)
+	{
+		return true;
 	}
 
 	virtual bool LoadState(pugi::xml_node node)

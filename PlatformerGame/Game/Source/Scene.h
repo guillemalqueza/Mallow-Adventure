@@ -7,6 +7,8 @@
 #include "Jumper.h"
 #include "CrumblingPlatform.h"
 #include "LockDoor.h"
+#include "GuiControl.h"
+#include "GuiControlButton.h"
 #include <vector>
 
 struct SDL_Texture;
@@ -38,6 +40,9 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	// Handles multiple Gui Event methods
+	bool OnGuiMouseClickEvent(GuiControl* control);
+
 	void CreateEntities(pugi::xml_node& config, const char* nodeName, EntityType entityType);
 
 	void SetCameraPosition(int x, int y);
@@ -58,6 +63,8 @@ public:
 	void StartLevel1();
 
 	Player* player;	
+	GuiControlButton* gcButtom;
+
 	int cameraIdx = 0;
 	int newCameraIdx = 0;
 	bool cameraInitialized = true;

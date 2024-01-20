@@ -7,6 +7,7 @@
 #include "Scene.h"
 #include "Map.h"
 #include "FadeToBlack.h"
+#include "GuiManager.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -93,6 +94,9 @@ bool Scene::Start()
 	app->render->camera.y = -286;
 
 	app->audio->PlayMusic(level1Music, 0.0f);
+
+	SDL_Rect btPos = { windowW / 2 - 60, windowH / 2 - 10, 120,20 };
+	gcButtom = (GuiControlButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "MyButton", btPos, this);
 
 	return true;
 }
@@ -466,6 +470,15 @@ bool Scene::SaveState(pugi::xml_node node)
 		ghostStatesNode.append_attribute("isDead").set_value(ghost->isDead);
 		ghostStatesNode.append_attribute("health").set_value(ghost->health);
 	}
+
+	return true;
+}
+
+bool Scene::OnGuiMouseClickEvent(GuiControl* control)
+{
+	// L15: TODO 5: Implement the OnGuiMouseClickEvent method
+	// L15: DONE 5: Implement the OnGuiMouseClickEvent method
+	LOG("Press Gui Control: %d", control->id);
 
 	return true;
 }

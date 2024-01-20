@@ -9,6 +9,7 @@
 #include "Physics.h"
 #include "FadeToBlack.h"
 #include "ParticleManager.h"
+#include "GuiManager.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -37,6 +38,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	entityManager = new EntityManager();
 	fade = new FadeToBlack();
 	particleManager = new ParticleManager();
+	guiManager = new GuiManager();
 
 
 	// Ordered for awake / Start / Update
@@ -50,6 +52,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(map);
 	AddModule(entityManager);
 	AddModule(particleManager);
+	AddModule(guiManager);
 	AddModule(fade);
 
 	// Render last to swap buffer
