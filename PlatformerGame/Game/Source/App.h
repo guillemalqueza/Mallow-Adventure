@@ -22,6 +22,7 @@ class Physics;
 class FadeToBlack;
 class ParticleManager;
 class GuiManager;
+class SceneMenu;
 
 class App
 {
@@ -102,6 +103,7 @@ public:
 	FadeToBlack* fade;
 	ParticleManager* particleManager;
 	GuiManager* guiManager;
+	SceneMenu* sceneMenu;
 
 	uint32 maxFrameDuration = 16;
 	uint32 initialMaxFrameDuration = 16;

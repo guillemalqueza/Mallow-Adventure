@@ -37,7 +37,13 @@ bool FadeToBlack::Update(float dt)
 		++frameCount;
 		if (frameCount >= maxFadeFrames)
 		{
+			if (modules)
+			{
+				moduleToDisable->Disable();
+				moduleToEnable->Enable();
+			}
 			currentStep = Fade_Step::FROM_BLACK;
+			modules = false;
 		}
 	}
 	else
@@ -90,5 +96,22 @@ bool FadeToBlack::Fade(int levelIdx, float frames)
 	activated = false;
 	fadeFinished = false;
 
+	return ret;
+}
+
+bool FadeToBlack::FadeModules(Module* moduleToDisable, Module* moduleToEnable, float frames)
+{
+	bool ret = false;
+	modules = true;
+	if (currentStep == Fade_Step::NONE)
+	{
+		currentStep = Fade_Step::TO_BLACK;
+		frameCount = 0;
+		maxFadeFrames = frames;
+
+		this->moduleToDisable = moduleToDisable;
+		this->moduleToEnable = moduleToEnable;
+		ret = true;
+	}
 	return ret;
 }

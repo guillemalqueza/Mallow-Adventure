@@ -84,8 +84,13 @@
     <ClCompile Include="Source\LogObstacle.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GuiControlButton.cpp" />
-    <ClCompile Include="Source\GuiManager.cpp" />
+    <ClCompile Include="Source\GuiControlButton.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GuiManager.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\App.h" />
@@ -203,9 +208,16 @@
     <ClInclude Include="Source\LogObstacle.h">
       <Filter>Entities</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GuiControl.h" />
-    <ClInclude Include="Source\GuiControlButton.h" />
-    <ClInclude Include="Source\GuiManager.h" />
+    <ClInclude Include="Source\GuiControl.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GuiControlButton.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GuiManager.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneMenu.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">

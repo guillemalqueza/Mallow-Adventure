@@ -10,6 +10,7 @@
 #include "FadeToBlack.h"
 #include "ParticleManager.h"
 #include "GuiManager.h"
+#include "SceneMenu.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -33,12 +34,13 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	tex = new Textures();
 	audio = new Audio();
 	physics = new Physics();
-	scene = new Scene();
-	map = new Map();
-	entityManager = new EntityManager();
+	scene = new Scene(false);
+	map = new Map(false);
+	entityManager = new EntityManager(false);
 	fade = new FadeToBlack();
 	particleManager = new ParticleManager();
 	guiManager = new GuiManager();
+	sceneMenu = new SceneMenu();
 
 
 	// Ordered for awake / Start / Update
@@ -53,8 +55,8 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(entityManager);
 	AddModule(particleManager);
 	AddModule(guiManager);
+	AddModule(sceneMenu);
 	AddModule(fade);
-
 	// Render last to swap buffer
 	AddModule(render);
 
@@ -127,6 +129,10 @@ bool App::Start()
 
 	while (item != NULL && ret == true)
 	{
+		if (!item->data->active) {
+			item = item->next;
+			continue;
+		}
 		ret = item->data->Start();
 		item = item->next;
 	}
