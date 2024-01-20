@@ -8,9 +8,9 @@
 #include "Window.h"
 #include "Scene.h"
 #include "Map.h"
-#include "Chest.h"
 #include "FadeToBlack.h"
 #include "GuiManager.h"
+#include "ParticleManager.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -35,18 +35,18 @@ bool SceneMenu::Awake(pugi::xml_node& config)
 bool SceneMenu::Start()
 {
 
-	background = app->tex->Load("Assets/Textures/menu.png");
-	menu = app->tex->Load("Assets/Textures/menu.png");
-	playHover = app->tex->Load("Assets/Textures/menu_play_hover.png");
-	continueHover = app->tex->Load("Assets/Textures/menu_continue_hover.png");
-	settingsHover = app->tex->Load("Assets/Textures/menu_settings_hover.png");
-	creditsHover = app->tex->Load("Assets/Textures/menu_credits_hover.png");
-	exitHover = app->tex->Load("Assets/Textures/menu_exit_hover.png");
-	playClick = app->tex->Load("Assets/Textures/menu_play_click.png");
-	continueClick = app->tex->Load("Assets/Textures/menu_continue_click.png");
-	settingsClick = app->tex->Load("Assets/Textures/menu_settings_click.png");
-	creditsClick = app->tex->Load("Assets/Textures/menu_credits_click.png");
-	exitClick = app->tex->Load("Assets/Textures/menu_exit_click.png");
+	background = app->tex->Load("Assets/Textures/Screens/background.png");
+	menu = app->tex->Load("Assets/Textures/Screens/menu.png");
+	playHover = app->tex->Load("Assets/Textures/Screens/menu_play_hover.png");
+	continueHover = app->tex->Load("Assets/Textures/Screens/menu_continue_hover.png");
+	settingsHover = app->tex->Load("Assets/Textures/Screens/menu_settings_hover.png");
+	creditsHover = app->tex->Load("Assets/Textures/Screens/menu_credits_hover.png");
+	exitHover = app->tex->Load("Assets/Textures/Screens/menu_exit_hover.png");
+	playClick = app->tex->Load("Assets/Textures/Screens/menu_play_click.png");
+	continueClick = app->tex->Load("Assets/Textures/Screens/menu_continue_click.png");
+	settingsClick = app->tex->Load("Assets/Textures/Screens/menu_settings_click.png");
+	creditsClick = app->tex->Load("Assets/Textures/Screens/menu_credits_click.png");
+	exitClick = app->tex->Load("Assets/Textures/Screens/menu_exit_click.png");
 	
 
 	playButton = (GuiControlButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "Play", { 657, 315, 285, 64 }, this);
@@ -71,6 +71,7 @@ bool SceneMenu::PreUpdate()
 
 bool SceneMenu::Update(float dt)
 {
+	app->render->DrawTexture(background, 0, 0, NULL, SDL_FLIP_NONE, 0);
 	if (playButton->state == GuiControlState::FOCUSED)
 	{
 		app->render->DrawTexture(playHover, 0, 0, NULL, SDL_FLIP_NONE, 0);
@@ -82,6 +83,7 @@ bool SceneMenu::Update(float dt)
 		app->guiManager->Disable();
 		app->map->Enable();
 		app->entityManager->Enable();
+		app->particleManager->Enable();
 	}
 	else if (continueButton->state == GuiControlState::FOCUSED)
 	{

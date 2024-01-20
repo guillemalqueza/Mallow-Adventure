@@ -38,7 +38,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	map = new Map(false);
 	entityManager = new EntityManager(false);
 	fade = new FadeToBlack();
-	particleManager = new ParticleManager();
+	particleManager = new ParticleManager(false);
 	guiManager = new GuiManager();
 	sceneMenu = new SceneMenu();
 

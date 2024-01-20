@@ -6,7 +6,7 @@
 #include "Log.h"
 
 
-ParticleManager::ParticleManager() : Module()
+ParticleManager::ParticleManager(bool enabled) : Module(enabled)
 {
 	name.Create("particlemanager");
 }

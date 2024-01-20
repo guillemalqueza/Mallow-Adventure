@@ -20,7 +20,7 @@ class ParticleManager : public Module
 {
 public:
 
-	ParticleManager();
+	ParticleManager(bool enabled = true);
 
 	// Destructor
 	virtual ~ParticleManager();
