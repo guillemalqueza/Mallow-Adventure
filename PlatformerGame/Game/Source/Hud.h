@@ -5,6 +5,7 @@
 #include "GuiControlButton.h"
 #include "GuiManager.h"
 #include "GuiControl.h"
+#include "Timer.h"
 
 struct SDL_Texture;
 
@@ -24,9 +25,11 @@ public:
 
 	bool CleanUp();
 
+	void DrawTimer();
 
 private:
 
+	Timer timer;
 	SDL_Texture* lifeBarTexture;
 
 };
