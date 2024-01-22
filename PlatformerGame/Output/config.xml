@@ -156,6 +156,11 @@
 			<chestAudio path="Assets/Audio/Fx/chest_magic_open_fx.wav"/>
 		</chest>
 
+		<!-- Life -->
+		<life x="500" y="1000" texturepath="Assets/Textures/chest_spritesheet.png">
+			<lifeAudio path="Assets/Audio/Fx/chest_magic_open_fx.wav"/>
+		</life>
+
 		<!-- Obstacles -->
 		<obstacle x="5170" y="2255" texturepath="Assets/Textures/rock.png"/>
 		<log x="7700" y="340" texturepath="Assets/Textures/log_spritesheet.png">
@@ -370,6 +375,16 @@
 				<animation x="500" y="704" w="100" h="64"/>
 				<animation x="600" y="704" w="100" h="64"/>
 			</drinkAnim>
+
+			<drink2Anim loop ="false" speed="0.1f">
+				<animation x="0" y="2368" w="100" h="64"/>
+				<animation x="100" y="2368" w="100" h="64"/>
+				<animation x="200" y="2368" w="100" h="64"/>
+				<animation x="300" y="2368" w="100" h="64"/>
+				<animation x="400" y="2368" w="100" h="64"/>
+				<animation x="500" y="2368" w="100" h="64"/>
+				<animation x="600" y="2368" w="100" h="64"/>
+			</drink2Anim>
 
 			<landJumpAnim loop="false" speed="0.3f">
 				<animation x="0" y="1600" w="100" h="64"/>

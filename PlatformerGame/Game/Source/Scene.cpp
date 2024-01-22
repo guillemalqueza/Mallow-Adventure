@@ -49,6 +49,7 @@ bool Scene::Awake(pugi::xml_node& config)
 	CreateEntities(config, "ghost", EntityType::GHOST);
 	CreateEntities(config, "obstacle", EntityType::OBSTACLE);
 	CreateEntities(config, "chest", EntityType::CHEST);
+	CreateEntities(config, "life", EntityType::LIFE);
 	CreateEntities(config, "log", EntityType::LOG_OBSTACLE);
 
 	app->entityManager->GetEnemies(skeletonsList, ghostsList);

@@ -113,7 +113,7 @@ bool Player::Update(float dt)
 
 	if (!isDead)
 	{
-		if (!isJumping && !isCrouching && !isAttacking && !activeSword && !enterDoor && !isDrinking && !isLanding && !wallLeft && !wallRight && !isWalking)
+		if (!isJumping && !isCrouching && !isAttacking && !activeSword && !enterDoor && !isDrinking && !isDrinkingLives && !isLanding && !wallLeft && !wallRight && !isWalking)
 		{
 			if (!isEquipped) currentAnim = &idleAnim;
 			else currentAnim = &armorIdleAnim;
@@ -126,7 +126,7 @@ bool Player::Update(float dt)
 			walkSound();
 			//idle wall keys
 			if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_IDLE && !ground 
-				&& (wallLeft || wallRight) && !activeSword && !isDrinking)
+				&& (wallLeft || wallRight) && !activeSword && !isDrinking && !isDrinkingLives)
 			{
 				pbody->body->SetGravityScale(0.0f);
 				pbody->body->SetLinearVelocity({ pbody->body->GetLinearVelocity().x, 0 });
@@ -141,18 +141,18 @@ bool Player::Update(float dt)
 			if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_IDLE) isFacingUp = false;
 
 			//climb wall keys
-			if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT && !activeSword && !enterDoor && !isDrinking)
+			if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT && !activeSword && !enterDoor && !isDrinking && !isDrinkingLives)
 			{
 				ClimbUp();
 			}
 
-			if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT && !activeSword && !enterDoor && !isDrinking)	
+			if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT && !activeSword && !enterDoor && !isDrinking && !isDrinkingLives)	
 			{
 				ClimbDown();
 			}
 
 			//crouch
-			if (app->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT && !isJumping && !activeSword && !enterDoor && !isDrinking)
+			if (app->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT && !isJumping && !activeSword && !enterDoor && !isDrinking && !isDrinkingLives)
 			{
 				if (!isCrouching)
 				{
@@ -172,12 +172,12 @@ bool Player::Update(float dt)
 			}
 
 			//player movement
-			if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT && !activeSword && !enterDoor && !isDrinking)
+			if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT && !activeSword && !enterDoor && !isDrinking && !isDrinkingLives)
 			{
 				LeftMovement();
 			}
 
-			if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT && !activeSword && !enterDoor && !isDrinking)
+			if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT && !activeSword && !enterDoor && !isDrinking && !isDrinkingLives)
 			{
 				RightMovement();
 			}
@@ -195,7 +195,7 @@ bool Player::Update(float dt)
 			}
 
 			//jump
-			if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !activeSword && !enterDoor && !isDrinking)
+			if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !activeSword && !enterDoor && !isDrinking && !isDrinkingLives)
 			{	
 				Jump();
 			}
@@ -226,7 +226,7 @@ bool Player::Update(float dt)
 			}
 
 			// attack 1
-			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN && !isAttacking && isEquipped && !activeSword && !enterDoor && !isDrinking)
+			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN && !isAttacking && isEquipped && !activeSword && !enterDoor && !isDrinking && !isDrinkingLives)
 			{
 				isAttacking = true;
 				
@@ -250,7 +250,7 @@ bool Player::Update(float dt)
 			}
 
 			// attack 2
-			if (app->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN && !isAttacking && isEquipped && !activeSword && !enterDoor && !isDrinking)
+			if (app->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN && !isAttacking && isEquipped && !activeSword && !enterDoor && !isDrinking && !isDrinkingLives)
 			{
 				isAttacking = true;
 				app->audio->PlayFx(swordAudio4FxId);
@@ -382,6 +382,13 @@ bool Player::Update(float dt)
 				currentAnim->ResetLoopCount();
 				currentAnim->Reset();
 			}
+			if (isDrinkingLives && currentAnim != &drink2Anim)
+			{
+				currentAnim = &drink2Anim;
+				app->audio->PlayFx(potionDrinkFxId);
+				currentAnim->ResetLoopCount();
+				currentAnim->Reset();
+			}
 
 			if (isLanding)
 			{
@@ -389,12 +396,13 @@ bool Player::Update(float dt)
 				{
 					isLanding = false;
 				}
-			}
-
+			}	
 
 			if (activeSword && currentAnim->HasFinished()) activeSword = false;
 
 			if (isDrinking && currentAnim->HasFinished()) isDrinking = false;
+
+			if (isDrinkingLives && currentAnim->HasFinished()) isDrinkingLives = false;
 
 			if (previousY == position.y && isLanding && currentAnim == &fallAnim)
 			{
@@ -933,6 +941,7 @@ void Player::LoadAnimations()
 	swordAnim.LoadAnimations("swordAnim", "player");
 	doorAnim.LoadAnimations("doorAnim", "player");
 	drinkAnim.LoadAnimations("drinkAnim", "player");
+	drink2Anim.LoadAnimations("drink2Anim", "player");
 	armorLandJumpAnim.LoadAnimations("armorLandJumpAnim", "player");
 
 	climbEffectAnim.LoadAnimations("climbEffectAnim", "player");

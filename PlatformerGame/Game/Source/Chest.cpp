@@ -89,7 +89,7 @@ void Chest::OnCollision(PhysBody* physA, PhysBody* physB)
 			{
 				pbody->body->SetActive(false);
 				app->scene->player->canPush = true;
-				app->scene->player->isDrinking = true;
+				app->scene->player->isDrinkingLives = true;
 				isPicked = true;
 			}
 			break;
