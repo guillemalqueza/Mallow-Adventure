@@ -46,6 +46,44 @@ private:
 	GuiControlButton* creditsButton;
 	GuiControlButton* exitButton;
 
+	SDL_Texture* settings;
+	SDL_Texture* settingsReturnHover;
+	SDL_Texture* settingsReturnClick;
+	SDL_Texture* settingsExitHover;
+	SDL_Texture* settingsExitClick;
+	SDL_Texture* settingsTick;
+	SDL_Texture* settingsSlider;
+	SDL_Texture* settingsFullScreenHover;
+	SDL_Texture* settingsFullScreenClick;
+	SDL_Texture* settingsVSyncHover;
+	SDL_Texture* settingsVSyncClick;
+
+	SDL_Texture* credits;
+	SDL_Texture* creditsReturnHover;
+	SDL_Texture* creditsReturnClick;
+	SDL_Texture* creditsExitHover;
+	SDL_Texture* creditsExitClick;
+
+	GuiControlButton* settingsReturnButton;
+	GuiControlButton* settingsExitButton;
+	GuiControlButton* settingsFullScreenButton;
+	GuiControlButton* settingsVSyncButton;
+	GuiControlButton* settingsMusicButton;
+	GuiControlButton* settingsFxButton;
+
+	GuiControlButton* creditsReturnButton;
+	GuiControlButton* creditsExitButton;
+
+	int buttonFxHover;
+	int buttonFxClick;
+	bool fxHoverPlayed = false;
+	bool fxClickPlayed = false;
+	
+	bool onMenu = true;
+	bool onSettings = false;
+	bool onCredits = false;
+	bool fullScreen = false;
+	bool vSync = false;
 
 };
 
