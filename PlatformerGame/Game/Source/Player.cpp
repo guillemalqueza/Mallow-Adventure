@@ -402,7 +402,11 @@ bool Player::Update(float dt)
 
 			if (isDrinking && currentAnim->HasFinished()) isDrinking = false;
 
-			if (isDrinkingLives && currentAnim->HasFinished()) isDrinkingLives = false;
+			if (isDrinkingLives && currentAnim->HasFinished())
+			{
+				isDrinkingLives = false;
+				health += 20;
+			}
 
 			if (previousY == position.y && isLanding && currentAnim == &fallAnim)
 			{

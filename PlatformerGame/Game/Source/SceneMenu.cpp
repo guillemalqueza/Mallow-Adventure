@@ -64,11 +64,6 @@ bool SceneMenu::Start()
 	return true;
 }
 
-bool SceneMenu::PreUpdate()
-{
-	return true;
-}
-
 bool SceneMenu::Update(float dt)
 {
 	app->render->DrawTexture(background, 0, 0, NULL, SDL_FLIP_NONE, 0);
@@ -123,16 +118,6 @@ bool SceneMenu::Update(float dt)
 	}
 
 	return true;
-}
-
-bool SceneMenu::PostUpdate()
-{
-	bool ret = true;
-
-	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		ret = false;
-
-	return ret;
 }
 
 bool SceneMenu::CleanUp()

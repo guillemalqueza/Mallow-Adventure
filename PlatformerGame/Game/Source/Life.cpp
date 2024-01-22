@@ -71,9 +71,13 @@ void Life::OnCollision(PhysBody* physA, PhysBody* physB)
 		{
 		case ColliderType::PLAYER:
 			LOG("Collision PLAYER");
-			pbody->body->SetActive(false);
-			app->scene->player->isDrinkingLives = true;
-			isPicked = true;
+			if (app->scene->player->health < 100)
+			{
+				pbody->body->SetActive(false);
+				app->scene->player->isDrinkingLives = true;
+				isPicked = true;
+			}
+		
 			break;
 		}
 	}

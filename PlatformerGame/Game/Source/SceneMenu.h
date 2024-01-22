@@ -20,11 +20,7 @@ public:
 
 	bool Start();
 
-	bool PreUpdate();
-
 	bool Update(float dt);
-
-	bool PostUpdate();
 
 	bool CleanUp();
 

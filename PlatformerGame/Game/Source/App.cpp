@@ -11,6 +11,7 @@
 #include "ParticleManager.h"
 #include "GuiManager.h"
 #include "SceneMenu.h"
+#include "Hud.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -41,6 +42,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	particleManager = new ParticleManager(false);
 	guiManager = new GuiManager();
 	sceneMenu = new SceneMenu();
+	hud = new Hud();
 
 
 	// Ordered for awake / Start / Update
@@ -54,6 +56,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(map);
 	AddModule(entityManager);
 	AddModule(particleManager);
+	AddModule(hud);
 	AddModule(guiManager);
 	AddModule(sceneMenu);
 	AddModule(fade);

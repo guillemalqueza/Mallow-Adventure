@@ -94,6 +94,7 @@
     <ClCompile Include="Source\Life.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Hud.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\App.h" />
@@ -224,6 +225,7 @@
     <ClInclude Include="Source\Life.h">
       <Filter>Entities</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Hud.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">
