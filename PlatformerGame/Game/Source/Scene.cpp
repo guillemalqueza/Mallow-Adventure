@@ -96,9 +96,6 @@ bool Scene::Start()
 
 	app->audio->PlayMusic(level1Music, 0.0f);
 
-	SDL_Rect btPos = { windowW / 2 - 60, windowH / 2 - 10, 120,20 };
-	gcButtom = (GuiControlButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "MyButton", btPos, this);
-
 	return true;
 }
 

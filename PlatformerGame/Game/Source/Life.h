@@ -39,13 +39,9 @@ private:
 	SDL_Texture* texture;
 	const char* texturePath;
 	PhysBody* pbody;
-	PhysBody* pbody2;
 
 	Animation* currentAnim;
-	Animation lifeClosedIdleAnim;
-	Animation lifeOpenAnim;
-	Animation lifeOpenPotionAnim;
-	Animation lifeOpenedIdleAnim;
+	Animation lifePotionAnim;
 };
 
 #endif // __LIFE_H__

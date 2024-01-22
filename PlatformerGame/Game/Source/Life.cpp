@@ -12,7 +12,7 @@
 
 Life::Life() : Entity(EntityType::LIFE)
 {
-	name.Create("Life");
+	name.Create("life");
 }
 
 Life::~Life() {}
@@ -31,29 +31,23 @@ bool Life::Start() {
 
 	//initilize textures
 	texture = app->tex->Load(texturePath);
-	pbody = app->physics->CreateCircle(position.x + 38, position.y + 38, 25, bodyType::STATIC);
+	pbody = app->physics->CreateCircle(position.x + 32, position.y + 32, 20, bodyType::STATIC);
 	pbody->ctype = ColliderType::CHEST;
+	pbody->body->GetFixtureList()->SetSensor(true);
 	pbody->listener = this;
 
-	lifeClosedIdleAnim.LoadAnimations("chestClosedIdleAnim", "chest");
-	lifeOpenAnim.LoadAnimations("chestOpenAnim", "chest");
-	lifeOpenPotionAnim.LoadAnimations("chestOpenPotionAnim", "chest");
-	currentAnim = &lifeClosedIdleAnim;
+	lifePotionAnim.LoadAnimations("lifePotionAnim", "life");
+	currentAnim = &lifePotionAnim;
 
 	return true;
 }
 
 bool Life::Update(float dt)
 {
-	if (currentAnim == &lifeOpenAnim && currentAnim->HasFinished())
-	{
-		currentAnim = &lifeOpenPotionAnim;
-	}
+	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 16;
+	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 16;
 
-	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 38;
-	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 38;
-
-	app->render->DrawTexture(texture, position.x, position.y, &currentAnim->GetCurrentFrame());
+	if (!isPicked) app->render->DrawTexture(texture, position.x, position.y, &currentAnim->GetCurrentFrame());
 
 	currentAnim->Update();
 	return true;

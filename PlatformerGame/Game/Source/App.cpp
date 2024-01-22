@@ -57,8 +57,8 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(entityManager);
 	AddModule(particleManager);
 	AddModule(hud);
-	AddModule(guiManager);
 	AddModule(sceneMenu);
+	AddModule(guiManager);
 	AddModule(fade);
 	// Render last to swap buffer
 	AddModule(render);
@@ -200,12 +200,15 @@ void App::FinishUpdate()
 
 	// This is a good place to call Load / Save functions
 	double currentDt = frameTime.ReadMs();
-	if (maxFrameDuration > 0 && currentDt < maxFrameDuration) {
-		uint32 delay = (uint32)(maxFrameDuration - currentDt);
+	if (app->render->vsync)
+	{
+		if (maxFrameDuration > 0 && currentDt < maxFrameDuration) {
+			uint32 delay = (uint32)(maxFrameDuration - currentDt);
 
-		PerfTimer delayTimer = PerfTimer();
-		SDL_Delay(delay);
-		//LOG("We waited for %I32u ms and got back in %f ms",delay,delayTimer.ReadMs());
+			PerfTimer delayTimer = PerfTimer();
+			SDL_Delay(delay);
+			//LOG("We waited for %I32u ms and got back in %f ms",delay,delayTimer.ReadMs());
+		}
 	}
 
 	// Amount of frames since startup

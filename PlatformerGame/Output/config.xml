@@ -6,7 +6,7 @@
 	</app>
 
 	<renderer>
-		<vsync value="false"/>
+		<vsync value="true"/>
 	</renderer>
 
 	<window>
@@ -157,7 +157,7 @@
 		</chest>
 
 		<!-- Life -->
-		<life x="500" y="1000" texturepath="Assets/Textures/chest_spritesheet.png">
+		<life x="500" y="1000" texturepath="Assets/Textures/potion_red.png">
 			<lifeAudio path="Assets/Audio/Fx/chest_magic_open_fx.wav"/>
 		</life>
 
@@ -773,6 +773,21 @@
 				<animation x="1444" y="0" w="76" h="76"/>
 			</chestOpenedIdleAnim>
 		</chest>
+
+		<!-- Life Potion Animations-->
+		<life>
+			<lifePotionAnim loop="true" speed="0.2f">
+				<animation x="0" y="0" w="32" h="32"/>
+				<animation x="32" y="0" w="32" h="32"/>
+				<animation x="64" y="0" w="32" h="32"/>
+				<animation x="96" y="0" w="32" h="32"/>
+				<animation x="128" y="0" w="32" h="32"/>
+				<animation x="160" y="0" w="32" h="32"/>
+				<animation x="192" y="0" w="32" h="32"/>
+				<animation x="224" y="0" w="32" h="32"/>
+			</lifePotionAnim>
+		</life>
+
 
 		<!-- Log Animations-->
 		<log>

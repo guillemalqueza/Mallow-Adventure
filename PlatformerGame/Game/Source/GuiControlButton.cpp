@@ -3,10 +3,14 @@
 #include "App.h"
 #include "Audio.h"
 
-GuiControlButton::GuiControlButton(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(GuiControlType::BUTTON, id)
+GuiControlButton::GuiControlButton(uint32 id, SDL_Rect bounds, SDL_Texture* textureDisabled, SDL_Texture* textureNormal, SDL_Texture* textureFocused, SDL_Texture* texturePressed) : GuiControl(GuiControlType::BUTTON, id)
 {
 	this->bounds = bounds;
 	this->text = text;
+	this->textureDisabled = textureDisabled;
+	this->textureNormal = textureNormal;
+	this->textureFocused = textureFocused;
+	this->texturePressed = texturePressed;
 
 	canClick = true;
 	drawBasic = false;
@@ -45,20 +49,20 @@ bool GuiControlButton::Update(float dt)
 		switch (state)
 		{
 		case GuiControlState::DISABLED:
-			app->render->DrawRectangle(bounds, 200, 200, 200, 255, true, false);
+			app->render->DrawTexture(textureDisabled, bounds.x, bounds.y, &bounds, SDL_FLIP_NONE, 0);
 			break;
 		case GuiControlState::NORMAL:
-			app->render->DrawRectangle(bounds, 0, 0, 255, 255, true, false);
+			app->render->DrawTexture(textureNormal, bounds.x, bounds.y, NULL, SDL_FLIP_NONE, 0);
 			break;
 		case GuiControlState::FOCUSED:
-			app->render->DrawRectangle(bounds, 0, 0, 20, 255, true, false);
+			app->render->DrawTexture(textureFocused, bounds.x, bounds.y, NULL, SDL_FLIP_NONE, 0);
 			break;
 		case GuiControlState::PRESSED:
-			app->render->DrawRectangle(bounds, 0, 255, 0, 255, true, false);
+			app->render->DrawTexture(texturePressed, bounds.x, bounds.y, &bounds, SDL_FLIP_NONE, 0);
 			break;
 		}
 
-		app->render->DrawText(text.GetString(), bounds.x, bounds.y, bounds.w, bounds.h);
+		//app->render->DrawText(text.GetString(), bounds.x, bounds.y, bounds.w, bounds.h);
 
 	}
 
