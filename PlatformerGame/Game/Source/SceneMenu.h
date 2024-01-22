@@ -29,40 +29,53 @@ private:
 
 	SDL_Texture* background;
 	SDL_Texture* menu;
+
+	SDL_Texture* playNormal;
 	SDL_Texture* playHover;
 	SDL_Texture* playClick;
+
+	SDL_Texture* continueDisabled;
+	SDL_Texture* continueNormal;
 	SDL_Texture* continueHover;
 	SDL_Texture* continueClick;
+
+	SDL_Texture* settingsNormal;
 	SDL_Texture* settingsHover;
 	SDL_Texture* settingsClick;	
+
+	SDL_Texture* creditsNormal;
 	SDL_Texture* creditsHover;
 	SDL_Texture* creditsClick;
+
+	SDL_Texture* exitNormal;
 	SDL_Texture* exitHover;
 	SDL_Texture* exitClick;
+
+	SDL_Texture* returnNormal;
+	SDL_Texture* returnHover;
+	SDL_Texture* returnClick;
 
 	GuiControlButton* playButton;
 	GuiControlButton* continueButton;
 	GuiControlButton* settingsButton;
 	GuiControlButton* creditsButton;
-	GuiControlButton* exitButton;
+	GuiControlButton* exitButtonMenu;
+	GuiControlButton* exitButtonSettings;
+	GuiControlButton* exitButtonCredits;
+	GuiControlButton* returnButtonSettings;
+	GuiControlButton* returnButtonCredits;
 
 	SDL_Texture* settings;
-	SDL_Texture* settingsReturnHover;
-	SDL_Texture* settingsReturnClick;
-	SDL_Texture* settingsExitHover;
-	SDL_Texture* settingsExitClick;
-	SDL_Texture* settingsTick;
-	SDL_Texture* settingsSlider;
-	SDL_Texture* settingsFullScreenHover;
-	SDL_Texture* settingsFullScreenClick;
-	SDL_Texture* settingsVSyncHover;
-	SDL_Texture* settingsVSyncClick;
-
 	SDL_Texture* credits;
-	SDL_Texture* creditsReturnHover;
-	SDL_Texture* creditsReturnClick;
-	SDL_Texture* creditsExitHover;
-	SDL_Texture* creditsExitClick;
+
+	SDL_Texture* settingsTick;
+
+	SDL_Texture* settingsSlider;
+
+	SDL_Texture* settingsMusicNormal;
+
+	SDL_Texture* settingsBoxNormal;
+	SDL_Texture* settingsBoxHover;
 
 	GuiControlButton* settingsReturnButton;
 	GuiControlButton* settingsExitButton;
@@ -83,7 +96,7 @@ private:
 	bool onSettings = false;
 	bool onCredits = false;
 	bool fullScreen = false;
-	bool vSync = false;
+	bool vSync = true;
 
 };
 

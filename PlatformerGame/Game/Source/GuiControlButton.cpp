@@ -46,24 +46,25 @@ bool GuiControlButton::Update(float dt)
 		}
 
 		//L15: DONE 4: Draw the button according the GuiControl State
-		switch (state)
-		{
-		case GuiControlState::DISABLED:
-			app->render->DrawTexture(textureDisabled, bounds.x, bounds.y, &bounds, SDL_FLIP_NONE, 0);
-			break;
-		case GuiControlState::NORMAL:
-			app->render->DrawTexture(textureNormal, bounds.x, bounds.y, NULL, SDL_FLIP_NONE, 0);
-			break;
-		case GuiControlState::FOCUSED:
-			app->render->DrawTexture(textureFocused, bounds.x, bounds.y, NULL, SDL_FLIP_NONE, 0);
-			break;
-		case GuiControlState::PRESSED:
-			app->render->DrawTexture(texturePressed, bounds.x, bounds.y, &bounds, SDL_FLIP_NONE, 0);
-			break;
-		}
 
 		//app->render->DrawText(text.GetString(), bounds.x, bounds.y, bounds.w, bounds.h);
 
+	}
+
+	switch (state)
+	{
+	case GuiControlState::DISABLED:
+		app->render->DrawTexture(textureDisabled, bounds.x, bounds.y, NULL, SDL_FLIP_NONE, 0);
+		break;
+	case GuiControlState::NORMAL:
+		app->render->DrawTexture(textureNormal, bounds.x, bounds.y, NULL, SDL_FLIP_NONE, 0);
+		break;
+	case GuiControlState::FOCUSED:
+		app->render->DrawTexture(textureFocused, bounds.x, bounds.y, NULL, SDL_FLIP_NONE, 0);
+		break;
+	case GuiControlState::PRESSED:
+		app->render->DrawTexture(texturePressed, bounds.x, bounds.y, NULL, SDL_FLIP_NONE, 0);
+		break;
 	}
 
 	return false;
