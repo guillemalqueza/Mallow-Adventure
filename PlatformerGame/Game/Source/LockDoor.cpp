@@ -20,15 +20,15 @@ LockDoor::~LockDoor() {}
 
 bool LockDoor::Awake() {
 
-	position.x = parameters.attribute("x").as_int();
-	position.y = parameters.attribute("y").as_int();
-	texturePath = parameters.attribute("texturepath").as_string();
-	doorAudioFxId = app->audio->LoadFx(parameters.child("doorAudio").attribute("path").as_string());
-
+	//position.x = parameters.attribute("x").as_int();
+	//position.y = parameters.attribute("y").as_int();
 	return true;
 }
 
 bool LockDoor::Start() {
+
+	texturePath = parameters.attribute("texturepath").as_string();
+	doorAudioFxId = app->audio->LoadFx(parameters.child("doorAudio").attribute("path").as_string());
 
 	//initilize textures
 	texture = app->tex->Load(texturePath);

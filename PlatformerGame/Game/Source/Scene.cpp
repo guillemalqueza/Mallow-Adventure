@@ -41,9 +41,9 @@ bool Scene::Awake(pugi::xml_node& config)
 	// Check https://pugixml.org/docs/quickstart.html#access
 
 	//CreateEntities(config, "key", EntityType::KEY);
-	CreateEntities(config, "equipment", EntityType::EQUIPMENT);
-	CreateEntities(config, "lockDoor", EntityType::LOCK_DOOR);
-	CreateEntities(config, "jumper", EntityType::JUMPER);
+	//CreateEntities(config, "equipment", EntityType::EQUIPMENT);
+	//CreateEntities(config, "lockDoor", EntityType::LOCK_DOOR);
+	//CreateEntities(config, "jumper", EntityType::JUMPER);
 	CreateEntities(config, "crumblingPlatform", EntityType::CRUMBLING_PLATFORM);
 	CreateEntities(config, "skeleton", EntityType::SKELETON);
 	CreateEntities(config, "ghost", EntityType::GHOST);
