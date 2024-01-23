@@ -131,7 +131,6 @@ bool SceneMenu::Update(float dt)
 			app->fade->FadeModules(this, (Module*)app->scene, 60.0f);
 			app->map->Enable();
 			app->entityManager->Enable();
-			app->particleManager->Enable();
 			app->guiManager->Disable();
 
 			if (fxClickPlayed == false)
