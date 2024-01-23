@@ -35,7 +35,7 @@ GuiControl* GuiManager::CreateGuiControl(GuiControlType type, int id, SDL_Textur
 		guiControl = new GuiControlCheckBox(id, bounds, textureDisabled, textureNormal, textureFocused, texturePressed);
 		break;
 	case GuiControlType::SLIDER:
-		guiControl = new GuiControlSlider(id, bounds, textureDisabled, textureNormal, textureFocused, texturePressed);
+		guiControl = new GuiControlSlider(id, bounds, textureDisabled, textureNormal, textureFocused, texturePressed, sliderBounds);
 		break;
 	}
 
