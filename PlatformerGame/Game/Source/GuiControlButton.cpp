@@ -23,7 +23,7 @@ GuiControlButton::~GuiControlButton()
 
 bool GuiControlButton::Update(float dt)
 {
-	if (state != GuiControlState::DISABLED)
+	if (state != GuiControlState::HIDDEN)
 	{
 		// L15: DONE 3: Update the state of the GUiButton according to the mouse position
 		app->input->GetMousePosition(mouseX, mouseY);
@@ -33,7 +33,7 @@ bool GuiControlButton::Update(float dt)
 		
 			state = GuiControlState::FOCUSED;
 
-			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT) {
+			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) {
 				state = GuiControlState::PRESSED;
 			}
 			
@@ -49,22 +49,22 @@ bool GuiControlButton::Update(float dt)
 
 		//app->render->DrawText(text.GetString(), bounds.x, bounds.y, bounds.w, bounds.h);
 
-	}
+		switch (state)
+		{
+		case GuiControlState::DISABLED:
+			app->render->DrawTexture(textureDisabled, bounds.x, bounds.y, NULL, SDL_FLIP_NONE, 0);
+			break;
+		case GuiControlState::NORMAL:
+			app->render->DrawTexture(textureNormal, bounds.x, bounds.y, NULL, SDL_FLIP_NONE, 0);
+			break;
+		case GuiControlState::FOCUSED:
+			app->render->DrawTexture(textureFocused, bounds.x, bounds.y, NULL, SDL_FLIP_NONE, 0);
+			break;
+		case GuiControlState::PRESSED:
+			app->render->DrawTexture(texturePressed, bounds.x, bounds.y, NULL, SDL_FLIP_NONE, 0);
+			break;
+		}
 
-	switch (state)
-	{
-	case GuiControlState::DISABLED:
-		app->render->DrawTexture(textureDisabled, bounds.x, bounds.y, NULL, SDL_FLIP_NONE, 0);
-		break;
-	case GuiControlState::NORMAL:
-		app->render->DrawTexture(textureNormal, bounds.x, bounds.y, NULL, SDL_FLIP_NONE, 0);
-		break;
-	case GuiControlState::FOCUSED:
-		app->render->DrawTexture(textureFocused, bounds.x, bounds.y, NULL, SDL_FLIP_NONE, 0);
-		break;
-	case GuiControlState::PRESSED:
-		app->render->DrawTexture(texturePressed, bounds.x, bounds.y, NULL, SDL_FLIP_NONE, 0);
-		break;
 	}
 
 	return false;
