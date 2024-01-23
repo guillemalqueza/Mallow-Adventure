@@ -29,7 +29,7 @@ private:
 	SDL_Texture* textureNormal;
 	SDL_Texture* textureFocused; 
 	SDL_Texture* texturePressed;
-	bool pressed = false;	
+	int sliderPosition = 0;
 };
 
 #endif // __GUICONTROLSLIDER_H__

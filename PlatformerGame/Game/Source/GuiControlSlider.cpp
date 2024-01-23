@@ -15,6 +15,8 @@ GuiControlSlider::GuiControlSlider(uint32 id, SDL_Rect bounds, SDL_Texture* text
 
 	canClick = true;
 	drawBasic = false;
+
+	sliderPosition = bounds.x;
 }
 
 GuiControlSlider::~GuiControlSlider()
@@ -35,8 +37,9 @@ bool GuiControlSlider::Update(float dt)
 		
 			state = GuiControlState::FOCUSED;
 
-			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) {
+			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT) {
 				state = GuiControlState::PRESSED;
+				bounds.x = mouseX;
 			}
 			
 			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP) {
@@ -50,15 +53,15 @@ bool GuiControlSlider::Update(float dt)
 		switch (state)
 		{
 		case GuiControlState::DISABLED:
-			app->render->DrawTexture(textureDisabled, mouseX, bounds.y, NULL, SDL_FLIP_NONE, 0);
+			app->render->DrawTexture(textureDisabled, bounds.x, bounds.y, NULL, SDL_FLIP_NONE, 0);
 		case GuiControlState::NORMAL:
-			app->render->DrawTexture(textureNormal, mouseX, bounds.y, NULL, SDL_FLIP_NONE, 0);
+			app->render->DrawTexture(textureNormal, bounds.x, bounds.y, NULL, SDL_FLIP_NONE, 0);
 			break;
 		case GuiControlState::FOCUSED:
-			app->render->DrawTexture(textureFocused, mouseX, bounds.y, NULL, SDL_FLIP_NONE, 0);
+			app->render->DrawTexture(textureFocused, bounds.x, bounds.y, NULL, SDL_FLIP_NONE, 0);
 			break;
 		case GuiControlState::PRESSED:
-			app->render->DrawTexture(textureFocused, mouseX, bounds.y, NULL, SDL_FLIP_NONE, 0);
+			app->render->DrawTexture(textureFocused, bounds.x, bounds.y, NULL, SDL_FLIP_NONE, 0);
 			
 
 
