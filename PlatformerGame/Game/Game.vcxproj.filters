@@ -99,6 +99,9 @@
     <ClCompile Include="Source\SceneMenu.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Torch.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\App.h" />
@@ -233,6 +236,9 @@
     </ClInclude>
     <ClInclude Include="Source\SceneMenu.h">
       <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Torch.h">
+      <Filter>Entities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

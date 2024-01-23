@@ -161,6 +161,11 @@
 			<lifeAudio path="Assets/Audio/Fx/chest_magic_open_fx.wav"/>
 		</life>
 
+		<!-- Torch -->
+		<torch x="550" y="900" texturepath="Assets/Textures/torch.png">
+			<torchAudio path="Assets/Audio/Fx/chest_magic_open_fx.wav"/>
+		</torch>
+
 		<!-- Obstacles -->
 		<obstacle x="5170" y="2255" texturepath="Assets/Textures/rock.png"/>
 		<log x="7700" y="340" texturepath="Assets/Textures/log_spritesheet.png">
@@ -788,6 +793,23 @@
 			</lifePotionAnim>
 		</life>
 
+		<!-- Torch Animations-->
+		<torch>
+			<torchIdleAnim loop="false" speed="0.2f">
+				<animation x="352" y="0" w="32" h="71"/>
+			</torchIdleAnim>
+			
+			<torchFireAnim loop="true" speed="0.16f">
+				<animation x="0" y="0" w="32" h="71"/>
+				<animation x="32" y="0" w="32" h="71"/>
+				<animation x="64" y="0" w="32" h="71"/>
+				<animation x="96" y="0" w="32" h="71"/>
+				<animation x="128" y="0" w="32" h="71"/>
+				<animation x="160" y="0" w="32" h="71"/>
+				<animation x="192" y="0" w="32" h="71"/>
+				<animation x="224" y="0" w="32" h="71"/>
+			</torchFireAnim>
+		</torch>
 
 		<!-- Log Animations-->
 		<log>

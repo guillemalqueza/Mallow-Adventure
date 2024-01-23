@@ -14,6 +14,7 @@
 #include "Chest.h"
 #include "LogObstacle.h"
 #include "Life.h"
+#include "Torch.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -124,6 +125,9 @@ Entity* EntityManager::CreateEntity(EntityType type)
 		break;
 	case EntityType::LIFE:
 		entity = new Life();
+		break;
+	case EntityType::TORCH:
+		entity = new Torch();
 		break;
 	case EntityType::LOG_OBSTACLE:
 		entity = new LogObstacle();
