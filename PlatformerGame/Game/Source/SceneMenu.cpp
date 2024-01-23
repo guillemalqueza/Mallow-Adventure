@@ -85,8 +85,8 @@ bool SceneMenu::Start()
 	settingsExitButton = (GuiControlButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 7, NULL, exitNormal, exitHover, exitClick, { 1419, 92, 63, 63 }, this);
 	settingsFullScreenButton = (GuiControlButton*)app->guiManager->CreateGuiControl(GuiControlType::CHECKBOX, 8, NULL, settingsBoxNormal, settingsBoxHover, settingsTick, { 661, 494, 89, 89 }, this);
 	settingsVSyncButton = (GuiControlButton*)app->guiManager->CreateGuiControl(GuiControlType::CHECKBOX, 9, NULL, settingsBoxNormal, settingsBoxHover, settingsTick, { 661, 613, 89, 89 }, this);
-	settingsMusicButton = (GuiControlButton*)app->guiManager->CreateGuiControl(GuiControlType::SLIDER, 10, NULL, settingsSlider, settingsSlider, settingsSlider, { 1124, 259, 30, 80 }, this, { 1000, 259, 300, 80 });
-	settingsFxButton = (GuiControlButton*)app->guiManager->CreateGuiControl(GuiControlType::SLIDER, 11, NULL, settingsSlider, settingsSlider, settingsSlider, { 1124, 376, 30, 80 }, this, { 1000, 376, 300, 80 });
+	settingsMusicButton = (GuiControlButton*)app->guiManager->CreateGuiControl(GuiControlType::SLIDER, 10, NULL, settingsSlider, settingsSlider, settingsSlider, { 1124, 259, 30, 80 }, this, { 663, 259, 613, 80 });
+	settingsFxButton = (GuiControlButton*)app->guiManager->CreateGuiControl(GuiControlType::SLIDER, 11, NULL, settingsSlider, settingsSlider, settingsSlider, { 1124, 376, 30, 80 }, this, { 663, 376, 613, 80 });
 
 	settingsReturnButton->state = GuiControlState::NORMAL;
 	settingsExitButton->state = GuiControlState::NORMAL;
@@ -113,6 +113,8 @@ bool SceneMenu::Update(float dt)
 		settingsExitButton->state = GuiControlState::HIDDEN;
 		settingsFullScreenButton->state = GuiControlState::HIDDEN;
 		settingsVSyncButton->state = GuiControlState::HIDDEN;
+		settingsMusicButton->state = GuiControlState::HIDDEN;
+		settingsFxButton->state = GuiControlState::HIDDEN;
 
 		creditsExitButton->state = GuiControlState::HIDDEN;
 		creditsReturnButton->state = GuiControlState::HIDDEN;
@@ -176,6 +178,8 @@ bool SceneMenu::Update(float dt)
 			settingsReturnButton->state = GuiControlState::NORMAL;
 			settingsFullScreenButton->state = GuiControlState::NORMAL;
 			settingsVSyncButton->state = GuiControlState::NORMAL;
+			settingsMusicButton->state = GuiControlState::NORMAL;
+			settingsFxButton->state = GuiControlState::NORMAL;
 		}
 		else if (creditsButton->state == GuiControlState::FOCUSED)
 		{
