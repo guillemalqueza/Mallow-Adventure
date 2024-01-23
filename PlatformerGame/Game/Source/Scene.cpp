@@ -8,6 +8,7 @@
 #include "Map.h"
 #include "FadeToBlack.h"
 #include "GuiManager.h"
+#include "ParticleManager.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -97,6 +98,7 @@ bool Scene::Start()
 
 	app->audio->PlayMusic(level1Music, 0.0f);
 
+	app->particleManager->Enable();
 	return true;
 }
 
