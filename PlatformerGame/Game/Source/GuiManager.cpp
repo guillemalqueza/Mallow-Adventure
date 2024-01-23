@@ -4,6 +4,7 @@
 
 #include "GuiControlButton.h"
 #include "GuiControlCheckBox.h"
+#include "GuiControlSlider.h"
 
 #include "Audio.h"
 
@@ -32,6 +33,9 @@ GuiControl* GuiManager::CreateGuiControl(GuiControlType type, int id, SDL_Textur
 		break;
 	case GuiControlType::CHECKBOX:
 		guiControl = new GuiControlCheckBox(id, bounds, textureDisabled, textureNormal, textureFocused, texturePressed);
+		break;
+	case GuiControlType::SLIDER:
+		guiControl = new GuiControlSlider(id, bounds, textureDisabled, textureNormal, textureFocused, texturePressed);
 		break;
 	}
 
