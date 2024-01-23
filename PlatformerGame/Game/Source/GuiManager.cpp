@@ -3,6 +3,8 @@
 #include "Textures.h"
 
 #include "GuiControlButton.h"
+#include "GuiControlCheckBox.h"
+
 #include "Audio.h"
 
 GuiManager::GuiManager() :Module()
@@ -27,6 +29,9 @@ GuiControl* GuiManager::CreateGuiControl(GuiControlType type, int id, SDL_Textur
 	{
 	case GuiControlType::BUTTON:
 		guiControl = new GuiControlButton(id, bounds, textureDisabled,textureNormal, textureFocused, texturePressed);
+		break;
+	case GuiControlType::CHECKBOX:
+		guiControl = new GuiControlCheckBox(id, bounds, textureDisabled, textureNormal, textureFocused, texturePressed);
 		break;
 	}
 

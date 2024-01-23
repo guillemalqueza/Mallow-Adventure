@@ -102,6 +102,9 @@
     <ClCompile Include="Source\Torch.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
+    <ClCompile Include="Source\GuiControlCheckBox.cpp">
+      <Filter>Modules\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\App.h" />
@@ -239,6 +242,9 @@
     </ClInclude>
     <ClInclude Include="Source\Torch.h">
       <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GuiControlCheckBox.h">
+      <Filter>Modules\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
