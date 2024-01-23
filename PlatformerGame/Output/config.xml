@@ -163,7 +163,7 @@
 
 		<!-- Torch -->
 		<torch x="550" y="900" texturepath="Assets/Textures/torch.png">
-			<torchAudio path="Assets/Audio/Fx/chest_magic_open_fx.wav"/>
+			<torchAudio path="Assets/Audio/Fx/torch_ignite_fx.wav"/>
 		</torch>
 
 		<!-- Obstacles -->

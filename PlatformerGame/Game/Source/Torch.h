@@ -33,6 +33,7 @@ public:
 	float followTimer = 0.0f;
 	float acceleration = 1.0f;
 	int torchAudioFxId;
+	bool torchAudioFxPlayed = false;
 
 private:
 
