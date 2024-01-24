@@ -41,6 +41,7 @@ bool Hud::Start()
 {
 
 	lifeBarTexture = app->tex->Load("Assets/Textures/ghost_shadow.png");
+	deadScreenTexture = app->tex->Load("Assets/Textures/Screens/die_screen.png");
 
 	timer = Timer();
 	timer.Start();
@@ -53,6 +54,15 @@ bool Hud::Update(float dt)
 	if (app->scene->player->health == 100) app->render->DrawTexture(lifeBarTexture, 0, 0, NULL, SDL_FLIP_NONE, 0);
 	
 	DrawTimer();
+
+	if(playerDeadHud && !spacePressed && !app->scene->player->revived) {
+		app->render->DrawTexture(deadScreenTexture, 0, 0, NULL, SDL_FLIP_NONE, 0);
+		if(app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !spacePressed) {
+			spacePressed = true;
+			playerDeadHud = false;
+		}
+	}
+
 
 	return true;
 }

@@ -27,10 +27,13 @@ public:
 
 	void DrawTimer();
 
+	bool playerDeadHud = false;
+	bool spacePressed = false;
 private:
 
 	Timer timer;
 	SDL_Texture* lifeBarTexture;
+	SDL_Texture* deadScreenTexture;
 
 };
 

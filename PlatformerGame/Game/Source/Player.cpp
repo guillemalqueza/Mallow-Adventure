@@ -9,6 +9,7 @@
 #include "Point.h"
 #include "Physics.h"
 #include "FadeToBlack.h"
+#include "Hud.h"
 
 Player::Player() : Entity(EntityType::PLAYER)
 {
@@ -473,17 +474,25 @@ bool Player::Update(float dt)
 		}
 		if (!isEquipped && currentAnim == &deadAnim && currentAnim->HasFinished() && !revived)
 		{
-			SetToInitialPosition();
-			revived = true;
-			health = 120;
-			isDead = false;
+			app->hud->playerDeadHud = true;
+			if(app->hud->spacePressed) {
+				SetToInitialPosition();
+				revived = true;
+				health = 120;
+				isDead = false;
+				app->hud->spacePressed = false;
+			}
 		}
 		else if (isEquipped && currentAnim == &armorDeadAnim && currentAnim->HasFinished() && !revived)
 		{
-			SetToInitialPosition();
-			revived = true;
-			health = 120;
-			isDead = false;
+			app->hud->playerDeadHud = true;
+			if(app->hud->spacePressed) {
+				SetToInitialPosition();
+				revived = true;
+				health = 120;
+				isDead = false;
+				app->hud->spacePressed = false;
+			}
 		}
 	}
 
