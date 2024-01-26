@@ -24,6 +24,7 @@ class ParticleManager;
 class GuiManager;
 class SceneMenu;
 class Hud;
+class SceneIntro;
 
 class App
 {
@@ -106,6 +107,7 @@ public:
 	GuiManager* guiManager;
 	SceneMenu* sceneMenu;
 	Hud* hud;
+	SceneIntro* sceneIntro;
 
 	uint32 maxFrameDuration = 16;
 	uint32 initialMaxFrameDuration = 16;

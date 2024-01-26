@@ -12,6 +12,7 @@
 #include "GuiManager.h"
 #include "SceneMenu.h"
 #include "Hud.h"
+#include "SceneIntro.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -41,9 +42,9 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	fade = new FadeToBlack();
 	particleManager = new ParticleManager(false);
 	guiManager = new GuiManager();
-	sceneMenu = new SceneMenu();
+	sceneMenu = new SceneMenu(false);
 	hud = new Hud(false);
-
+	sceneIntro = new SceneIntro();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -58,6 +59,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(particleManager);
 	AddModule(hud);
 	AddModule(sceneMenu);
+	AddModule(sceneIntro);
 	AddModule(guiManager);
 	AddModule(fade);
 	// Render last to swap buffer

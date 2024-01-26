@@ -39,9 +39,6 @@
     <ClCompile Include="Source\Render.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Scene.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Audio.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -96,14 +93,23 @@
     <ClCompile Include="Source\Hud.cpp">
       <Filter>Modules\UI</Filter>
     </ClCompile>
-    <ClCompile Include="Source\SceneMenu.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Torch.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
     <ClCompile Include="Source\GuiControlCheckBox.cpp">
       <Filter>Modules\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GuiControlSlider.cpp">
+      <Filter>Modules\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene.cpp">
+      <Filter>Modules\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneIntro.cpp">
+      <Filter>Modules\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneMenu.cpp">
+      <Filter>Modules\Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -158,9 +164,6 @@
     </ClInclude>
     <ClInclude Include="Source\Key.h">
       <Filter>Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene.h">
-      <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="Source\Physics.h">
       <Filter>Modules</Filter>
@@ -237,14 +240,23 @@
     <ClInclude Include="Source\Hud.h">
       <Filter>Modules\UI</Filter>
     </ClInclude>
-    <ClInclude Include="Source\SceneMenu.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Torch.h">
       <Filter>Entities</Filter>
     </ClInclude>
     <ClInclude Include="Source\GuiControlCheckBox.h">
       <Filter>Modules\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GuiControlSlider.h">
+      <Filter>Modules\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene.h">
+      <Filter>Modules\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneIntro.h">
+      <Filter>Modules\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneMenu.h">
+      <Filter>Modules\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -268,6 +280,9 @@
     </Filter>
     <Filter Include="Modules\UI">
       <UniqueIdentifier>{f9aa26b1-ecc5-4f22-a939-b72f1e34ac76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules\Scenes">
+      <UniqueIdentifier>{cc3c2733-85b5-4d14-afde-b871962e3ff2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
