@@ -38,6 +38,7 @@ bool SceneMenu::Awake(pugi::xml_node& config)
 
 bool SceneMenu::Start()
 {
+	//Load textures
 	background = app->tex->Load(configNode2.child("background").attribute("texturepath").as_string());
 	playNormal = app->tex->Load(configNode2.child("playNormal").attribute("texturepath").as_string());
 	playHover = app->tex->Load(configNode2.child("playHover").attribute("texturepath").as_string());
@@ -109,6 +110,7 @@ bool SceneMenu::Update(float dt)
 	//On menu screen
 	if(onMenu && !onSettings && !onCredits){
 
+		//Hide settings buttons
 		settingsReturnButton->state = GuiControlState::HIDDEN;
 		settingsExitButton->state = GuiControlState::HIDDEN;
 		settingsFullScreenButton->state = GuiControlState::HIDDEN;
@@ -119,7 +121,9 @@ bool SceneMenu::Update(float dt)
 		creditsExitButton->state = GuiControlState::HIDDEN;
 		creditsReturnButton->state = GuiControlState::HIDDEN;
 
+		//Render background 
 		app->render->DrawTexture(background, 0, 0, NULL, SDL_FLIP_NONE, 0);
+		//Check if buttons are focused or pressed. If pressed, do the action. With sound effects.
 		if (playButton->state == GuiControlState::FOCUSED)
 		{
 			if (fxHoverPlayed == false)
@@ -139,8 +143,6 @@ bool SceneMenu::Update(float dt)
 			app->map->Enable();
 			app->entityManager->Enable();
 			app->hud->Enable();
-			//app->guiManager->Disable();
-
 		}
 		else if (continueButton->state == GuiControlState::FOCUSED)
 		{
@@ -174,6 +176,7 @@ bool SceneMenu::Update(float dt)
 				app->audio->PlayFx(buttonFxClick);
 				fxClickPlayed = true;
 			}
+			//Show settings buttons
 			onSettings = true;
 			settingsExitButton->state = GuiControlState::NORMAL;
 			settingsReturnButton->state = GuiControlState::NORMAL;
@@ -230,6 +233,7 @@ bool SceneMenu::Update(float dt)
 	//On settings screen
 	else if (onSettings)
 	{
+		//Hide menu buttons
 		playButton->state = GuiControlState::HIDDEN;
 		continueButton->state = GuiControlState::HIDDEN;
 		settingsButton->state = GuiControlState::HIDDEN;
@@ -255,6 +259,7 @@ bool SceneMenu::Update(float dt)
 				app->audio->PlayFx(buttonFxClick);
 				fxClickPlayed = true;
 				onSettings = false;
+				//Show menu buttons
 				playButton->state = GuiControlState::NORMAL;
 				continueButton->state = GuiControlState::DISABLED;
 				settingsButton->state = GuiControlState::NORMAL;
@@ -332,12 +337,14 @@ bool SceneMenu::Update(float dt)
 	//On credits screen
 	else if (onCredits)
 	{
+		//Hide menu buttons
 		playButton->state = GuiControlState::HIDDEN;
 		continueButton->state = GuiControlState::HIDDEN;
 		settingsButton->state = GuiControlState::HIDDEN;
 		creditsButton->state = GuiControlState::HIDDEN;
 		exitButtonMenu->state = GuiControlState::HIDDEN;
 
+		//Render background and credits
 		app->render->DrawTexture(background, 0, 0, NULL, SDL_FLIP_NONE, 0);
 		app->render->DrawTexture(credits, 0, 0, NULL, SDL_FLIP_NONE, 0);
 		if (creditsReturnButton->state == GuiControlState::FOCUSED)
@@ -355,6 +362,7 @@ bool SceneMenu::Update(float dt)
 				app->audio->PlayFx(buttonFxClick);
 				fxClickPlayed = true;
 				onCredits = false;
+				//Show menu buttons
 				playButton->state = GuiControlState::NORMAL;
 				continueButton->state = GuiControlState::NORMAL;
 				settingsButton->state = GuiControlState::NORMAL;
@@ -382,6 +390,7 @@ bool SceneMenu::Update(float dt)
 		}	
 		else
 		{
+			//Reset sound effects
 			fxHoverPlayed = false;
 			fxClickPlayed = false;
 		}

@@ -42,6 +42,7 @@ bool Hud::Awake(pugi::xml_node& config)
 
 bool Hud::Start()
 {
+	// Charge all textures
 	lifeBarTexture = app->tex->Load(configNode3.child("lifeBarTexture").attribute("texturepath").as_string());
 	deadScreenTexture = app->tex->Load(configNode3.child("deadScreenTexture").attribute("texturepath").as_string());
 	keyTexture = app->tex->Load(configNode3.child("keyTexture").attribute("texturepath").as_string());
@@ -58,7 +59,6 @@ bool Hud::Start()
 	backToTitleNormal = app->tex->Load(configNode3.child("backToTitleNormal").attribute("texturepath").as_string());
 	backToTitleHover = app->tex->Load(configNode3.child("backToTitleHover").attribute("texturepath").as_string());
 	backToTitleClick = app->tex->Load(configNode3.child("backToTitleClick").attribute("texturepath").as_string());
-
 	settingsExitNormal = app->tex->Load(configNode3.child("settingsExitNormal").attribute("texturepath").as_string());
 	settingsExitHover = app->tex->Load(configNode3.child("settingsExitHover").attribute("texturepath").as_string());
 	settingsExitClick = app->tex->Load(configNode3.child("settingsExitClick").attribute("texturepath").as_string());
@@ -83,6 +83,8 @@ bool Hud::Start()
 	settingsBoxHover = app->tex->Load(configNode3.child("settingsBoxHover").attribute("texturepath").as_string());
 	settings = app->tex->Load(configNode3.child("settings").attribute("texturepath").as_string());	
 
+
+	//Create Buttons
 	exitButton = (GuiControlButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, NULL, exitNormal, exitHover, exitClick, { 1419, 92, 63, 63 }, this);
 	resumeButton = (GuiControlButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 3, NULL, resumeNormal, resumeHover, resumeClick, { 657, 305, 281, 64 }, this);
 	settingsButton = (GuiControlButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 4, NULL, settingsNormal, settingsHover, settingsClick, { 657, 418, 279, 64 }, this);
@@ -120,6 +122,7 @@ bool Hud::Start()
 
 bool Hud::Update(float dt)
 {
+	//Change life bar depending on player health
 	if (app->scene->player->health >= 100) app->render->DrawTexture(lifeBarTexture, 0, 0, &healthBar100, SDL_FLIP_NONE, 0);
 	else if (app->scene->player->health < 100 && app->scene->player->health >= 80) app->render->DrawTexture(lifeBarTexture, 0, 0, &healthBar80, SDL_FLIP_NONE, 0);
 	else if (app->scene->player->health < 80 && app->scene->player->health >= 60) app->render->DrawTexture(lifeBarTexture, 0, 0, &healthBar60, SDL_FLIP_NONE, 0);
@@ -140,6 +143,7 @@ bool Hud::Update(float dt)
 
 	app->render->DrawText(scoreText.c_str(), 400, 25, 100, 25);
 
+	//Player dead hud
 	if(playerDeadHud && !spacePressed && !app->scene->player->revived) {
 		app->render->DrawTexture(deadScreenTexture, 0, 0, NULL, SDL_FLIP_NONE, 0);
 		if(app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !spacePressed) {
@@ -148,8 +152,9 @@ bool Hud::Update(float dt)
 		}
 	}
 
+	//Pause menu
 	if (app->scene->pause) {
-
+		//If pause menu is activated, show buttons
 		if (resumeButton->state == GuiControlState::HIDDEN)
 		{
 			resumeButton->state = GuiControlState::NORMAL;
@@ -158,7 +163,9 @@ bool Hud::Update(float dt)
 			exitButton->state = GuiControlState::NORMAL;
 		}
 		if(!onSettings){
+			//Render pause
 			app->render->DrawTexture(pause, 0, 0, NULL, SDL_FLIP_NONE, 0);
+			//Check if buttons are focused or pressed. If pressed, do the action. With sound effects. 
 			if (resumeButton->state == GuiControlState::FOCUSED) {
 				if (app->sceneMenu->fxHoverPlayed == false)
 				{
@@ -245,14 +252,18 @@ bool Hud::Update(float dt)
 				app->sceneMenu->fxClickPlayed = false;
 			}
 		}
+		//Settings menu on pause
 		else if (onSettings) {
-
+			//Hide previous buttons
 			resumeButton->state = GuiControlState::HIDDEN;
 			settingsButton->state = GuiControlState::HIDDEN;
 			backToTitleButton->state = GuiControlState::HIDDEN;
 			exitButton->state = GuiControlState::HIDDEN;
 
+			//Render settings menu
 			app->render->DrawTexture(settings, 0, 0, NULL, SDL_FLIP_NONE, 0);
+			
+			//Check if buttons are focused or pressed. If pressed, do the action. With sound effects.
 			if (settingsReturnButton->state == GuiControlState::FOCUSED)
 			{
 				if (app->sceneMenu->fxHoverPlayed == false)
@@ -344,7 +355,8 @@ bool Hud::Update(float dt)
 	}
 	else
 	{
-		// hide buttons
+		//If pause menu is deactivated, hide buttons
+
 		resumeButton->state = GuiControlState::HIDDEN;
 		settingsButton->state = GuiControlState::HIDDEN;
 		backToTitleButton->state = GuiControlState::HIDDEN;
@@ -360,6 +372,7 @@ bool Hud::Update(float dt)
 	return true;
 }
 
+//Draw timer on screen with minutes and seconds format
 void Hud::DrawTimer()
 {
 	// calculate time
