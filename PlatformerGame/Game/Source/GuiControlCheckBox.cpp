@@ -51,7 +51,7 @@ bool GuiControlCheckBox::Update(float dt)
 
 		if (app->guiManager->debugGui)
 		{
-			app->render->DrawRectangle({ bounds.x - 3, bounds.y - 3, bounds.w + 6, bounds.h + 6 }, 255, 0, 0, 100);
+			app->render->DrawRectangle({ bounds.x - 3 + app->render->camera.x, bounds.y - 3 - app->render->camera.y, bounds.w + 6, bounds.h + 6 }, 255, 0, 0, 100);
 		}
 
 		//draw checkbox texture

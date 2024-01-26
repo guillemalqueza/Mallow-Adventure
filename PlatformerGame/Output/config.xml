@@ -572,7 +572,7 @@
 
 		<!-- Ghost -->
 		<ghost>
-			<ghostAttackAnim loop="false" speed="0.1f">
+			<ghostAttackAnim loop="true" speed="0.1f">
 				<animation x="0" y="0" w="200" h="200"/>
 				<animation x="200" y="0" w="200" h="200"/>
 				<animation x="400" y="0" w="200" h="200"/>

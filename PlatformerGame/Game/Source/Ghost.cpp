@@ -89,6 +89,15 @@ bool Ghost::Update(float dt)
 		position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y);
 	}
 
+	if (abs(app->scene->player->position.x - position.x) < 10)
+	{
+		currentAnim = &ghostAttackAnim;
+	}
+	else currentAnim = &ghostIdleAnim;
+
+	if (position.x > app->scene->player->position.x + 32) isFacingRight = false;
+	else isFacingRight = true;
+
 	enemyPbody->body->SetTransform({ pbody->body->GetPosition().x, pbody->body->GetPosition().y - PIXEL_TO_METERS(10) }, 0);
 
 	// draw light

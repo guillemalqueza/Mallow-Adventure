@@ -56,7 +56,7 @@ bool GuiControlSlider::Update(float dt)
 
         if (app->guiManager->debugGui)
         {
-            app->render->DrawRectangle({ bounds.x - 6, bounds.y - 3, bounds.w + 6, bounds.h + 6 }, 0, 0, 255, 100);
+            app->render->DrawRectangle({ bounds.x - 6 + app->render->camera.x, bounds.y - 3 - app->render->camera.y, bounds.w + 6, bounds.h + 6 }, 0, 0, 255, 100);
         }
 
         //draw slider texture

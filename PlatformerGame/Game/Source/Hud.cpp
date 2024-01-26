@@ -344,6 +344,7 @@ bool Hud::Update(float dt)
 	}
 	else
 	{
+		// hide buttons
 		resumeButton->state = GuiControlState::HIDDEN;
 		settingsButton->state = GuiControlState::HIDDEN;
 		backToTitleButton->state = GuiControlState::HIDDEN;
@@ -361,10 +362,12 @@ bool Hud::Update(float dt)
 
 void Hud::DrawTimer()
 {
-	int time = 400000 - timer.ReadMSec();
+	// calculate time
+	int time = 500000 - timer.ReadMSec();
 	int minutes = time / 60000;
 	int seconds = (time / 1000) % 60;
 
+	// convert to string
 	ostringstream timerTextStream;
 	timerTextStream << setfill('0') << setw(2) << minutes << ":"
 		<< setfill('0') << setw(2) << seconds;
@@ -372,7 +375,9 @@ void Hud::DrawTimer()
 	string timerTextStr = timerTextStream.str();
 	const char* timerTextCStr = timerTextStr.c_str();
 
-	app->render->DrawText(timerTextCStr, 260, 25, 100, 25);
+	// draw
+	if (time > 0) app->render->DrawText(timerTextCStr, 260, 25, 100, 25);
+	else app->render->DrawText("00:00", 260, 25, 100, 25);
 }
 
 bool Hud::CleanUp()
