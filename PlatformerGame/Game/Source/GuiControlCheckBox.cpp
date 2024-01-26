@@ -54,6 +54,7 @@ bool GuiControlCheckBox::Update(float dt)
 			app->render->DrawRectangle({ bounds.x - 3, bounds.y - 3, bounds.w + 6, bounds.h + 6 }, 255, 0, 0, 100);
 		}
 
+		//draw checkbox texture
 		switch (state)
 		{
 		case GuiControlState::DISABLED:

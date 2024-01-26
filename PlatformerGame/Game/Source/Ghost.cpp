@@ -47,6 +47,10 @@ bool Ghost::Start() {
 	pbody->ctype = ColliderType::GHOST;
 	pbody->listener = this;
 
+	enemyPbody = app->physics->CreateRectangleSensor(position.x, position.y, 30, 54, bodyType::DYNAMIC);
+	enemyPbody->ctype = ColliderType::ENEMY;
+	enemyPbody->listener = this;
+
 	summonPbody = app->physics->CreateCircle(summonPosition.x, summonPosition.y, 20, bodyType::KINEMATIC);
 	summonPbody->ctype = ColliderType::GHOST_SUMMON;
 	summonPbody->body->GetFixtureList()->SetSensor(true);
@@ -84,6 +88,8 @@ bool Ghost::Update(float dt)
 		position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x);
 		position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y);
 	}
+
+	enemyPbody->body->SetTransform({ pbody->body->GetPosition().x, pbody->body->GetPosition().y - PIXEL_TO_METERS(10) }, 0);
 
 	// draw light
 	app->render->DrawTexture(bigLightTexture, position.x - 80, position.y - 200);
@@ -242,6 +248,7 @@ void Ghost::OnCollision(PhysBody* physA, PhysBody* physB)
 		{
 		case ColliderType::SWORD:
 			health -= 50;
+			app->scene->player->score += 50;
 			break;
 		}
 	}

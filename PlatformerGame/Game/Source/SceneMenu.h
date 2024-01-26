@@ -41,6 +41,7 @@ public:
 	GuiControlButton* returnButtonSettings;
 	GuiControlButton* returnButtonCredits;
 
+	bool isProgressSaved = false;
 private:
 
 	SDL_Texture* background;
