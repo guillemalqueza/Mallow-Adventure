@@ -48,6 +48,8 @@ bool Torch::Update(float dt)
 	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 16;
 	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 36;
 
+	LOG("Torch position x: %i, y: %i", position.x, position.y);
+
 	if(!isPicked) currentAnim = &torchIdleAnim;
 	else {
 		currentAnim = &torchFireAnim;
@@ -75,6 +77,7 @@ void Torch::OnCollision(PhysBody* physA, PhysBody* physB)
 			if(!isPicked) {
 				app->audio->PlayFx(torchAudioFxId);
 				isPicked = true;
+				app->scene->GetTorchPos();
 			}
 			break;
 		}

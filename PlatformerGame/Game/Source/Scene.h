@@ -62,6 +62,8 @@ public:
 	void StartLevel2();
 	void StartLevel1();
 
+	void GetTorchPos();
+
 	Player* player;	
 	GuiControlButton* gcButtom;
 
@@ -109,9 +111,11 @@ private:
 	iPoint level2SpawnPoint = { 4120, 830 };
 	iPoint level3SpawnPoint = { 320, 5824 };
 
-	iPoint torch1Pos = { 5920, 896 };
-	iPoint torch2Pos = { 2816, 3936 };
-	iPoint torch3Pos = { 4288, 3264 };
+	iPoint torch1Pos = { 5900, 896 };
+	iPoint torch2Pos = { 2800, 3936 };
+	iPoint torch3Pos = { 4260, 3264 };
+	iPoint lastTorchPos = {0, 0 };
+	bool isTorchActive = false;
 
 };
 

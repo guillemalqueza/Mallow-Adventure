@@ -50,8 +50,8 @@ bool Scene::Awake(pugi::xml_node& config)
 	CreateEntities(config, "ghost", EntityType::GHOST);
 	CreateEntities(config, "obstacle", EntityType::OBSTACLE);
 	CreateEntities(config, "chest", EntityType::CHEST);
-	CreateEntities(config, "life", EntityType::LIFE);
-	CreateEntities(config, "torch", EntityType::TORCH);
+	//CreateEntities(config, "life", EntityType::LIFE);
+	//CreateEntities(config, "torch", EntityType::TORCH);
 	CreateEntities(config, "log", EntityType::LOG_OBSTACLE);
 
 	app->entityManager->GetEnemies(skeletonsList, ghostsList);
@@ -152,12 +152,20 @@ bool Scene::Update(float dt)
 	if ((app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN || levelToLoadIdx == 1) && app->fade->fadeFinished)
 	{
 		levelToLoadIdx = 0;
-		if (!isLoading)
+		if (!isLoading && !isTorchActive)
 		{
 			player->wallLeft = false;
 			player->wallRight = false;
 			newCameraIdx = 0;
 			level1SpawnPoint = { 400, 991 };
+		}
+		else if (!isLoading && isTorchActive)
+		{
+			player->wallLeft = false;
+			player->wallRight = false;
+			newCameraIdx = 0;
+			level1SpawnPoint = lastTorchPos;
+			isTorchActive = false;
 		}
 		app->fade->Fade(1, 60);
 		isLoading = false;
@@ -166,12 +174,20 @@ bool Scene::Update(float dt)
 	if ((app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN || levelToLoadIdx == 2) && app->fade->fadeFinished)
 	{
 		levelToLoadIdx = 0;
-		if (!isLoading)
+		if (!isLoading && !isTorchActive)
 		{
 			player->wallLeft = false;
 			player->wallRight = false;
 			newCameraIdx = 2;
 			level2SpawnPoint = { 4120, 830 };
+		}
+		else if (!isLoading && isTorchActive)
+		{
+			player->wallLeft = false;
+			player->wallRight = false;
+			newCameraIdx = 2;
+			level2SpawnPoint = lastTorchPos;
+			isTorchActive = false;
 		}
 		app->fade->Fade(2, 60);
 		isLoading = false;
@@ -180,12 +196,19 @@ bool Scene::Update(float dt)
 	{
 		levelToLoadIdx = 0;
 		
-		if (!isLoading)
+		if (!isLoading && !isTorchActive)
 		{	
 			player->wallLeft = false;
 			player->wallRight = false;
 			newCameraIdx = 3;		
 			level3SpawnPoint = { 320, 5824 };
+		}
+		else if (!isLoading && isTorchActive)
+		{
+			player->wallLeft = false;
+			player->wallRight = false;
+			level3SpawnPoint = lastTorchPos;
+			isTorchActive = false;
 		}
 		app->fade->Fade(3, 60);
 		isLoading = false;
@@ -194,7 +217,29 @@ bool Scene::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) app->SaveRequest();
 	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) app->LoadRequest();
 
-
+	if (app->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
+	{
+		if (lastTorchPos.x > 5000 && lastTorchPos != iPoint(0,0) )
+		{
+			lastTorchPos = torch2Pos;
+			levelToLoadIdx = 3;
+			newCameraIdx = 5;
+			isTorchActive = true;
+		}
+		else if (lastTorchPos.x < 3000 && lastTorchPos != iPoint(0, 0))
+		{
+			lastTorchPos = torch3Pos;
+			levelToLoadIdx = 3;
+			newCameraIdx = 6;
+			isTorchActive = true;
+		}
+		else
+		{
+			lastTorchPos = torch1Pos;
+			levelToLoadIdx = 2;
+			isTorchActive = true;
+		}
+	}
 	return true;
 }
 
@@ -482,5 +527,10 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 	LOG("Press Gui Control: %d", control->id);
 
 	return true;
+}
+
+void Scene::GetTorchPos()
+{
+	lastTorchPos = player->position;
 }
 
