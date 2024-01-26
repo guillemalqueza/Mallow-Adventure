@@ -29,7 +29,6 @@ bool SceneMenu::Awake(pugi::xml_node& config)
 	LOG("Loading SceneMenu");
 	bool ret = true;
 
-
 	return ret;
 }
 
@@ -219,7 +218,7 @@ bool SceneMenu::Update(float dt)
 			{
 				app->audio->PlayFx(buttonFxClick);
 				fxClickPlayed = true;
-				SDL_Quit();
+				return false;
 			}
 		}
 		else
@@ -279,7 +278,7 @@ bool SceneMenu::Update(float dt)
 				app->audio->PlayFx(buttonFxClick);
 				fxClickPlayed = true;
 				onSettings = false;
-				SDL_Quit();
+				return false;
 			}
 		}
 		else if (settingsFullScreenButton->state == GuiControlState::FOCUSED)
@@ -378,7 +377,7 @@ bool SceneMenu::Update(float dt)
 				app->audio->PlayFx(buttonFxClick);
 				fxClickPlayed = true;
 				onCredits = false;
-				SDL_Quit();
+				return false;
 			}
 		}	
 		else

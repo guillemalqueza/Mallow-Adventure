@@ -197,7 +197,7 @@ bool Hud::Update(float dt)
 				app->audio->PlayFx(app->sceneMenu->buttonFxClick);
 				app->sceneMenu->fxClickPlayed = true;
 			}
-			SDL_Quit();
+			return false;
 		}
 		else {
 			app->sceneMenu->fxHoverPlayed = false;

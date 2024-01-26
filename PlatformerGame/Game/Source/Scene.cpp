@@ -481,6 +481,7 @@ bool Scene::LoadState(pugi::xml_node node)
 	else if (level3Enabled) level3SpawnPoint = player->position;
 
 	isLoading = true;
+	notUseChechPoint = true;
 	player->SetToInitialPosition();
 
 	return true;

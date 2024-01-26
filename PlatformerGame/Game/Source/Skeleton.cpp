@@ -264,6 +264,7 @@ void Skeleton::OnCollision(PhysBody* physA, PhysBody* physB)
 		{
 			case ColliderType::SWORD:
 				health -= 50;
+				app->scene->player->score += 100;
 				break;
 		}
 	}

@@ -758,7 +758,7 @@ void Player::DrawPlayer()
 // Sets the player to the initial position
 void Player::SetToInitialPosition()
 {
-	if (app->scene->lastTorchPos != iPoint(0, 0))
+	if (app->scene->lastTorchPos != iPoint(0, 0) && !app->scene->notUseChechPoint)
 	{
 		app->scene->checkPoint = true;
 	}
@@ -774,6 +774,7 @@ void Player::SetToInitialPosition()
 	{
 		app->scene->levelToLoadIdx = 3;
 	}
+	app->scene->notUseChechPoint = false;
 }
 
 // Toggles the god mode
