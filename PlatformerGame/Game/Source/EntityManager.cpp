@@ -75,14 +75,20 @@ bool EntityManager::CleanUp()
 	bool ret = true;
 	ListItem<Entity*>* item;
 	item = entities.end;
-
 	while (item != NULL && ret == true)
 	{
 		ret = item->data->CleanUp();
+		if (item->data->name != "Player"
+			&& item->data->name != "Ghost"
+			&& item->data->name != "Skeleton"
+			&& item->data->name != "obstacle"
+			&& item->data->name != "log")
+		{
+			entities.Del(item);
+		}
 		item = item->prev;
 	}
-
-	entities.Clear();
+	//entities.Clear();
 
 	return ret;
 }
