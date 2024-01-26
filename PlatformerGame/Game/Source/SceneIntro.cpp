@@ -40,7 +40,7 @@ bool SceneIntro::Update(float dt)
 {
 	if (timer.ReadSec() > 1 && !changingScene)
 	{
-		app->fade->FadeModules(this, (Module*)app->sceneMenu, 60);
+		app->fade->FadeModules(this, (Module*)app->sceneMenu, 30);
 		changingScene = true;
 	}
 	app->render->DrawTexture(logo, 0, 0);

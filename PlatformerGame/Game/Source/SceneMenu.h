@@ -28,6 +28,8 @@ public:
 	int buttonFxClick;
 	bool fxHoverPlayed = false;
 	bool fxClickPlayed = false;
+	bool fullScreen = false;
+	bool vSync = true;
 
 	GuiControlButton* playButton;
 	GuiControlButton* continueButton;
@@ -94,8 +96,6 @@ private:
 	bool onMenu = true;
 	bool onSettings = false;
 	bool onCredits = false;
-	bool fullScreen = false;
-	bool vSync = true;
 
 };
 

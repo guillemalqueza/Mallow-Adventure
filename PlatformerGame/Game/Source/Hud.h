@@ -29,6 +29,7 @@ public:
 
 	bool playerDeadHud = false;
 	bool spacePressed = false;
+	bool onSettings = false;
 private:
 
 	Timer timer;
@@ -68,12 +69,53 @@ private:
 	SDL_Texture* backToTitleHover;
 	SDL_Texture* backToTitleClick;
 
+	//Settings
+	SDL_Texture* settingsExitNormal;
+	SDL_Texture* settingsExitHover;
+	SDL_Texture* settingsExitClick;
+
+	SDL_Texture* settingsReturnNormal;
+	SDL_Texture* settingsReturnHover;
+	SDL_Texture* settingsReturnClick;
+
+	SDL_Texture* settingsMusicNormal;
+	SDL_Texture* settingsMusicHover;
+	SDL_Texture* settingsMusicClick;
+
+	SDL_Texture* settingsFxNormal;
+	SDL_Texture* settingsFxHover;
+	SDL_Texture* settingsFxClick;
+
+	SDL_Texture* settingsFullScreenNormal;
+	SDL_Texture* settingsFullScreenHover;
+	SDL_Texture* settingsFullScreenClick;
+
+	SDL_Texture* settingsVSyncNormal;
+	SDL_Texture* settingsVSyncHover;
+	SDL_Texture* settingsVSyncClick;
+
+	SDL_Texture* settingsTick;
+
+	SDL_Texture* settingsSlider;
+
+	SDL_Texture* settingsBoxNormal;
+	SDL_Texture* settingsBoxHover;
+
+	SDL_Texture* settings;
+
 
 	GuiControlButton* exitButton;
 	GuiControlButton* returnButton;
 	GuiControlButton* resumeButton;
 	GuiControlButton* settingsButton;
 	GuiControlButton* backToTitleButton;
+
+	GuiControlButton* settingsExitButton;
+	GuiControlButton* settingsReturnButton;
+	GuiControlButton* settingsMusicButton;
+	GuiControlButton* settingsFxButton;
+	GuiControlButton* settingsFullScreenButton;
+	GuiControlButton* settingsVSyncButton;
 };
 
 #endif // __HUD_H__
