@@ -41,17 +41,12 @@ bool Scene::Awake(pugi::xml_node& config)
 	// iterate all objects in the scene
 	// Check https://pugixml.org/docs/quickstart.html#access
 
-	//CreateEntities(config, "key", EntityType::KEY);
-	//CreateEntities(config, "equipment", EntityType::EQUIPMENT);
-	//CreateEntities(config, "lockDoor", EntityType::LOCK_DOOR);
-	//CreateEntities(config, "jumper", EntityType::JUMPER);
+	
 	CreateEntities(config, "crumblingPlatform", EntityType::CRUMBLING_PLATFORM);
 	CreateEntities(config, "skeleton", EntityType::SKELETON);
 	CreateEntities(config, "ghost", EntityType::GHOST);
 	CreateEntities(config, "obstacle", EntityType::OBSTACLE);
 	CreateEntities(config, "chest", EntityType::CHEST);
-	//CreateEntities(config, "life", EntityType::LIFE);
-	//CreateEntities(config, "torch", EntityType::TORCH);
 	CreateEntities(config, "log", EntityType::LOG_OBSTACLE);
 
 	app->entityManager->GetEnemies(skeletonsList, ghostsList);
@@ -248,8 +243,7 @@ bool Scene::PostUpdate()
 {
 	bool ret = true;
 
-	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		ret = false;
+	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) pause = !pause;
 
 	return ret;
 }

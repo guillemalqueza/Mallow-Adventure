@@ -81,6 +81,8 @@ public:
 
 	const char* level1Music, *level2Music, *level3Music;
 
+	bool pause = false;
+
 private:
 	SDL_Texture* backgroundTexture;
 	SDL_Texture* backgroundTexture2;
