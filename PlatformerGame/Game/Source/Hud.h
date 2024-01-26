@@ -36,7 +36,14 @@ private:
 	SDL_Texture* deadScreenTexture;
 	SDL_Texture* keyTexture;
 
-	SDL_Rect lifeRect = { 0,0,32,32 };
+	SDL_Rect keyRect = { 0,0,32,32 };
+
+	SDL_Rect healthBar100 = { 0,0,238,80 };
+	SDL_Rect healthBar80 = { 0,80,238,80 };
+	SDL_Rect healthBar60 = { 0,160,238,80 };
+	SDL_Rect healthBar40 = { 0,240,238,80 };
+	SDL_Rect healthBar20 = { 0,320,238,80 };
+	SDL_Rect healthBar0 = { 0,400,238,80 };
 
 };
 

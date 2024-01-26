@@ -52,11 +52,17 @@ bool Hud::Start()
 
 bool Hud::Update(float dt)
 {
-	if (app->scene->player->health == 100) app->render->DrawTexture(lifeBarTexture, 0, 0, NULL, SDL_FLIP_NONE, 0);
+	if (app->scene->player->health == 100) app->render->DrawTexture(lifeBarTexture, 0, 0, &healthBar100, SDL_FLIP_NONE, 0);
+	else if (app->scene->player->health < 100 && app->scene->player->health >= 80) app->render->DrawTexture(lifeBarTexture, 0, 0, &healthBar80, SDL_FLIP_NONE, 0);
+	else if (app->scene->player->health < 80 && app->scene->player->health >= 60) app->render->DrawTexture(lifeBarTexture, 0, 0, &healthBar60, SDL_FLIP_NONE, 0);
+	else if (app->scene->player->health < 60 && app->scene->player->health >= 40) app->render->DrawTexture(lifeBarTexture, 0, 0, &healthBar40, SDL_FLIP_NONE, 0);
+	else if (app->scene->player->health < 40 && app->scene->player->health >= 20) app->render->DrawTexture(lifeBarTexture, 0, 0, &healthBar20, SDL_FLIP_NONE, 0);
+	else if (app->scene->player->health < 20 && app->scene->player->health > 0) app->render->DrawTexture(lifeBarTexture, 0, 0, &healthBar0, SDL_FLIP_NONE, 0);
+	else if (app->scene->player->health <= 0) app->render->DrawTexture(lifeBarTexture, 0, 0, &healthBar0, SDL_FLIP_NONE, 0);
 	
 	DrawTimer();
 
-	app->render->DrawTexture(keyTexture, 600, 20, &lifeRect, SDL_FLIP_NONE, 0);
+	app->render->DrawTexture(keyTexture, 600, 20, &keyRect, SDL_FLIP_NONE, 0);
 
 	string keyText = to_string(app->scene->player->keys);
 
