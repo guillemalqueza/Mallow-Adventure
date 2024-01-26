@@ -34,6 +34,9 @@ private:
 	Timer timer;
 	SDL_Texture* lifeBarTexture;
 	SDL_Texture* deadScreenTexture;
+	SDL_Texture* keyTexture;
+
+	SDL_Rect lifeRect = { 0,0,32,32 };
 
 };
 

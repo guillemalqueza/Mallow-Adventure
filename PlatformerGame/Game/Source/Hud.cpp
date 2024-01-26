@@ -42,6 +42,7 @@ bool Hud::Start()
 
 	lifeBarTexture = app->tex->Load("Assets/Textures/ghost_shadow.png");
 	deadScreenTexture = app->tex->Load("Assets/Textures/Screens/die_screen.png");
+	keyTexture = app->tex->Load("Assets/Textures/key.png");
 
 	timer = Timer();
 	timer.Start();
@@ -54,6 +55,12 @@ bool Hud::Update(float dt)
 	if (app->scene->player->health == 100) app->render->DrawTexture(lifeBarTexture, 0, 0, NULL, SDL_FLIP_NONE, 0);
 	
 	DrawTimer();
+
+	app->render->DrawTexture(keyTexture, 600, 20, &lifeRect, SDL_FLIP_NONE, 0);
+
+	string keyText = to_string(app->scene->player->keys);
+
+	app->render->DrawText(keyText.c_str(), 640, 25, 20, 20);
 
 	string scoreText = "Score: " + to_string(app->scene->player->score);
 
@@ -76,11 +83,11 @@ void Hud::DrawTimer()
 	int minutes = time / 60000;
 	int seconds = (time / 1000) % 60;
 
-	std::ostringstream timerTextStream;
-	timerTextStream << std::setfill('0') << std::setw(2) << minutes << ":"
-		<< std::setfill('0') << std::setw(2) << seconds;
+	ostringstream timerTextStream;
+	timerTextStream << setfill('0') << setw(2) << minutes << ":"
+		<< setfill('0') << setw(2) << seconds;
 
-	std::string timerTextStr = timerTextStream.str();
+	string timerTextStr = timerTextStream.str();
 	const char* timerTextCStr = timerTextStr.c_str();
 
 	app->render->DrawText(timerTextCStr, 200, 25, 100, 25);

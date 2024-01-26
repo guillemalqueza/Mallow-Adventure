@@ -11,6 +11,7 @@
 #include "FadeToBlack.h"
 #include "GuiManager.h"
 #include "ParticleManager.h"
+#include "Hud.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -133,6 +134,7 @@ bool SceneMenu::Update(float dt)
 			app->fade->FadeModules(this, (Module*)app->scene, 60.0f);
 			app->map->Enable();
 			app->entityManager->Enable();
+			app->hud->Enable();
 			app->guiManager->Disable();
 
 			if (fxClickPlayed == false)

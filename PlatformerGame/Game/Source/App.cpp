@@ -42,7 +42,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	particleManager = new ParticleManager(false);
 	guiManager = new GuiManager();
 	sceneMenu = new SceneMenu();
-	hud = new Hud();
+	hud = new Hud(false);
 
 
 	// Ordered for awake / Start / Update

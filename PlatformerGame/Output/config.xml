@@ -600,6 +600,7 @@
 				<animation x="400" y="1400" w="200" h="200"/>
 				<animation x="600" y="1400" w="200" h="200"/>
 				<animation x="800" y="1400" w="200" h="200"/>
+				<animation x="0" y="0" w="0" h="0"/>
 			</ghostSummonDeathAnim>
 
 			<ghostSummonIdleAnim loop="true" speed="0.1f">
