@@ -170,8 +170,17 @@ bool Hud::Update(float dt)
 				app->audio->PlayFx(app->sceneMenu->buttonFxClick);
 				app->sceneMenu->fxClickPlayed = true;
 			}
+
+			backToTitleButton->state = GuiControlState::HIDDEN;
+			resumeButton->state = GuiControlState::HIDDEN;
+			settingsButton->state = GuiControlState::HIDDEN;
+			exitButton->state = GuiControlState::HIDDEN;
+
+			app->fade->FadeModules((Module*)app->scene, (Module*)app->sceneMenu, 60.0f);
+			app->map->Disable();
+			app->entityManager->Disable();
+			app->hud->Disable();
 			app->scene->pause = false;
-			//app->fade->FadeToBlack(this, (Module*)app->sceneMenu, 90);
 		}
 		else if (exitButton->state == GuiControlState::FOCUSED) {
 			if (app->sceneMenu->fxHoverPlayed == false)
