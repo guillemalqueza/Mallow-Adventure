@@ -29,7 +29,7 @@ bool SceneIntro::Awake(pugi::xml_node& config)
 
 bool SceneIntro::Start()
 {
-	logo = app->tex->Load("Assets/Textures/Screens/background.png");
+	logo = app->tex->Load("Assets/Textures/Screens/logo.png");
 	timer = Timer();
 	timer.Start();
 

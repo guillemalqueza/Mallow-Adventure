@@ -40,7 +40,7 @@ bool Hud::Awake(pugi::xml_node& config)
 bool Hud::Start()
 {
 
-	lifeBarTexture = app->tex->Load("Assets/Textures/ghost_shadow.png");
+	lifeBarTexture = app->tex->Load("Assets/Textures/health_bar.png");
 	deadScreenTexture = app->tex->Load("Assets/Textures/Screens/die_screen.png");
 	keyTexture = app->tex->Load("Assets/Textures/key.png");
 
