@@ -40,6 +40,7 @@ bool Ghost::Start() {
 	//initilize textures
 	texture = app->tex->Load(texturePath);
 	pathTexture = app->tex->Load("Assets/Textures/path.png");
+	healthBarTexture = app->tex->Load("Assets/Textures/ghost_health_bar.png");
 	lightTexture = app->tex->Load(lightTexturePath);
 	bigLightTexture = app->tex->Load(bigLightTexturePath);
 	pbody = app->physics->CreateCircle(position.x, position.y, 20, bodyType::STATIC);
@@ -50,6 +51,10 @@ bool Ghost::Start() {
 	summonPbody->ctype = ColliderType::GHOST_SUMMON;
 	summonPbody->body->GetFixtureList()->SetSensor(true);
 	summonPbody->listener = this;
+
+	enemySummonPbody = app->physics->CreateRectangleSensor(summonPosition.x, summonPosition.y, 30, 54, bodyType::DYNAMIC);
+	enemySummonPbody->ctype = ColliderType::ENEMY;
+	enemySummonPbody->listener = this;
 
 	initialTransform = pbody->body->GetTransform();
 	initialSummonTransform = summonPbody->body->GetTransform();
@@ -108,7 +113,7 @@ bool Ghost::Update(float dt)
 	}
 
 	// move summon to player
-	if (distance < 10)
+	if (distance < 10 && health > 0)
 	{
 		app->map->pathfinding->CreatePath(summonTilePos, playerTilePos, true);
 		path = app->map->pathfinding->GetLastPath();
@@ -154,7 +159,7 @@ bool Ghost::Update(float dt)
 		summonPosition.x += velocity.x;
 		summonPosition.y += velocity.y;
 
-		currentSummonAnim = &ghostSummonIdleAnim;
+		if (health > 0) currentSummonAnim = &ghostSummonIdleAnim;
 
 		if (path == app->map->pathfinding->GetLastPath()) app->map->pathfinding->ClearLastPath();
 
@@ -170,6 +175,7 @@ bool Ghost::Update(float dt)
 	summonPosition.y = METERS_TO_PIXELS(summonPbody->body->GetTransform().p.y);
 
 	summonPbody->body->SetLinearVelocity(velocity);
+	enemySummonPbody->body->SetTransform({ summonPbody->body->GetPosition().x, summonPbody->body->GetPosition().y - PIXEL_TO_METERS(10) }, 0);
 
 	if (summonSpawned)
 	{
@@ -190,6 +196,14 @@ bool Ghost::Update(float dt)
 			else app->render->DrawTexture(texture, summonPosition.x - 100, summonPosition.y - 90, &summonRect, SDL_FLIP_HORIZONTAL);
 		}
 		currentSummonAnim->Update();
+
+		if (health >= 100) app->render->DrawTexture(healthBarTexture, summonPosition.x - 40, summonPosition.y - 50, &healthBarRect100);
+		else if (health >= 50 && health < 100) app->render->DrawTexture(healthBarTexture, summonPosition.x - 40, summonPosition.y - 50, &healthBarRect50);
+		else if (health < 50)
+		{
+			app->render->DrawTexture(healthBarTexture, summonPosition.x - 40, summonPosition.y - 50, &healthBarRect0);
+			currentSummonAnim = &ghostSummonDeathAnim;
+		}
 	}
 
 	// draw path
@@ -213,9 +227,14 @@ bool Ghost::CleanUp()
 
 void Ghost::OnCollision(PhysBody* physA, PhysBody* physB)
 {
-	switch (physB->ctype)
+	if (physA->ctype == ColliderType::ENEMY)
 	{
-
+		switch (physB->ctype)
+		{
+		case ColliderType::SWORD:
+			health -= 50;
+			break;
+		}
 	}
 }
 
