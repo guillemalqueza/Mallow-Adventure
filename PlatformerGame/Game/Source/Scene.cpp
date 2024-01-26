@@ -40,9 +40,7 @@ bool Scene::Awake(pugi::xml_node& config)
 
 	// iterate all objects in the scene
 	// Check https://pugixml.org/docs/quickstart.html#access
-
 	
-	CreateEntities(config, "crumblingPlatform", EntityType::CRUMBLING_PLATFORM);
 	CreateEntities(config, "skeleton", EntityType::SKELETON);
 	CreateEntities(config, "ghost", EntityType::GHOST);
 	CreateEntities(config, "obstacle", EntityType::OBSTACLE);
@@ -159,7 +157,6 @@ bool Scene::Update(float dt)
 			player->wallRight = false;
 			newCameraIdx = 0;
 			level1SpawnPoint = lastTorchPos;
-			isTorchActive = false;
 		}
 		app->fade->Fade(1, 60);
 		isLoading = false;
@@ -181,7 +178,6 @@ bool Scene::Update(float dt)
 			player->wallRight = false;
 			newCameraIdx = 2;
 			level2SpawnPoint = lastTorchPos;
-			isTorchActive = false;
 		}
 		app->fade->Fade(2, 60);
 		isLoading = false;
@@ -202,7 +198,6 @@ bool Scene::Update(float dt)
 			player->wallLeft = false;
 			player->wallRight = false;
 			level3SpawnPoint = lastTorchPos;
-			isTorchActive = false;
 		}
 		app->fade->Fade(3, 60);
 		isLoading = false;

@@ -57,9 +57,23 @@ bool FadeToBlack::Update(float dt)
 		if (!activated)
 		{
 			activated = true;
-			if (levelIdx == 1) app->scene->StartLevel1();
-			else if (levelIdx == 2) app->scene->StartLevel2();
-			else if (levelIdx == 3) app->scene->StartLevel3();
+			if (levelIdx == 1)
+			{
+				app->scene->isTorchActive = false;
+				app->scene->StartLevel1();
+			}
+			else if (levelIdx == 2)
+			{
+				app->scene->newCameraIdx = 2;
+				app->scene->isTorchActive = false;
+				app->scene->StartLevel2();
+			}
+			else if (levelIdx == 3)
+			{
+				if (!app->scene->isTorchActive) app->scene->newCameraIdx = 3;
+				app->scene->isTorchActive = false;
+				app->scene->StartLevel3();
+			}
 		}
 	}
 

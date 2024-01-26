@@ -82,6 +82,8 @@ public:
 	const char* level1Music, *level2Music, *level3Music;
 
 	bool pause = false;
+	bool isTorchActive = false;
+
 
 private:
 	SDL_Texture* backgroundTexture;
@@ -117,7 +119,6 @@ private:
 	iPoint torch2Pos = { 2800, 3936 };
 	iPoint torch3Pos = { 4260, 3264 };
 	iPoint lastTorchPos = {0, 0 };
-	bool isTorchActive = false;
 
 };
 

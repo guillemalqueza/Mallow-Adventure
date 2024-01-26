@@ -130,11 +130,11 @@
 		<crumblingPlatform x="5900" y="500" texturepath="Assets/Textures/crumbling_platform.png"/>
 		<crumblingPlatform x="6050" y="550" texturepath="Assets/Textures/crumbling_platform.png"/>
 		<crumblingPlatform x="6200" y="600" texturepath="Assets/Textures/crumbling_platform.png"/>
-		<crumblingPlatform x="4416" y="2560" texturepath="Assets/Textures/crumbling_platform2.png"/>
-		<crumblingPlatform x="4544" y="2528" texturepath="Assets/Textures/crumbling_platform2.png"/>
-		<crumblingPlatform x="4672" y="2464" texturepath="Assets/Textures/crumbling_platform2.png"/>
-		<crumblingPlatform x="4544" y="1952" texturepath="Assets/Textures/crumbling_platform2.png"/>
-		<crumblingPlatform x="4800" y="2032" texturepath="Assets/Textures/crumbling_platform2.png"/>
+		<crumblingPlatform2 x="4416" y="2560" texturepath="Assets/Textures/crumbling_platform2.png"/>
+		<crumblingPlatform2 x="4544" y="2528" texturepath="Assets/Textures/crumbling_platform2.png"/>
+		<crumblingPlatform2 x="4672" y="2464" texturepath="Assets/Textures/crumbling_platform2.png"/>
+		<crumblingPlatform2 x="4544" y="1952" texturepath="Assets/Textures/crumbling_platform2.png"/>
+		<crumblingPlatform2 x="4800" y="2032" texturepath="Assets/Textures/crumbling_platform2.png"/>
 
 		<!-- Door -->
 		<lockDoor x="3200" y="190" texturepath="Assets/Textures/lock_door.png">
