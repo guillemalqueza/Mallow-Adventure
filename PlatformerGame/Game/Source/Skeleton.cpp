@@ -233,6 +233,9 @@ bool Skeleton::Update(float dt)
 
 bool Skeleton::CleanUp()
 {
+	app->tex->UnLoad(texture);
+	app->tex->UnLoad(pathTexture);
+	app->tex->UnLoad(healthBarTexture);
 	return true;
 }
 

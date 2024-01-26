@@ -87,6 +87,7 @@ bool CrumblingPlatform::Update(float dt)
 
 bool CrumblingPlatform::CleanUp()
 {
+	app->tex->UnLoad(texture);
 	return true;
 }
 

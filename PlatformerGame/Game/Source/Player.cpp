@@ -794,6 +794,9 @@ void Player::ToggleGodMode()
 
 bool Player::CleanUp()
 {
+	app->tex->UnLoad(texture);
+	app->tex->UnLoad(lightTexture);
+	app->tex->UnLoad(effectsTexture);
 
 	return true;
 }

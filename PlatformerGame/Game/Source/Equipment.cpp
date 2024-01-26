@@ -79,6 +79,7 @@ bool Equipment::Update(float dt)
 
 bool Equipment::CleanUp()
 {
+	app->tex->UnLoad(texture);
 	return true;
 }
 

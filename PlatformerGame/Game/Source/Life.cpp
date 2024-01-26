@@ -56,6 +56,8 @@ bool Life::Update(float dt)
 
 bool Life::CleanUp()
 {
+	app->tex->UnLoad(texture);
+
 	return true;
 }
 

@@ -78,6 +78,8 @@ bool Jumper::Update(float dt)
 
 bool Jumper::CleanUp()
 {
+	app->tex->UnLoad(texture);
+
 	return true;
 }
 

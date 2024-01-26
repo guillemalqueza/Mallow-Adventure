@@ -54,6 +54,7 @@ bool Obstacle::Update(float dt)
 
 bool Obstacle::CleanUp()
 {
+	app->tex->UnLoad(texture);
 	return true;
 }
 

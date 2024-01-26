@@ -248,8 +248,9 @@ bool Scene::PostUpdate()
 bool Scene::CleanUp()
 {
 	LOG("Freeing scene");
-	app->map->Disable();
-	//app->entityManager->DestroyEntity(player);
+	app->tex->UnLoad(backgroundTexture);
+	app->tex->UnLoad(backgroundTexture2);
+
 	return true;
 }
 

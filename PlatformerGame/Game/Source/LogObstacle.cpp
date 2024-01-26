@@ -84,6 +84,7 @@ bool LogObstacle::Update(float dt)
 
 bool LogObstacle::CleanUp()
 {
+	app->tex->UnLoad(texture);
 	return true;
 }
 

@@ -61,6 +61,7 @@ bool Torch::Update(float dt)
 
 bool Torch::CleanUp()
 {
+	app->tex->UnLoad(texture);
 	return true;
 }
 

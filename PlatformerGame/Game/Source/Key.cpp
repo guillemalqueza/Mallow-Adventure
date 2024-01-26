@@ -55,6 +55,7 @@ bool Key::Update(float dt)
 
 bool Key::CleanUp()
 {
+	app->tex->UnLoad(texture);
 	return true;
 }
 

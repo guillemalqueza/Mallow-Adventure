@@ -225,6 +225,12 @@ bool Ghost::Update(float dt)
 
 bool Ghost::CleanUp()
 {
+	app->tex->UnLoad(texture);
+	app->tex->UnLoad(pathTexture);
+	app->tex->UnLoad(healthBarTexture);
+	app->tex->UnLoad(lightTexture);
+	app->tex->UnLoad(bigLightTexture);
+
 	return true;
 }
 

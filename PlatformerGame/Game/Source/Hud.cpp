@@ -178,6 +178,7 @@ bool Hud::Update(float dt)
 
 			app->fade->FadeModules((Module*)app->scene, (Module*)app->sceneMenu, 60.0f);
 			app->map->Disable();
+			app->particleManager->Disable();
 			app->entityManager->Disable();
 			app->hud->Disable();
 			app->scene->pause = false;
@@ -233,6 +234,10 @@ void Hud::DrawTimer()
 bool Hud::CleanUp()
 {
 	LOG("Freeing Hud");
+
+	app->tex->UnLoad(lifeBarTexture);
+	app->tex->UnLoad(deadScreenTexture);
+	app->tex->UnLoad(keyTexture);
 
 	return true;
 }

@@ -36,7 +36,7 @@ bool SceneMenu::Awake(pugi::xml_node& config)
 bool SceneMenu::Start()
 {
 	background = app->tex->Load("Assets/Textures/Screens/background.png");
-	menu = app->tex->Load("Assets/Textures/Screens/menu.png");
+	//menu = app->tex->Load("Assets/Textures/Screens/menu.png");
 	playNormal = app->tex->Load("Assets/Textures/Screens/Play/play_normal.png");
 	playHover = app->tex->Load("Assets/Textures/Screens/Play/play_hover.png");
 	playClick = app->tex->Load("Assets/Textures/Screens/Play/play_click.png");
@@ -396,6 +396,33 @@ bool SceneMenu::Update(float dt)
 bool SceneMenu::CleanUp()
 {
 	LOG("Freeing SceneMenu");
+
+	app->tex->UnLoad(background);
+	app->tex->UnLoad(playNormal);
+	app->tex->UnLoad(playHover);
+	app->tex->UnLoad(playClick);
+	app->tex->UnLoad(continueDisabled);
+	app->tex->UnLoad(continueNormal);
+	app->tex->UnLoad(continueHover);
+	app->tex->UnLoad(continueClick);
+	app->tex->UnLoad(settingsNormal);
+	app->tex->UnLoad(settingsHover);
+	app->tex->UnLoad(settingsClick);
+	app->tex->UnLoad(creditsNormal);
+	app->tex->UnLoad(creditsHover);
+	app->tex->UnLoad(creditsClick);
+	app->tex->UnLoad(exitNormal);
+	app->tex->UnLoad(exitHover);
+	app->tex->UnLoad(exitClick);
+	app->tex->UnLoad(settings);
+	app->tex->UnLoad(returnNormal);
+	app->tex->UnLoad(returnHover);
+	app->tex->UnLoad(returnClick);
+	app->tex->UnLoad(settingsBoxNormal);
+	app->tex->UnLoad(settingsBoxHover);
+	app->tex->UnLoad(settingsTick);
+	app->tex->UnLoad(settingsSlider);
+	app->tex->UnLoad(credits);
 
 	
 	return true;

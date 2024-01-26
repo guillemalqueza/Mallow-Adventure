@@ -77,6 +77,7 @@ bool LockDoor::Update(float dt)
 
 bool LockDoor::CleanUp()
 {
+	app->tex->UnLoad(texture);
 	return true;
 }
 

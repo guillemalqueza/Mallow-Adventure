@@ -75,6 +75,7 @@ bool Chest::Update(float dt)
 
 bool Chest::CleanUp()
 {
+	app->tex->UnLoad(texture);
 	return true;
 }
 
