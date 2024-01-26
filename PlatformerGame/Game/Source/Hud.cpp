@@ -55,6 +55,10 @@ bool Hud::Update(float dt)
 	
 	DrawTimer();
 
+	string scoreText = "Score: " + to_string(app->scene->player->score);
+
+	app->render->DrawText(scoreText.c_str(), 400, 25, 100, 25);
+
 	if(playerDeadHud && !spacePressed && !app->scene->player->revived) {
 		app->render->DrawTexture(deadScreenTexture, 0, 0, NULL, SDL_FLIP_NONE, 0);
 		if(app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !spacePressed) {
@@ -62,7 +66,6 @@ bool Hud::Update(float dt)
 			playerDeadHud = false;
 		}
 	}
-
 
 	return true;
 }

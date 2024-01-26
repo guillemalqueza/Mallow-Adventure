@@ -600,6 +600,8 @@ bool Map::LoadEntities()
                     if (gid == 4160) CreateEntities("obstacle", EntityType::OBSTACLE, pos);
                     if (gid == 4161) CreateEntities("chest", EntityType::CHEST, pos);
                     if (gid == 4162) CreateEntities("log", EntityType::LOG_OBSTACLE, pos);
+                    if (gid == 4163) CreateEntities("torch", EntityType::TORCH, pos);
+                    if (gid == 4164) CreateEntities("life", EntityType::LIFE, pos);
                 }
             }
         }

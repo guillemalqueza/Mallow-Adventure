@@ -135,6 +135,8 @@ public:
 
 	float dt;
 
+	int score = 0;
+
 };
 
 #endif // __PLAYER_H__

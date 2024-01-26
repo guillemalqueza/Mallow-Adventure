@@ -19,19 +19,20 @@ Life::~Life() {}
 
 bool Life::Awake() {
 
-	position.x = parameters.attribute("x").as_int();
-	position.y = parameters.attribute("y").as_int();
-	texturePath = parameters.attribute("texturepath").as_string();
-	lifeAudioFxId = app->audio->LoadFx(parameters.child("lifeAudio").attribute("path").as_string());
+	//position.x = parameters.attribute("x").as_int();
+	//position.y = parameters.attribute("y").as_int();
+
 
 	return true;
 }
 
 bool Life::Start() {
 
+	texturePath = parameters.attribute("texturepath").as_string();
+	lifeAudioFxId = app->audio->LoadFx(parameters.child("lifeAudio").attribute("path").as_string());
 	//initilize textures
 	texture = app->tex->Load(texturePath);
-	pbody = app->physics->CreateCircle(position.x + 32, position.y + 32, 20, bodyType::STATIC);
+	pbody = app->physics->CreateCircle(position.x + 32, position.y + 16, 20, bodyType::STATIC);
 	pbody->ctype = ColliderType::LIFE;
 	pbody->body->GetFixtureList()->SetSensor(true);
 	pbody->listener = this;

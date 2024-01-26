@@ -19,16 +19,16 @@ Torch::~Torch() {}
 
 bool Torch::Awake() {
 
-	position.x = parameters.attribute("x").as_int();
-	position.y = parameters.attribute("y").as_int();
-	texturePath = parameters.attribute("texturepath").as_string();
-	torchAudioFxId = app->audio->LoadFx(parameters.child("torchAudio").attribute("path").as_string());
+	//position.x = parameters.attribute("x").as_int();
+	//position.y = parameters.attribute("y").as_int();
 
 	return true;
 }
 
 bool Torch::Start() {
 
+	texturePath = parameters.attribute("texturepath").as_string();
+	torchAudioFxId = app->audio->LoadFx(parameters.child("torchAudio").attribute("path").as_string());
 	//initilize textures
 	texture = app->tex->Load(texturePath);
 	pbody = app->physics->CreateCircle(position.x, position.y, 40, bodyType::STATIC);

@@ -109,6 +109,10 @@ private:
 	iPoint level2SpawnPoint = { 4120, 830 };
 	iPoint level3SpawnPoint = { 320, 5824 };
 
+	iPoint torch1Pos = { 5920, 896 };
+	iPoint torch2Pos = { 2816, 3936 };
+	iPoint torch3Pos = { 4288, 3264 };
+
 };
 
 #endif // __SCENE_H__
