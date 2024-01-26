@@ -31,7 +31,8 @@ bool GuiControlSlider::Update(float dt)
     {
         app->input->GetMousePosition(mouseX, mouseY);
 
-        if (mouseX > bounds.x && mouseX < bounds.x + bounds.w && mouseY > bounds.y && mouseY < bounds.y + bounds.h) {
+       
+        if (mouseX > sliderBounds.x && mouseX < sliderBounds.x + sliderBounds.w - bounds.w && mouseY > bounds.y && mouseY < bounds.y + bounds.h) {
             state = GuiControlState::FOCUSED;
 
             if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) {
@@ -41,18 +42,7 @@ bool GuiControlSlider::Update(float dt)
 
             if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT) {
                 state = GuiControlState::PRESSED;
-                int delta = mouseX - initialMouseX;
-
-                int newSliderX = bounds.x + delta;
-                if (newSliderX < sliderBounds.x) {
-                    newSliderX = sliderBounds.x;
-                }
-                else if (newSliderX > sliderBounds.x + sliderBounds.w - bounds.w) {
-                    newSliderX = sliderBounds.x + sliderBounds.w - bounds.w;
-                }
-
-                bounds.x = newSliderX;
-                initialMouseX = mouseX;
+                bounds.x = mouseX;
             }
 
             if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP) {
