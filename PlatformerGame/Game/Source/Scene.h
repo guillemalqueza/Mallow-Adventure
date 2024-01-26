@@ -83,7 +83,8 @@ public:
 
 	bool pause = false;
 	bool isTorchActive = false;
-
+	bool checkPoint = false;
+	iPoint lastTorchPos = { 0, 0 };
 
 private:
 	SDL_Texture* backgroundTexture;
@@ -118,7 +119,6 @@ private:
 	iPoint torch1Pos = { 5900, 896 };
 	iPoint torch2Pos = { 2800, 3936 };
 	iPoint torch3Pos = { 4260, 3264 };
-	iPoint lastTorchPos = {0, 0 };
 
 };
 

@@ -59,6 +59,11 @@ bool GuiManager::Update(float dt)
 		control = control->next;
 	}
 
+	if (app->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
+	{
+		debugGui = !debugGui;
+	}
+
 	return true;
 }
 

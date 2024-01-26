@@ -758,7 +758,11 @@ void Player::DrawPlayer()
 // Sets the player to the initial position
 void Player::SetToInitialPosition()
 {
-	if (app->scene->level1Enabled)
+	if (app->scene->lastTorchPos != iPoint(0, 0))
+	{
+		app->scene->checkPoint = true;
+	}
+	else if (app->scene->level1Enabled)
 	{
 		app->scene->levelToLoadIdx = 1;
 	}

@@ -3,6 +3,7 @@
 #include "App.h"
 #include "Audio.h"
 #include "Log.h"
+#include "GuiManager.h"
 
 GuiControlSlider::GuiControlSlider(uint32 id, SDL_Rect bounds, SDL_Texture* textureDisabled, SDL_Texture* textureNormal, SDL_Texture* textureFocused, SDL_Texture* texturePressed, SDL_Rect sliderBounds) : GuiControl(GuiControlType::BUTTON, id)
 {
@@ -51,6 +52,11 @@ bool GuiControlSlider::Update(float dt)
         }
         else {
             state = GuiControlState::NORMAL;
+        }
+
+        if (app->guiManager->debugGui)
+        {
+            app->render->DrawRectangle({ bounds.x - 6, bounds.y - 3, bounds.w + 6, bounds.h + 6 }, 0, 0, 255, 100);
         }
 
         switch (state)
