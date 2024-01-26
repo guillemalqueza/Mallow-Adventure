@@ -13,6 +13,7 @@
 #include "ParticleManager.h"
 #include "Defs.h"
 #include "Log.h"
+#include "SceneMenu.h"
 
 #include <iostream>
 #include <iomanip>
@@ -44,6 +45,26 @@ bool Hud::Start()
 	deadScreenTexture = app->tex->Load("Assets/Textures/Screens/die_screen.png");
 	keyTexture = app->tex->Load("Assets/Textures/key.png");
 
+	pause = app->tex->Load("Assets/Textures/Screens/Pause/pause.png");
+
+	exitNormal = app->tex->Load("Assets/Textures/Screens/More/exit_normal.png");
+	exitHover = app->tex->Load("Assets/Textures/Screens/More/exit_hover.png");
+	exitClick = app->tex->Load("Assets/Textures/Screens/More/exit_click.png");
+	resumeNormal = app->tex->Load("Assets/Textures/Screens/Pause/resume_normal.png");
+	resumeHover = app->tex->Load("Assets/Textures/Screens/Pause/resume_hover.png");
+	resumeClick = app->tex->Load("Assets/Textures/Screens/Pause/resume_click.png");
+	settingsNormal = app->tex->Load("Assets/Textures/Screens/Pause/settings_normal.png");
+	settingsHover = app->tex->Load("Assets/Textures/Screens/Pause/settings_hover.png");
+	settingsClick = app->tex->Load("Assets/Textures/Screens/Pause/settings_click.png");
+	backToTitleNormal = app->tex->Load("Assets/Textures/Screens/Pause/back_to_title_normal.png");
+	backToTitleHover = app->tex->Load("Assets/Textures/Screens/Pause/back_to_title_hover.png");
+	backToTitleClick = app->tex->Load("Assets/Textures/Screens/Pause/back_to_title_click.png");
+
+	exitButton = (GuiControlButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, NULL, exitNormal, exitHover, exitClick, { 1419, 92, 63, 63 }, this);
+	resumeButton = (GuiControlButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 3, NULL, resumeNormal, resumeHover, resumeClick, { 657, 305, 281, 64 }, this);
+	settingsButton = (GuiControlButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 4, NULL, settingsNormal, settingsHover, settingsClick, { 657, 418, 279, 64 }, this);
+	backToTitleButton = (GuiControlButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 5, NULL, backToTitleNormal, backToTitleHover, backToTitleClick, { 599, 531, 399, 64 }, this);
+
 	timer = Timer();
 	timer.Start();
 
@@ -52,6 +73,7 @@ bool Hud::Start()
 
 bool Hud::Update(float dt)
 {
+
 	if (app->scene->player->health == 100) app->render->DrawTexture(lifeBarTexture, 0, 0, &healthBar100, SDL_FLIP_NONE, 0);
 	else if (app->scene->player->health < 100 && app->scene->player->health >= 80) app->render->DrawTexture(lifeBarTexture, 0, 0, &healthBar80, SDL_FLIP_NONE, 0);
 	else if (app->scene->player->health < 80 && app->scene->player->health >= 60) app->render->DrawTexture(lifeBarTexture, 0, 0, &healthBar60, SDL_FLIP_NONE, 0);
@@ -78,6 +100,96 @@ bool Hud::Update(float dt)
 			spacePressed = true;
 			playerDeadHud = false;
 		}
+	}
+
+	if (app->scene->pause) {
+
+		if (resumeButton->state == GuiControlState::HIDDEN)
+		{
+			resumeButton->state = GuiControlState::NORMAL;
+			settingsButton->state = GuiControlState::NORMAL;
+			backToTitleButton->state = GuiControlState::NORMAL;
+			exitButton->state = GuiControlState::NORMAL;
+		}
+
+		app->render->DrawTexture(pause, 0, 0, NULL, SDL_FLIP_NONE, 0);
+		if (resumeButton->state == GuiControlState::FOCUSED) {
+			if (app->sceneMenu->fxHoverPlayed == false)
+			{
+				app->audio->PlayFx(app->sceneMenu->buttonFxHover);
+				app->sceneMenu->fxHoverPlayed = true;
+			}
+		}
+		else if (resumeButton->state == GuiControlState::PRESSED)
+		{
+			if (app->sceneMenu->fxClickPlayed == false)
+			{
+				app->audio->PlayFx(app->sceneMenu->buttonFxClick);
+				app->sceneMenu->fxClickPlayed = true;
+			}
+			app->scene->pause = false;
+		}
+		else if (settingsButton->state == GuiControlState::FOCUSED) {
+			if (app->sceneMenu->fxHoverPlayed == false)
+			{
+				app->audio->PlayFx(app->sceneMenu->buttonFxHover);
+				app->sceneMenu->fxHoverPlayed = true;
+			}
+		}
+		else if (settingsButton->state == GuiControlState::PRESSED)
+		{
+			if (app->sceneMenu->fxClickPlayed == false)
+			{
+				app->audio->PlayFx(app->sceneMenu->buttonFxClick);
+				app->sceneMenu->fxClickPlayed = true;
+			}
+			app->scene->pause = false;
+			//app->sceneMenu->settings = true;
+		}
+		else if (backToTitleButton->state == GuiControlState::FOCUSED) {
+			if (app->sceneMenu->fxHoverPlayed == false)
+			{
+				app->audio->PlayFx(app->sceneMenu->buttonFxHover);
+				app->sceneMenu->fxHoverPlayed = true;
+			}
+		}
+		else if (backToTitleButton->state == GuiControlState::PRESSED)
+		{
+			if (app->sceneMenu->fxClickPlayed == false)
+			{
+				app->audio->PlayFx(app->sceneMenu->buttonFxClick);
+				app->sceneMenu->fxClickPlayed = true;
+			}
+			app->scene->pause = false;
+			//app->fade->FadeToBlack(this, (Module*)app->sceneMenu, 90);
+		}
+		else if (exitButton->state == GuiControlState::FOCUSED) {
+			if (app->sceneMenu->fxHoverPlayed == false)
+			{
+				app->audio->PlayFx(app->sceneMenu->buttonFxHover);
+				app->sceneMenu->fxHoverPlayed = true;
+			}
+		}
+		else if (exitButton->state == GuiControlState::PRESSED)
+		{
+			if (app->sceneMenu->fxClickPlayed == false)
+			{
+				app->audio->PlayFx(app->sceneMenu->buttonFxClick);
+				app->sceneMenu->fxClickPlayed = true;
+			}
+			SDL_Quit();
+		}
+		else {
+			app->sceneMenu->fxHoverPlayed = false;
+			app->sceneMenu->fxClickPlayed = false;
+		}
+	}
+	else
+	{
+		resumeButton->state = GuiControlState::HIDDEN;
+		settingsButton->state = GuiControlState::HIDDEN;
+		backToTitleButton->state = GuiControlState::HIDDEN;
+		exitButton->state = GuiControlState::HIDDEN;
 	}
 
 	return true;

@@ -131,17 +131,17 @@ bool SceneMenu::Update(float dt)
 		}
 		else if (playButton->state == GuiControlState::PRESSED)
 		{
+			if (fxClickPlayed == false)
+			{
+				app->audio->PlayFx(buttonFxClick);
+				fxClickPlayed = true;
+			}
 			app->fade->FadeModules(this, (Module*)app->scene, 60.0f);
 			app->map->Enable();
 			app->entityManager->Enable();
 			app->hud->Enable();
 			app->guiManager->Disable();
 
-			if (fxClickPlayed == false)
-			{
-				app->audio->PlayFx(buttonFxClick);
-				fxClickPlayed = true;
-			}
 		}
 		else if (continueButton->state == GuiControlState::FOCUSED)
 		{

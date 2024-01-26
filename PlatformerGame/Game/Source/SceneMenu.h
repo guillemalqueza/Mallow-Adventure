@@ -24,6 +24,10 @@ public:
 
 	bool CleanUp();
 
+	int buttonFxHover;
+	int buttonFxClick;
+	bool fxHoverPlayed = false;
+	bool fxClickPlayed = false;
 
 private:
 
@@ -86,11 +90,6 @@ private:
 
 	GuiControlButton* creditsReturnButton;
 	GuiControlButton* creditsExitButton;
-
-	int buttonFxHover;
-	int buttonFxClick;
-	bool fxHoverPlayed = false;
-	bool fxClickPlayed = false;
 	
 	bool onMenu = true;
 	bool onSettings = false;
