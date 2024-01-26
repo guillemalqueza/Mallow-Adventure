@@ -9,6 +9,7 @@
 #include "FadeToBlack.h"
 #include "GuiManager.h"
 #include "ParticleManager.h"
+#include "Hud.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -269,6 +270,7 @@ bool Scene::PostUpdate()
 
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) {
 		pause = !pause;
+		app->hud->onSettings = false;
 	}
 
 	return ret;

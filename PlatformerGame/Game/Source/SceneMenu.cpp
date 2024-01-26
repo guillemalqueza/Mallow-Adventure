@@ -24,49 +24,49 @@ SceneMenu::SceneMenu(bool enabled) : Module(enabled)
 SceneMenu::~SceneMenu()
 {}
 
+pugi::xml_node configNode2;
+
 bool SceneMenu::Awake(pugi::xml_node& config)
 {
 	LOG("Loading SceneMenu");
 	bool ret = true;
+
+	configNode2 = config;
 
 	return ret;
 }
 
 bool SceneMenu::Start()
 {
-	background = app->tex->Load("Assets/Textures/Screens/background.png");
-	//menu = app->tex->Load("Assets/Textures/Screens/menu.png");
-	playNormal = app->tex->Load("Assets/Textures/Screens/Play/play_normal.png");
-	playHover = app->tex->Load("Assets/Textures/Screens/Play/play_hover.png");
-	playClick = app->tex->Load("Assets/Textures/Screens/Play/play_click.png");
-	continueDisabled = app->tex->Load("Assets/Textures/Screens/Continue/continue_disabled.png");
-	continueNormal = app->tex->Load("Assets/Textures/Screens/Continue/continue_normal.png");
-	continueHover = app->tex->Load("Assets/Textures/Screens/Continue/continue_hover.png");
-	continueClick = app->tex->Load("Assets/Textures/Screens/Continue/continue_click.png");
-	settingsNormal = app->tex->Load("Assets/Textures/Screens/Settings/settings_normal.png");
-	settingsHover = app->tex->Load("Assets/Textures/Screens/Settings/settings_hover.png");
-	settingsClick = app->tex->Load("Assets/Textures/Screens/Settings/settings_click.png");
-	creditsNormal = app->tex->Load("Assets/Textures/Screens/Credits/credits_normal.png");
-	creditsHover = app->tex->Load("Assets/Textures/Screens/Credits/credits_hover.png");
-	creditsClick = app->tex->Load("Assets/Textures/Screens/Credits/credits_click.png");
-	exitNormal = app->tex->Load("Assets/Textures/Screens/More/exit_normal.png");
-	exitHover = app->tex->Load("Assets/Textures/Screens/More/exit_hover.png");
-	exitClick = app->tex->Load("Assets/Textures/Screens/More/exit_click.png");
-	settings = app->tex->Load("Assets/Textures/Screens/More/settings.png");
-	credits = app->tex->Load("Assets/Textures/Screens/More/credits.png");
-	returnNormal = app->tex->Load("Assets/Textures/Screens/More/return_normal.png");
-	returnHover = app->tex->Load("Assets/Textures/Screens/More/return_hover.png");
-	returnClick = app->tex->Load("Assets/Textures/Screens/More/return_click.png");
+	background = app->tex->Load(configNode2.child("background").attribute("texturepath").as_string());
+	playNormal = app->tex->Load(configNode2.child("playNormal").attribute("texturepath").as_string());
+	playHover = app->tex->Load(configNode2.child("playHover").attribute("texturepath").as_string());
+	playClick = app->tex->Load(configNode2.child("playClick").attribute("texturepath").as_string());
+	continueDisabled = app->tex->Load(configNode2.child("continueDisabled").attribute("texturepath").as_string());
+	continueNormal = app->tex->Load(configNode2.child("continueNormal").attribute("texturepath").as_string());
+	continueHover = app->tex->Load(configNode2.child("continueHover").attribute("texturepath").as_string());
+	continueClick = app->tex->Load(configNode2.child("continueClick").attribute("texturepath").as_string());
+	settingsNormal = app->tex->Load(configNode2.child("settingsNormal").attribute("texturepath").as_string());
+	settingsHover = app->tex->Load(configNode2.child("settingsHover").attribute("texturepath").as_string());
+	settingsClick = app->tex->Load(configNode2.child("settingsClick").attribute("texturepath").as_string());
+	creditsNormal = app->tex->Load(configNode2.child("creditsNormal").attribute("texturepath").as_string());
+	creditsHover = app->tex->Load(configNode2.child("creditsHover").attribute("texturepath").as_string());
+	creditsClick = app->tex->Load(configNode2.child("creditsClick").attribute("texturepath").as_string());
+	exitNormal = app->tex->Load(configNode2.child("exitNormal").attribute("texturepath").as_string());
+	exitHover = app->tex->Load(configNode2.child("exitHover").attribute("texturepath").as_string());
+	exitClick = app->tex->Load(configNode2.child("exitClick").attribute("texturepath").as_string());
+	settings = app->tex->Load(configNode2.child("settings").attribute("texturepath").as_string());
+	credits = app->tex->Load(configNode2.child("credits").attribute("texturepath").as_string());
+	returnNormal = app->tex->Load(configNode2.child("returnNormal").attribute("texturepath").as_string());
+	returnHover = app->tex->Load(configNode2.child("returnHover").attribute("texturepath").as_string());
+	returnClick = app->tex->Load(configNode2.child("returnClick").attribute("texturepath").as_string());
+	settingsBoxNormal = app->tex->Load(configNode2.child("settingsBoxNormal").attribute("texturepath").as_string());
+	settingsBoxHover = app->tex->Load(configNode2.child("settingsBoxHover").attribute("texturepath").as_string());
+	settingsTick = app->tex->Load(configNode2.child("settingsTick").attribute("texturepath").as_string());
+	settingsSlider = app->tex->Load(configNode2.child("settingsSlider").attribute("texturepath").as_string());
+	buttonFxHover = app->audio->LoadFx(configNode2.child("buttonFxHover").attribute("path").as_string());
+	buttonFxClick = app->audio->LoadFx(configNode2.child("buttonFxClick").attribute("path").as_string());
 
-	settingsBoxNormal = app->tex->Load("Assets/Textures/Screens/More/settings_box_normal.png");
-	settingsBoxHover = app->tex->Load("Assets/Textures/Screens/More/settings_box_hover.png");
-
-	settingsTick = app->tex->Load("Assets/Textures/Screens/More/tick.png");
-	settingsSlider = app->tex->Load("Assets/Textures/Screens/More/slider.png");
-
-	buttonFxHover = app->audio->LoadFx("Assets/Audio/Fx/button_hover.wav");
-	buttonFxClick = app->audio->LoadFx("Assets/Audio/Fx/button_click.wav");
-	
 	//Menu Buttons
 	playButton = (GuiControlButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, NULL, playNormal, playHover, playClick, { 657, 315, 285, 64 }, this);
 	continueButton = (GuiControlButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 2, continueDisabled, continueNormal, continueHover, continueClick, { 657, 397, 285, 64 }, this);
