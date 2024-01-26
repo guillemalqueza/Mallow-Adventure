@@ -58,11 +58,14 @@ private:
 	SDL_Texture* lightTexture;
 	SDL_Texture* bigLightTexture;
 	SDL_Texture* pathTexture;
+	SDL_Texture* healthBarTexture;
 	const char* texturePath;
 	const char* lightTexturePath;
 	const char* bigLightTexturePath;
 	PhysBody* pbody;
+	PhysBody* enemyPbody;
 	PhysBody* summonPbody;
+	PhysBody* enemySummonPbody;
 	b2Transform initialTransform, initialSummonTransform;
 	iPoint summonPosition;
 
@@ -76,6 +79,10 @@ private:
 	iPoint initialIdlePosition;
 
 	const DynArray<iPoint>* path;
+
+	SDL_Rect healthBarRect100 = { 0,0,80,32 };
+	SDL_Rect healthBarRect50 = { 0,32,80,32 };
+	SDL_Rect healthBarRect0 = { 0,96,80,32 };
 };
 
 #endif // __GHOST_H__

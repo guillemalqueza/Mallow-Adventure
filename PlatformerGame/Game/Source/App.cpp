@@ -9,6 +9,10 @@
 #include "Physics.h"
 #include "FadeToBlack.h"
 #include "ParticleManager.h"
+#include "GuiManager.h"
+#include "SceneMenu.h"
+#include "Hud.h"
+#include "SceneIntro.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -32,12 +36,15 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	tex = new Textures();
 	audio = new Audio();
 	physics = new Physics();
-	scene = new Scene();
-	map = new Map();
-	entityManager = new EntityManager();
+	scene = new Scene(false);
+	map = new Map(false);
+	entityManager = new EntityManager(false);
 	fade = new FadeToBlack();
-	particleManager = new ParticleManager();
-
+	particleManager = new ParticleManager(false);
+	guiManager = new GuiManager();
+	sceneMenu = new SceneMenu(false);
+	hud = new Hud(false);
+	sceneIntro = new SceneIntro();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -50,8 +57,11 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(map);
 	AddModule(entityManager);
 	AddModule(particleManager);
+	AddModule(hud);
+	AddModule(sceneMenu);
+	AddModule(sceneIntro);
+	AddModule(guiManager);
 	AddModule(fade);
-
 	// Render last to swap buffer
 	AddModule(render);
 
@@ -124,6 +134,10 @@ bool App::Start()
 
 	while (item != NULL && ret == true)
 	{
+		if (!item->data->active) {
+			item = item->next;
+			continue;
+		}
 		ret = item->data->Start();
 		item = item->next;
 	}
@@ -188,12 +202,15 @@ void App::FinishUpdate()
 
 	// This is a good place to call Load / Save functions
 	double currentDt = frameTime.ReadMs();
-	if (maxFrameDuration > 0 && currentDt < maxFrameDuration) {
-		uint32 delay = (uint32)(maxFrameDuration - currentDt);
+	if (app->render->vsync)
+	{
+		if (maxFrameDuration > 0 && currentDt < maxFrameDuration) {
+			uint32 delay = (uint32)(maxFrameDuration - currentDt);
 
-		PerfTimer delayTimer = PerfTimer();
-		SDL_Delay(delay);
-		//LOG("We waited for %I32u ms and got back in %f ms",delay,delayTimer.ReadMs());
+			PerfTimer delayTimer = PerfTimer();
+			SDL_Delay(delay);
+			//LOG("We waited for %I32u ms and got back in %f ms",delay,delayTimer.ReadMs());
+		}
 	}
 
 	// Amount of frames since startup
@@ -315,6 +332,10 @@ bool App::CleanUp()
 
 	while (item != NULL && ret == true)
 	{
+		if (!item->data->active) {
+			item = item->prev;
+			continue;
+		}
 		ret = item->data->CleanUp();
 		item = item->prev;
 	}

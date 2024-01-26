@@ -7,13 +7,16 @@
 #include "Scene.h"
 #include "Map.h"
 #include "FadeToBlack.h"
+#include "GuiManager.h"
+#include "ParticleManager.h"
+#include "Hud.h"
 
 #include "Defs.h"
 #include "Log.h"
 
 using namespace std;
 
-Scene::Scene() : Module()
+Scene::Scene(bool enabled) : Module(enabled)
 {
 	name.Create("scene");
 
@@ -38,16 +41,10 @@ bool Scene::Awake(pugi::xml_node& config)
 
 	// iterate all objects in the scene
 	// Check https://pugixml.org/docs/quickstart.html#access
-
-	CreateEntities(config, "key", EntityType::KEY);
-	CreateEntities(config, "equipment", EntityType::EQUIPMENT);
-	CreateEntities(config, "lockDoor", EntityType::LOCK_DOOR);
-	CreateEntities(config, "jumper", EntityType::JUMPER);
-	CreateEntities(config, "crumblingPlatform", EntityType::CRUMBLING_PLATFORM);
+	
 	CreateEntities(config, "skeleton", EntityType::SKELETON);
 	CreateEntities(config, "ghost", EntityType::GHOST);
 	CreateEntities(config, "obstacle", EntityType::OBSTACLE);
-	CreateEntities(config, "chest", EntityType::CHEST);
 	CreateEntities(config, "log", EntityType::LOG_OBSTACLE);
 
 	app->entityManager->GetEnemies(skeletonsList, ghostsList);
@@ -94,6 +91,7 @@ bool Scene::Start()
 
 	app->audio->PlayMusic(level1Music, 0.0f);
 
+	app->particleManager->Enable();
 	return true;
 }
 
@@ -147,12 +145,19 @@ bool Scene::Update(float dt)
 	if ((app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN || levelToLoadIdx == 1) && app->fade->fadeFinished)
 	{
 		levelToLoadIdx = 0;
-		if (!isLoading)
+		if (!isLoading && !isTorchActive)
 		{
 			player->wallLeft = false;
 			player->wallRight = false;
 			newCameraIdx = 0;
 			level1SpawnPoint = { 400, 991 };
+		}
+		else if (!isLoading && isTorchActive)
+		{
+			player->wallLeft = false;
+			player->wallRight = false;
+			newCameraIdx = 0;
+			level1SpawnPoint = lastTorchPos;
 		}
 		app->fade->Fade(1, 60);
 		isLoading = false;
@@ -161,12 +166,19 @@ bool Scene::Update(float dt)
 	if ((app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN || levelToLoadIdx == 2) && app->fade->fadeFinished)
 	{
 		levelToLoadIdx = 0;
-		if (!isLoading)
+		if (!isLoading && !isTorchActive)
 		{
 			player->wallLeft = false;
 			player->wallRight = false;
 			newCameraIdx = 2;
 			level2SpawnPoint = { 4120, 830 };
+		}
+		else if (!isLoading && isTorchActive)
+		{
+			player->wallLeft = false;
+			player->wallRight = false;
+			newCameraIdx = 2;
+			level2SpawnPoint = lastTorchPos;
 		}
 		app->fade->Fade(2, 60);
 		isLoading = false;
@@ -175,12 +187,18 @@ bool Scene::Update(float dt)
 	{
 		levelToLoadIdx = 0;
 		
-		if (!isLoading)
+		if (!isLoading && !isTorchActive)
 		{	
 			player->wallLeft = false;
 			player->wallRight = false;
 			newCameraIdx = 3;		
 			level3SpawnPoint = { 320, 5824 };
+		}
+		else if (!isLoading && isTorchActive)
+		{
+			player->wallLeft = false;
+			player->wallRight = false;
+			level3SpawnPoint = lastTorchPos;
 		}
 		app->fade->Fade(3, 60);
 		isLoading = false;
@@ -189,7 +207,59 @@ bool Scene::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) app->SaveRequest();
 	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) app->LoadRequest();
 
-
+	// change the spawn position of the player depending on the checkpoint
+	if (app->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN || checkPoint)
+	{
+		if (!checkPoint)
+		{
+			if (lastTorchPos.x > 5000 && lastTorchPos != iPoint(0, 0))
+			{
+				lastTorchPos = torch2Pos;
+				levelToLoadIdx = 3;
+				newCameraIdx = 5;
+				isTorchActive = true;
+			}
+			else if (lastTorchPos.x < 3000 && lastTorchPos != iPoint(0, 0))
+			{
+				lastTorchPos = torch3Pos;
+				levelToLoadIdx = 3;
+				newCameraIdx = 6;
+				isTorchActive = true;
+			}
+			else
+			{
+				lastTorchPos = torch1Pos;
+				levelToLoadIdx = 2;
+				newCameraIdx = 3;
+				isTorchActive = true;
+			}
+		}
+		else
+		{
+			if (lastTorchPos.x > 5000 && lastTorchPos != iPoint(0, 0))
+			{
+				lastTorchPos = torch1Pos;
+				levelToLoadIdx = 2;
+				newCameraIdx = 3;
+				isTorchActive = true;
+			}
+			else if (lastTorchPos.x < 3000 && lastTorchPos != iPoint(0, 0))
+			{
+				lastTorchPos = torch2Pos;
+				levelToLoadIdx = 3;
+				newCameraIdx = 5;
+				isTorchActive = true;
+			}
+			else
+			{
+				lastTorchPos = torch3Pos;
+				levelToLoadIdx = 3;
+				newCameraIdx = 6;
+				isTorchActive = true;
+			}
+			checkPoint = false;
+		}
+	}
 	return true;
 }
 
@@ -198,8 +268,10 @@ bool Scene::PostUpdate()
 {
 	bool ret = true;
 
-	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		ret = false;
+	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) {
+		pause = !pause;
+		app->hud->onSettings = false;
+	}
 
 	return ret;
 }
@@ -208,8 +280,9 @@ bool Scene::PostUpdate()
 bool Scene::CleanUp()
 {
 	LOG("Freeing scene");
-	app->map->Disable();
-	//app->entityManager->DestroyEntity(player);
+	app->tex->UnLoad(backgroundTexture);
+	app->tex->UnLoad(backgroundTexture2);
+
 	return true;
 }
 
@@ -349,6 +422,9 @@ void Scene::StartLevel3()
 
 bool Scene::LoadState(pugi::xml_node node)
 {
+	pugi::xml_node status = node.append_child("status");
+	status.attribute("status").as_bool();
+
 	//player
 	pugi::xml_node playerPositionNode = node.child("player").child("playerPosition");
 	player->position.x = playerPositionNode.attribute("x").as_int();
@@ -410,6 +486,7 @@ bool Scene::LoadState(pugi::xml_node node)
 	else if (level3Enabled) level3SpawnPoint = player->position;
 
 	isLoading = true;
+	notUseChechPoint = true;
 	player->SetToInitialPosition();
 
 	return true;
@@ -417,6 +494,9 @@ bool Scene::LoadState(pugi::xml_node node)
 
 bool Scene::SaveState(pugi::xml_node node)
 {
+	pugi::xml_node status = node.append_child("status");
+	status.append_attribute("status").set_value(1);
+
 	//player
 	pugi::xml_node playerPositionNode = node.append_child("player").append_child("playerPosition");
 	playerPositionNode.append_attribute("x").set_value(player->position.x);
@@ -468,5 +548,18 @@ bool Scene::SaveState(pugi::xml_node node)
 	}
 
 	return true;
+}
+
+bool Scene::OnGuiMouseClickEvent(GuiControl* control)
+{
+	LOG("Press Gui Control: %d", control->id);
+
+	return true;
+}
+
+void Scene::GetTorchPos()
+{
+	// update checkpoint position
+	lastTorchPos = player->position;
 }
 

@@ -37,7 +37,13 @@ bool FadeToBlack::Update(float dt)
 		++frameCount;
 		if (frameCount >= maxFadeFrames)
 		{
+			if (modules)
+			{
+				moduleToDisable->Disable();
+				moduleToEnable->Enable();
+			}
 			currentStep = Fade_Step::FROM_BLACK;
+			modules = false;
 		}
 	}
 	else
@@ -51,9 +57,23 @@ bool FadeToBlack::Update(float dt)
 		if (!activated)
 		{
 			activated = true;
-			if (levelIdx == 1) app->scene->StartLevel1();
-			else if (levelIdx == 2) app->scene->StartLevel2();
-			else if (levelIdx == 3) app->scene->StartLevel3();
+			if (levelIdx == 1)
+			{
+				app->scene->isTorchActive = false;
+				app->scene->StartLevel1();
+			}
+			else if (levelIdx == 2)
+			{
+				app->scene->newCameraIdx = 2;
+				app->scene->isTorchActive = false;
+				app->scene->StartLevel2();
+			}
+			else if (levelIdx == 3)
+			{
+				if (!app->scene->isTorchActive) app->scene->newCameraIdx = 3;
+				app->scene->isTorchActive = false;
+				app->scene->StartLevel3();
+			}
 		}
 	}
 
@@ -90,5 +110,22 @@ bool FadeToBlack::Fade(int levelIdx, float frames)
 	activated = false;
 	fadeFinished = false;
 
+	return ret;
+}
+
+bool FadeToBlack::FadeModules(Module* moduleToDisable, Module* moduleToEnable, float frames)
+{
+	bool ret = false;
+	modules = true;
+	if (currentStep == Fade_Step::NONE)
+	{
+		currentStep = Fade_Step::TO_BLACK;
+		frameCount = 0;
+		maxFadeFrames = frames;
+
+		this->moduleToDisable = moduleToDisable;
+		this->moduleToEnable = moduleToEnable;
+		ret = true;
+	}
 	return ret;
 }

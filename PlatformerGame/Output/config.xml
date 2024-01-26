@@ -6,7 +6,7 @@
 	</app>
 
 	<renderer>
-		<vsync value="false"/>
+		<vsync value="true"/>
 	</renderer>
 
 	<window>
@@ -130,11 +130,11 @@
 		<crumblingPlatform x="5900" y="500" texturepath="Assets/Textures/crumbling_platform.png"/>
 		<crumblingPlatform x="6050" y="550" texturepath="Assets/Textures/crumbling_platform.png"/>
 		<crumblingPlatform x="6200" y="600" texturepath="Assets/Textures/crumbling_platform.png"/>
-		<crumblingPlatform x="4416" y="2560" texturepath="Assets/Textures/crumbling_platform2.png"/>
-		<crumblingPlatform x="4544" y="2528" texturepath="Assets/Textures/crumbling_platform2.png"/>
-		<crumblingPlatform x="4672" y="2464" texturepath="Assets/Textures/crumbling_platform2.png"/>
-		<crumblingPlatform x="4544" y="1952" texturepath="Assets/Textures/crumbling_platform2.png"/>
-		<crumblingPlatform x="4800" y="2032" texturepath="Assets/Textures/crumbling_platform2.png"/>
+		<crumblingPlatform2 x="4416" y="2560" texturepath="Assets/Textures/crumbling_platform2.png"/>
+		<crumblingPlatform2 x="4544" y="2528" texturepath="Assets/Textures/crumbling_platform2.png"/>
+		<crumblingPlatform2 x="4672" y="2464" texturepath="Assets/Textures/crumbling_platform2.png"/>
+		<crumblingPlatform2 x="4544" y="1952" texturepath="Assets/Textures/crumbling_platform2.png"/>
+		<crumblingPlatform2 x="4800" y="2032" texturepath="Assets/Textures/crumbling_platform2.png"/>
 
 		<!-- Door -->
 		<lockDoor x="3200" y="190" texturepath="Assets/Textures/lock_door.png">
@@ -156,6 +156,16 @@
 			<chestAudio path="Assets/Audio/Fx/chest_magic_open_fx.wav"/>
 		</chest>
 
+		<!-- Life -->
+		<life x="500" y="1000" texturepath="Assets/Textures/potion_red.png">
+			<lifeAudio path="Assets/Audio/Fx/chest_magic_open_fx.wav"/>
+		</life>
+
+		<!-- Torch -->
+		<torch x="550" y="900" texturepath="Assets/Textures/torch.png">
+			<torchAudio path="Assets/Audio/Fx/torch_ignite_fx.wav"/>
+		</torch>
+
 		<!-- Obstacles -->
 		<obstacle x="5170" y="2255" texturepath="Assets/Textures/rock.png"/>
 		<log x="7700" y="340" texturepath="Assets/Textures/log_spritesheet.png">
@@ -165,6 +175,71 @@
 			<logAudioBreak path="Assets/Audio/Fx/log_break_fx.wav"/>
 		</log>
 	</scene>
+
+	<!-- Menu -->
+	<scenemenu>
+		<background texturepath="Assets/Textures/Screens/background.png"/>
+		<playNormal texturepath="Assets/Textures/Screens/Play/play_normal.png"/>
+		<playHover texturepath="Assets/Textures/Screens/Play/play_hover.png"/>
+		<playClick texturepath="Assets/Textures/Screens/Play/play_click.png"/>
+		<continueDisabled texturepath="Assets/Textures/Screens/Continue/continue_disabled.png"/>
+		<continueNormal texturepath="Assets/Textures/Screens/Continue/continue_normal.png"/>
+		<continueHover texturepath="Assets/Textures/Screens/Continue/continue_hover.png"/>
+		<continueClick texturepath="Assets/Textures/Screens/Continue/continue_click.png"/>
+		<settingsNormal texturepath="Assets/Textures/Screens/Settings/settings_normal.png"/>
+		<settingsHover texturepath="Assets/Textures/Screens/Settings/settings_hover.png"/>
+		<settingsClick texturepath="Assets/Textures/Screens/Settings/settings_click.png"/>
+		<creditsNormal texturepath="Assets/Textures/Screens/Credits/credits_normal.png"/>
+		<creditsHover texturepath="Assets/Textures/Screens/Credits/credits_hover.png"/>
+		<creditsClick texturepath="Assets/Textures/Screens/Credits/credits_click.png"/>
+		<exitNormal texturepath="Assets/Textures/Screens/More/exit_normal.png"/>
+		<exitHover texturepath="Assets/Textures/Screens/More/exit_hover.png"/>
+		<exitClick texturepath="Assets/Textures/Screens/More/exit_click.png"/>
+		<settings texturepath="Assets/Textures/Screens/More/settings.png"/>
+		<credits texturepath="Assets/Textures/Screens/More/credits.png"/>
+		<returnNormal texturepath="Assets/Textures/Screens/More/return_normal.png"/>
+		<returnHover texturepath="Assets/Textures/Screens/More/return_hover.png"/>
+		<returnClick texturepath="Assets/Textures/Screens/More/return_click.png"/>
+		<settingsBoxNormal texturepath="Assets/Textures/Screens/More/settings_box_normal.png"/>
+		<settingsBoxHover texturepath="Assets/Textures/Screens/More/settings_box_hover.png"/>
+		<settingsTick texturepath="Assets/Textures/Screens/More/tick.png"/>
+		<settingsSlider texturepath="Assets/Textures/Screens/More/slider.png"/>
+		<buttonFxHover path="Assets/Audio/Fx/button_hover.wav"/>
+		<buttonFxClick path="Assets/Audio/Fx/button_click.wav"/>
+	</scenemenu>
+
+	<!-- Hud -->
+	<hud>
+		<lifeBarTexture texturepath="Assets/Textures/health_bar.png"/>
+		<deadScreenTexture texturepath="Assets/Textures/Screens/die_screen.png"/>
+		<winScreenTexture texturepath="Assets/Textures/Screens/win_screen.png"/>
+		<keyTexture texturepath="Assets/Textures/key.png"/>
+		<pause texturepath="Assets/Textures/Screens/Pause/pause.png"/>
+		<exitNormal texturepath="Assets/Textures/Screens/More/exit_normal.png"/>
+		<exitHover texturepath="Assets/Textures/Screens/More/exit_hover.png"/>
+		<exitClick texturepath="Assets/Textures/Screens/More/exit_click.png"/>
+		<resumeNormal texturepath="Assets/Textures/Screens/Pause/resume_normal.png"/>
+		<resumeHover texturepath="Assets/Textures/Screens/Pause/resume_hover.png"/>
+		<resumeClick texturepath="Assets/Textures/Screens/Pause/resume_click.png"/>
+		<settingsNormal texturepath="Assets/Textures/Screens/Pause/settings_normal.png"/>
+		<settingsHover texturepath="Assets/Textures/Screens/Pause/settings_hover.png"/>
+		<settingsClick texturepath="Assets/Textures/Screens/Pause/settings_click.png"/>
+		<backToTitleNormal texturepath="Assets/Textures/Screens/Pause/back_to_title_normal.png"/>
+		<backToTitleHover texturepath="Assets/Textures/Screens/Pause/back_to_title_hover.png"/>
+		<backToTitleClick texturepath="Assets/Textures/Screens/Pause/back_to_title_click.png"/>
+
+		<settingsExitNormal texturepath="Assets/Textures/Screens/More/exit_normal.png"/>
+		<settingsExitHover texturepath="Assets/Textures/Screens/More/exit_hover.png"/>
+		<settingsExitClick texturepath="Assets/Textures/Screens/More/exit_click.png"/>
+		<settingsReturnNormal texturepath="Assets/Textures/Screens/More/return_normal.png"/>
+		<settingsReturnHover texturepath="Assets/Textures/Screens/More/return_hover.png"/>
+		<settingsReturnClick texturepath="Assets/Textures/Screens/More/return_click.png"/>
+		<settingsBoxNormal texturepath="Assets/Textures/Screens/More/settings_box_normal.png"/>
+		<settingsBoxHover texturepath="Assets/Textures/Screens/More/settings_box_hover.png"/>
+		<settingsTick texturepath="Assets/Textures/Screens/More/tick.png"/>
+		<settingsSlider texturepath="Assets/Textures/Screens/More/slider.png"/>
+		<settings texturepath="Assets/Textures/Screens/More/settings.png"/>
+	</hud>
 
 	<animations>
 		<!-- Player Animations-->
@@ -371,6 +446,16 @@
 				<animation x="600" y="704" w="100" h="64"/>
 			</drinkAnim>
 
+			<drink2Anim loop ="false" speed="0.1f">
+				<animation x="0" y="2368" w="100" h="64"/>
+				<animation x="100" y="2368" w="100" h="64"/>
+				<animation x="200" y="2368" w="100" h="64"/>
+				<animation x="300" y="2368" w="100" h="64"/>
+				<animation x="400" y="2368" w="100" h="64"/>
+				<animation x="500" y="2368" w="100" h="64"/>
+				<animation x="600" y="2368" w="100" h="64"/>
+			</drink2Anim>
+
 			<landJumpAnim loop="false" speed="0.3f">
 				<animation x="0" y="1600" w="100" h="64"/>
 				<animation x="100" y="1600" w="100" h="64"/>
@@ -488,7 +573,7 @@
 
 		<!-- Ghost -->
 		<ghost>
-			<ghostAttackAnim loop="false" speed="0.1f">
+			<ghostAttackAnim loop="true" speed="0.1f">
 				<animation x="0" y="0" w="200" h="200"/>
 				<animation x="200" y="0" w="200" h="200"/>
 				<animation x="400" y="0" w="200" h="200"/>
@@ -580,6 +665,7 @@
 				<animation x="400" y="1400" w="200" h="200"/>
 				<animation x="600" y="1400" w="200" h="200"/>
 				<animation x="800" y="1400" w="200" h="200"/>
+				<animation x="0" y="0" w="0" h="0"/>
 			</ghostSummonDeathAnim>
 
 			<ghostSummonIdleAnim loop="true" speed="0.1f">
@@ -758,6 +844,38 @@
 				<animation x="1444" y="0" w="76" h="76"/>
 			</chestOpenedIdleAnim>
 		</chest>
+
+		<!-- Life Potion Animations-->
+		<life>
+			<lifePotionAnim loop="true" speed="0.2f">
+				<animation x="0" y="0" w="32" h="32"/>
+				<animation x="32" y="0" w="32" h="32"/>
+				<animation x="64" y="0" w="32" h="32"/>
+				<animation x="96" y="0" w="32" h="32"/>
+				<animation x="128" y="0" w="32" h="32"/>
+				<animation x="160" y="0" w="32" h="32"/>
+				<animation x="192" y="0" w="32" h="32"/>
+				<animation x="224" y="0" w="32" h="32"/>
+			</lifePotionAnim>
+		</life>
+
+		<!-- Torch Animations-->
+		<torch>
+			<torchIdleAnim loop="false" speed="0.2f">
+				<animation x="352" y="0" w="32" h="71"/>
+			</torchIdleAnim>
+			
+			<torchFireAnim loop="true" speed="0.16f">
+				<animation x="0" y="0" w="32" h="71"/>
+				<animation x="32" y="0" w="32" h="71"/>
+				<animation x="64" y="0" w="32" h="71"/>
+				<animation x="96" y="0" w="32" h="71"/>
+				<animation x="128" y="0" w="32" h="71"/>
+				<animation x="160" y="0" w="32" h="71"/>
+				<animation x="192" y="0" w="32" h="71"/>
+				<animation x="224" y="0" w="32" h="71"/>
+			</torchFireAnim>
+		</torch>
 
 		<!-- Log Animations-->
 		<log>

@@ -6,20 +6,21 @@
 #include "PugiXml/src/pugixml.hpp"
 
 class App;
+class GuiControl;
 
 class Module
 {
 public:
 
-	Module() : active(false)
+	Module(bool enabled = true) : active(enabled)
 	{}
 
 	void Init()
 	{
-		if (!active)
+		/*if (!active)
 		{
 			active = true;
-		}
+		}*/
 	}
 
 	// Called before render is available
@@ -74,6 +75,11 @@ public:
 			active = false;
 			CleanUp();
 		}
+	}
+
+	virtual bool OnGuiMouseClickEvent(GuiControl* control)
+	{
+		return true;
 	}
 
 	virtual bool LoadState(pugi::xml_node node)

@@ -14,6 +14,8 @@ enum class EntityType
 	KEY,
 	EQUIPMENT,
 	CHEST,
+	LIFE,
+	TORCH,
 	JUMPER,
 	CRUMBLING_PLATFORM,
 	LOCK_DOOR,

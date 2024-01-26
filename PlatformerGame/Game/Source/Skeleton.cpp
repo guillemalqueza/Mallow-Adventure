@@ -38,6 +38,7 @@ bool Skeleton::Start() {
 	//initilize textures
 	texture = app->tex->Load(texturePath);
 	pathTexture = app->tex->Load("Assets/Textures/path.png");
+	healthBarTexture = app->tex->Load("Assets/Textures/enemy_health_bar.png");
 	pbody = app->physics->CreateCircle(position.x, position.y, 20, bodyType::DYNAMIC);
 	pbody->ctype = ColliderType::SKELETON;
 	pbody->listener = this;
@@ -223,11 +224,18 @@ bool Skeleton::Update(float dt)
 		ResetEntity();
 	}
 
+	if (health >= 100) app->render->DrawTexture(healthBarTexture, position.x - 60, position.y - 80, &healthBarRect100);
+	else if (health >= 50 && health < 100) app->render->DrawTexture(healthBarTexture, position.x - 60, position.y - 80, &healthBarRect50);
+	else if (health < 50) app->render->DrawTexture(healthBarTexture, position.x - 60, position.y - 80, &healthBarRect0);
+
 	return true;
 }
 
 bool Skeleton::CleanUp()
 {
+	app->tex->UnLoad(texture);
+	app->tex->UnLoad(pathTexture);
+	app->tex->UnLoad(healthBarTexture);
 	return true;
 }
 
@@ -256,6 +264,7 @@ void Skeleton::OnCollision(PhysBody* physA, PhysBody* physB)
 		{
 			case ColliderType::SWORD:
 				health -= 50;
+				app->scene->player->score += 100;
 				break;
 		}
 	}

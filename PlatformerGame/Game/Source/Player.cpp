@@ -9,6 +9,7 @@
 #include "Point.h"
 #include "Physics.h"
 #include "FadeToBlack.h"
+#include "Hud.h"
 
 Player::Player() : Entity(EntityType::PLAYER)
 {
@@ -113,7 +114,7 @@ bool Player::Update(float dt)
 
 	if (!isDead)
 	{
-		if (!isJumping && !isCrouching && !isAttacking && !activeSword && !enterDoor && !isDrinking && !isLanding && !wallLeft && !wallRight && !isWalking)
+		if (!isJumping && !isCrouching && !isAttacking && !activeSword && !enterDoor && !isDrinking && !isDrinkingLives && !isLanding && !wallLeft && !wallRight && !isWalking)
 		{
 			if (!isEquipped) currentAnim = &idleAnim;
 			else currentAnim = &armorIdleAnim;
@@ -126,7 +127,7 @@ bool Player::Update(float dt)
 			walkSound();
 			//idle wall keys
 			if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_IDLE && app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_IDLE && !ground 
-				&& (wallLeft || wallRight) && !activeSword && !isDrinking)
+				&& (wallLeft || wallRight) && !activeSword && !isDrinking && !isDrinkingLives)
 			{
 				pbody->body->SetGravityScale(0.0f);
 				pbody->body->SetLinearVelocity({ pbody->body->GetLinearVelocity().x, 0 });
@@ -141,18 +142,18 @@ bool Player::Update(float dt)
 			if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_IDLE) isFacingUp = false;
 
 			//climb wall keys
-			if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT && !activeSword && !enterDoor && !isDrinking)
+			if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT && !activeSword && !enterDoor && !isDrinking && !isDrinkingLives)
 			{
 				ClimbUp();
 			}
 
-			if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT && !activeSword && !enterDoor && !isDrinking)	
+			if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT && !activeSword && !enterDoor && !isDrinking && !isDrinkingLives)	
 			{
 				ClimbDown();
 			}
 
 			//crouch
-			if (app->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT && !isJumping && !activeSword && !enterDoor && !isDrinking)
+			if (app->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT && !isJumping && !activeSword && !enterDoor && !isDrinking && !isDrinkingLives)
 			{
 				if (!isCrouching)
 				{
@@ -172,12 +173,12 @@ bool Player::Update(float dt)
 			}
 
 			//player movement
-			if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT && !activeSword && !enterDoor && !isDrinking)
+			if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT && !activeSword && !enterDoor && !isDrinking && !isDrinkingLives)
 			{
 				LeftMovement();
 			}
 
-			if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT && !activeSword && !enterDoor && !isDrinking)
+			if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT && !activeSword && !enterDoor && !isDrinking && !isDrinkingLives)
 			{
 				RightMovement();
 			}
@@ -195,7 +196,7 @@ bool Player::Update(float dt)
 			}
 
 			//jump
-			if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !activeSword && !enterDoor && !isDrinking)
+			if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !activeSword && !enterDoor && !isDrinking && !isDrinkingLives)
 			{	
 				Jump();
 			}
@@ -226,7 +227,7 @@ bool Player::Update(float dt)
 			}
 
 			// attack 1
-			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN && !isAttacking && isEquipped && !activeSword && !enterDoor && !isDrinking)
+			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN && !isAttacking && isEquipped && !activeSword && !enterDoor && !isDrinking && !isDrinkingLives)
 			{
 				isAttacking = true;
 				
@@ -250,7 +251,7 @@ bool Player::Update(float dt)
 			}
 
 			// attack 2
-			if (app->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN && !isAttacking && isEquipped && !activeSword && !enterDoor && !isDrinking)
+			if (app->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN && !isAttacking && isEquipped && !activeSword && !enterDoor && !isDrinking && !isDrinkingLives)
 			{
 				isAttacking = true;
 				app->audio->PlayFx(swordAudio4FxId);
@@ -382,6 +383,13 @@ bool Player::Update(float dt)
 				currentAnim->ResetLoopCount();
 				currentAnim->Reset();
 			}
+			if (isDrinkingLives && currentAnim != &drink2Anim)
+			{
+				currentAnim = &drink2Anim;
+				app->audio->PlayFx(potionDrinkFxId);
+				currentAnim->ResetLoopCount();
+				currentAnim->Reset();
+			}
 
 			if (isLanding)
 			{
@@ -389,12 +397,17 @@ bool Player::Update(float dt)
 				{
 					isLanding = false;
 				}
-			}
-
+			}	
 
 			if (activeSword && currentAnim->HasFinished()) activeSword = false;
 
 			if (isDrinking && currentAnim->HasFinished()) isDrinking = false;
+
+			if (isDrinkingLives && currentAnim->HasFinished())
+			{
+				isDrinkingLives = false;
+				health += 20;
+			}
 
 			if (previousY == position.y && isLanding && currentAnim == &fallAnim)
 			{
@@ -461,17 +474,25 @@ bool Player::Update(float dt)
 		}
 		if (!isEquipped && currentAnim == &deadAnim && currentAnim->HasFinished() && !revived)
 		{
-			SetToInitialPosition();
-			revived = true;
-			health = 120;
-			isDead = false;
+			app->hud->playerDeadHud = true;
+			if(app->hud->spacePressed) {
+				SetToInitialPosition();
+				revived = true;
+				health = 120;
+				isDead = false;
+				app->hud->spacePressed = false;
+			}
 		}
 		else if (isEquipped && currentAnim == &armorDeadAnim && currentAnim->HasFinished() && !revived)
 		{
-			SetToInitialPosition();
-			revived = true;
-			health = 120;
-			isDead = false;
+			app->hud->playerDeadHud = true;
+			if(app->hud->spacePressed) {
+				SetToInitialPosition();
+				revived = true;
+				health = 120;
+				isDead = false;
+				app->hud->spacePressed = false;
+			}
 		}
 	}
 
@@ -737,7 +758,11 @@ void Player::DrawPlayer()
 // Sets the player to the initial position
 void Player::SetToInitialPosition()
 {
-	if (app->scene->level1Enabled)
+	if (app->scene->lastTorchPos != iPoint(0, 0) && !app->scene->notUseChechPoint)
+	{
+		app->scene->checkPoint = true;
+	}
+	else if (app->scene->level1Enabled)
 	{
 		app->scene->levelToLoadIdx = 1;
 	}
@@ -749,6 +774,7 @@ void Player::SetToInitialPosition()
 	{
 		app->scene->levelToLoadIdx = 3;
 	}
+	app->scene->notUseChechPoint = false;
 }
 
 // Toggles the god mode
@@ -773,6 +799,9 @@ void Player::ToggleGodMode()
 
 bool Player::CleanUp()
 {
+	app->tex->UnLoad(texture);
+	app->tex->UnLoad(lightTexture);
+	app->tex->UnLoad(effectsTexture);
 
 	return true;
 }
@@ -933,6 +962,7 @@ void Player::LoadAnimations()
 	swordAnim.LoadAnimations("swordAnim", "player");
 	doorAnim.LoadAnimations("doorAnim", "player");
 	drinkAnim.LoadAnimations("drinkAnim", "player");
+	drink2Anim.LoadAnimations("drink2Anim", "player");
 	armorLandJumpAnim.LoadAnimations("armorLandJumpAnim", "player");
 
 	climbEffectAnim.LoadAnimations("climbEffectAnim", "player");

@@ -19,15 +19,15 @@ CrumblingPlatform::~CrumblingPlatform() {}
 
 bool CrumblingPlatform::Awake() {
 
-	position.x = parameters.attribute("x").as_int();
-	position.y = parameters.attribute("y").as_int();
-	texturePath = parameters.attribute("texturepath").as_string();
+	/*position.x = parameters.attribute("x").as_int();
+	position.y = parameters.attribute("y").as_int();*/
 
 	return true;
 }
 
 bool CrumblingPlatform::Start() {
 
+	texturePath = parameters.attribute("texturepath").as_string();
 	//initilize textures
 	texture = app->tex->Load(texturePath);
 	pbody = app->physics->CreateRectangle(position.x, position.y, 32, 32, bodyType::STATIC);
@@ -87,6 +87,7 @@ bool CrumblingPlatform::Update(float dt)
 
 bool CrumblingPlatform::CleanUp()
 {
+	app->tex->UnLoad(texture);
 	return true;
 }
 

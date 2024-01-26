@@ -31,6 +31,8 @@ enum class ColliderType {
 	EQUIPMENT,
 	CHEST,
 	CHEST_AREA,
+	TORCH,
+	LIFE,
 	LOG_OBSTACLE,
 	PLATFORM,
 	WALL,

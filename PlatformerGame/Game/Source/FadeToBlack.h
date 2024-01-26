@@ -30,6 +30,8 @@ public:
 	// After the first step, the modules should be switched
 	bool Fade(int cameraIdx, float frames = 60);
 
+	bool FadeModules(Module* moduleToDisable, Module* moduleToEnable, float frames);
+
 public:
 	bool fadeFinished = true;
 
@@ -50,6 +52,11 @@ private:
 	// The rectangle of the screen, used to render the black rectangle
 	SDL_Rect screenRect;
 	bool activated = false;
+
+	Module* moduleToDisable = nullptr;
+	Module* moduleToEnable = nullptr;
+
+	bool modules = false;
 };
 
 #endif //__FADETOBLACK_H__

@@ -13,11 +13,13 @@
 #include "Obstacle.h"
 #include "Chest.h"
 #include "LogObstacle.h"
+#include "Life.h"
+#include "Torch.h"
 
 #include "Defs.h"
 #include "Log.h"
 
-EntityManager::EntityManager() : Module()
+EntityManager::EntityManager(bool enabled) : Module(enabled)
 {
 	name.Create("entitymanager");
 }
@@ -73,14 +75,20 @@ bool EntityManager::CleanUp()
 	bool ret = true;
 	ListItem<Entity*>* item;
 	item = entities.end;
-
 	while (item != NULL && ret == true)
 	{
 		ret = item->data->CleanUp();
+		if (item->data->name != "Player"
+			&& item->data->name != "Ghost"
+			&& item->data->name != "Skeleton"
+			&& item->data->name != "obstacle"
+			&& item->data->name != "log")
+		{
+			entities.Del(item);
+		}
 		item = item->prev;
 	}
-
-	entities.Clear();
+	//entities.Clear();
 
 	return ret;
 }
@@ -121,6 +129,12 @@ Entity* EntityManager::CreateEntity(EntityType type)
 	case EntityType::CHEST:
 		entity = new Chest();
 		break;
+	case EntityType::LIFE:
+		entity = new Life();
+		break;
+	case EntityType::TORCH:
+		entity = new Torch();
+		break;
 	case EntityType::LOG_OBSTACLE:
 		entity = new LogObstacle();
 		break;
@@ -129,6 +143,7 @@ Entity* EntityManager::CreateEntity(EntityType type)
 	}
 
 	entities.Add(entity);
+	//entity->Awake();
 
 	return entity;
 }
@@ -153,6 +168,8 @@ bool EntityManager::Update(float dt)
 	bool ret = true;
 	ListItem<Entity*>* item;
 	Entity* pEntity = NULL;
+
+	if (app->scene->pause) return true;
 
 	for (item = entities.start; item != NULL && ret == true; item = item->next)
 	{

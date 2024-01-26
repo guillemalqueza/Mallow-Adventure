@@ -19,24 +19,25 @@ Equipment::~Equipment() {}
 
 bool Equipment::Awake() {
 
-	position.x = parameters.attribute("x").as_int();
-	position.y = parameters.attribute("y").as_int();
-	texturePath = parameters.attribute("texturepath").as_string();
-	equipmentReleaseFxId = app->audio->LoadFx(parameters.child("equipmentReleaseAudio").attribute("path").as_string());
-	equipmentPickUpFxId = app->audio->LoadFx(parameters.child("equipmentPickUpAudio").attribute("path").as_string());
+	//position.x = parameters.attribute("x").as_int();
+	//position.y = parameters.attribute("y").as_int();
 
 	return true;
 }
 
 bool Equipment::Start() {
 
+	texturePath = parameters.attribute("texturepath").as_string();
+	equipmentReleaseFxId = app->audio->LoadFx(parameters.child("equipmentReleaseAudio").attribute("path").as_string());
+	equipmentPickUpFxId = app->audio->LoadFx(parameters.child("equipmentPickUpAudio").attribute("path").as_string());
+
 	//initilize textures
 	texture = app->tex->Load(texturePath);
-	pbody = app->physics->CreateRectangleSensor(position.x + 90, position.y + 120, 25, 200, bodyType::STATIC);
+	pbody = app->physics->CreateRectangleSensor(position.x, position.y-70, 25, 200, bodyType::STATIC);
 	pbody->ctype = ColliderType::EQUIPMENT;
 	pbody->listener = this;
 
-	pbody2 = app->physics->CreateCircle(position.x + 90, position.y + 190, 250, bodyType::STATIC);
+	pbody2 = app->physics->CreateCircle(position.x, position.y, 250, bodyType::STATIC);
 	pbody2->body->GetFixtureList()->SetSensor(true);
 	pbody2->ctype = ColliderType::EQUIPMENT_AREA;
 	pbody2->listener = this;
@@ -78,6 +79,7 @@ bool Equipment::Update(float dt)
 
 bool Equipment::CleanUp()
 {
+	app->tex->UnLoad(texture);
 	return true;
 }
 

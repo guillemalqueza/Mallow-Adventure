@@ -7,6 +7,8 @@
 #include "Jumper.h"
 #include "CrumblingPlatform.h"
 #include "LockDoor.h"
+#include "GuiControl.h"
+#include "GuiControlButton.h"
 #include <vector>
 
 struct SDL_Texture;
@@ -15,7 +17,7 @@ class Scene : public Module
 {
 public:
 
-	Scene();
+	Scene(bool enabled = true);
 
 	// Destructor
 	virtual ~Scene();
@@ -38,6 +40,9 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	// Handles multiple Gui Event methods
+	bool OnGuiMouseClickEvent(GuiControl* control);
+
 	void CreateEntities(pugi::xml_node& config, const char* nodeName, EntityType entityType);
 
 	void SetCameraPosition(int x, int y);
@@ -57,7 +62,11 @@ public:
 	void StartLevel2();
 	void StartLevel1();
 
+	void GetTorchPos();
+
 	Player* player;	
+	GuiControlButton* gcButtom;
+
 	int cameraIdx = 0;
 	int newCameraIdx = 0;
 	bool cameraInitialized = true;
@@ -71,6 +80,13 @@ public:
 	int levelToLoadIdx = 0;
 
 	const char* level1Music, *level2Music, *level3Music;
+
+	bool pause = false;
+	bool isTorchActive = false;
+	bool checkPoint = false;
+	iPoint lastTorchPos = { 0, 0 };
+	bool notUseChechPoint = false;
+	bool win = false;
 
 private:
 	SDL_Texture* backgroundTexture;
@@ -101,6 +117,10 @@ private:
 	iPoint level1SpawnPoint = { 400, 991 };
 	iPoint level2SpawnPoint = { 4120, 830 };
 	iPoint level3SpawnPoint = { 320, 5824 };
+
+	iPoint torch1Pos = { 5900, 896 };
+	iPoint torch2Pos = { 2800, 3936 };
+	iPoint torch3Pos = { 4260, 3264 };
 
 };
 

@@ -19,19 +19,19 @@ Chest::~Chest() {}
 
 bool Chest::Awake() {
 
-	position.x = parameters.attribute("x").as_int();
-	position.y = parameters.attribute("y").as_int();
-	texturePath = parameters.attribute("texturepath").as_string();
-	chestAudioFxId = app->audio->LoadFx(parameters.child("chestAudio").attribute("path").as_string());
+	/*position.x = parameters.attribute("x").as_int();
+	position.y = parameters.attribute("y").as_int();*/
 
 	return true;
 }
 
 bool Chest::Start() {
 
+	texturePath = parameters.attribute("texturepath").as_string();
+	chestAudioFxId = app->audio->LoadFx(parameters.child("chestAudio").attribute("path").as_string());
 	//initilize textures
 	texture = app->tex->Load(texturePath);
-	pbody = app->physics->CreateRectangleSensor(position.x + 38, position.y + 38, 25, 200, bodyType::STATIC);
+	pbody = app->physics->CreateRectangleSensor(position.x + 38, position.y + 34, 25, 200, bodyType::STATIC);
 	pbody->ctype = ColliderType::CHEST;
 	pbody->listener = this;
 
@@ -75,6 +75,7 @@ bool Chest::Update(float dt)
 
 bool Chest::CleanUp()
 {
+	app->tex->UnLoad(texture);
 	return true;
 }
 
@@ -89,7 +90,7 @@ void Chest::OnCollision(PhysBody* physA, PhysBody* physB)
 			{
 				pbody->body->SetActive(false);
 				app->scene->player->canPush = true;
-				app->scene->player->isDrinking = true;
+				app->scene->player->isDrinkingLives = true;
 				isPicked = true;
 			}
 			break;
