@@ -29,6 +29,16 @@ public:
 	bool fxHoverPlayed = false;
 	bool fxClickPlayed = false;
 
+	GuiControlButton* playButton;
+	GuiControlButton* continueButton;
+	GuiControlButton* settingsButton;
+	GuiControlButton* creditsButton;
+	GuiControlButton* exitButtonMenu;
+	GuiControlButton* exitButtonSettings;
+	GuiControlButton* exitButtonCredits;
+	GuiControlButton* returnButtonSettings;
+	GuiControlButton* returnButtonCredits;
+
 private:
 
 	SDL_Texture* background;
@@ -58,16 +68,6 @@ private:
 	SDL_Texture* returnNormal;
 	SDL_Texture* returnHover;
 	SDL_Texture* returnClick;
-
-	GuiControlButton* playButton;
-	GuiControlButton* continueButton;
-	GuiControlButton* settingsButton;
-	GuiControlButton* creditsButton;
-	GuiControlButton* exitButtonMenu;
-	GuiControlButton* exitButtonSettings;
-	GuiControlButton* exitButtonCredits;
-	GuiControlButton* returnButtonSettings;
-	GuiControlButton* returnButtonCredits;
 
 	SDL_Texture* settings;
 	SDL_Texture* credits;

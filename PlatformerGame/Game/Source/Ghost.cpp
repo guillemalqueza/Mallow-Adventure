@@ -180,8 +180,11 @@ bool Ghost::Update(float dt)
 	if (summonSpawned)
 	{
 		// draw light
-		if (isSummonFacingRight) app->render->DrawTexture(lightTexture, summonPosition.x - 60, summonPosition.y - 50);
-		else app->render->DrawTexture(lightTexture, summonPosition.x - 50, summonPosition.y - 50);
+		if (health > 0)
+		{
+			if (isSummonFacingRight) app->render->DrawTexture(lightTexture, summonPosition.x - 60, summonPosition.y - 50);
+			else app->render->DrawTexture(lightTexture, summonPosition.x - 50, summonPosition.y - 50);
+		}
 
 		// draw summon
 		SDL_Rect summonRect = currentSummonAnim->GetCurrentFrame();

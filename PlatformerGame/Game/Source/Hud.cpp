@@ -65,6 +65,17 @@ bool Hud::Start()
 	settingsButton = (GuiControlButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 4, NULL, settingsNormal, settingsHover, settingsClick, { 657, 418, 279, 64 }, this);
 	backToTitleButton = (GuiControlButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 5, NULL, backToTitleNormal, backToTitleHover, backToTitleClick, { 599, 531, 399, 64 }, this);
 
+	app->sceneMenu->playButton->state = GuiControlState::HIDDEN;
+	app->sceneMenu->continueButton->state = GuiControlState::HIDDEN;
+	app->sceneMenu->settingsButton->state = GuiControlState::HIDDEN;
+	app->sceneMenu->creditsButton->state = GuiControlState::HIDDEN;
+	app->sceneMenu->exitButtonMenu->state = GuiControlState::HIDDEN;
+
+	exitButton->state = GuiControlState::HIDDEN;
+	resumeButton->state = GuiControlState::HIDDEN;
+	settingsButton->state = GuiControlState::HIDDEN;
+	backToTitleButton->state = GuiControlState::HIDDEN;
+
 	timer = Timer();
 	timer.Start();
 
@@ -73,8 +84,7 @@ bool Hud::Start()
 
 bool Hud::Update(float dt)
 {
-
-	if (app->scene->player->health == 100) app->render->DrawTexture(lifeBarTexture, 0, 0, &healthBar100, SDL_FLIP_NONE, 0);
+	if (app->scene->player->health >= 100) app->render->DrawTexture(lifeBarTexture, 0, 0, &healthBar100, SDL_FLIP_NONE, 0);
 	else if (app->scene->player->health < 100 && app->scene->player->health >= 80) app->render->DrawTexture(lifeBarTexture, 0, 0, &healthBar80, SDL_FLIP_NONE, 0);
 	else if (app->scene->player->health < 80 && app->scene->player->health >= 60) app->render->DrawTexture(lifeBarTexture, 0, 0, &healthBar60, SDL_FLIP_NONE, 0);
 	else if (app->scene->player->health < 60 && app->scene->player->health >= 40) app->render->DrawTexture(lifeBarTexture, 0, 0, &healthBar40, SDL_FLIP_NONE, 0);

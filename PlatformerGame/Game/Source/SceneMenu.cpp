@@ -140,7 +140,7 @@ bool SceneMenu::Update(float dt)
 			app->map->Enable();
 			app->entityManager->Enable();
 			app->hud->Enable();
-			app->guiManager->Disable();
+			//app->guiManager->Disable();
 
 		}
 		else if (continueButton->state == GuiControlState::FOCUSED)
