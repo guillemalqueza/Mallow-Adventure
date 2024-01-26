@@ -21,6 +21,7 @@ bool GuiManager::Start()
 }
 
 // L15: DONE1: Implement CreateGuiControl function that instantiates a new GUI control and add it to the list of controls
+		//It has different textures for each state. Don't draw the button if it's hidden and not working but draw it if it's disabled
 GuiControl* GuiManager::CreateGuiControl(GuiControlType type, int id, SDL_Texture* textureDisabled, SDL_Texture* textureNormal, SDL_Texture* textureFocused, SDL_Texture* texturePressed, SDL_Rect bounds, Module* observer, SDL_Rect sliderBounds)
 {
 	GuiControl* guiControl = nullptr;

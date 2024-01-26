@@ -28,24 +28,29 @@ GuiControlSlider::~GuiControlSlider()
 
 bool GuiControlSlider::Update(float dt)
 {
+   
     if (state != GuiControlState::HIDDEN)
     {
+
         app->input->GetMousePosition(mouseX, mouseY);
 
-       
+       // if position of mouse is inside the bounds of the button, change state
         if (mouseX > sliderBounds.x && mouseX < sliderBounds.x + sliderBounds.w - bounds.w && mouseY > bounds.y && mouseY < bounds.y + bounds.h) {
             state = GuiControlState::FOCUSED;
 
+            // if mouse button is pressed, change state and set initial mouse position
             if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) {
                 state = GuiControlState::PRESSED;
                 initialMouseX = mouseX;
             }
 
+            // if mouse button is pressed, change state and set initial mouse position
             if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT) {
                 state = GuiControlState::PRESSED;
                 bounds.x = mouseX;
             }
 
+            // if mouse button is released, change state and notify observer
             if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP) {
                 NotifyObserver();
             }

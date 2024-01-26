@@ -49,13 +49,10 @@ bool GuiControlButton::Update(float dt)
 		}
 		//L15: DONE 4: Draw the button according the GuiControl State
 
-		//app->render->DrawText(text.GetString(), bounds.x, bounds.y, bounds.w, bounds.h);
-
 		if (app->guiManager->debugGui)
 		{
 			app->render->DrawRectangle({ bounds.x - 3, bounds.y - 3, bounds.w + 6, bounds.h + 6 }, 0, 255, 0, 100);
 		}
-
 		switch (state)
 		{
 		case GuiControlState::DISABLED:
