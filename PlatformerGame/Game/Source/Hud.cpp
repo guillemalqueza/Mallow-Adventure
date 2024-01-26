@@ -42,7 +42,7 @@ bool Hud::Awake(pugi::xml_node& config)
 
 bool Hud::Start()
 {
-	lifeBarTexture = app->tex->Load(configNode3.child("lifebar").attribute("texturepath").as_string());
+	lifeBarTexture = app->tex->Load(configNode3.child("lifeBarTexture").attribute("texturepath").as_string());
 	deadScreenTexture = app->tex->Load(configNode3.child("deadScreenTexture").attribute("texturepath").as_string());
 	keyTexture = app->tex->Load(configNode3.child("keyTexture").attribute("texturepath").as_string());
 	pause = app->tex->Load(configNode3.child("pause").attribute("texturepath").as_string());
@@ -361,7 +361,7 @@ bool Hud::Update(float dt)
 
 void Hud::DrawTimer()
 {
-	int time = 100000 - timer.ReadMSec();
+	int time = 400000 - timer.ReadMSec();
 	int minutes = time / 60000;
 	int seconds = (time / 1000) % 60;
 
@@ -372,7 +372,7 @@ void Hud::DrawTimer()
 	string timerTextStr = timerTextStream.str();
 	const char* timerTextCStr = timerTextStr.c_str();
 
-	app->render->DrawText(timerTextCStr, 200, 25, 100, 25);
+	app->render->DrawText(timerTextCStr, 260, 25, 100, 25);
 }
 
 bool Hud::CleanUp()
