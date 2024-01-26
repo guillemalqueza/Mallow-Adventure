@@ -206,27 +206,57 @@ bool Scene::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) app->SaveRequest();
 	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) app->LoadRequest();
 
-	if (app->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
+	// change the spawn position of the player depending on the checkpoint
+	if (app->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN || checkPoint)
 	{
-		if (lastTorchPos.x > 5000 && lastTorchPos != iPoint(0,0) )
+		if (!checkPoint)
 		{
-			lastTorchPos = torch2Pos;
-			levelToLoadIdx = 3;
-			newCameraIdx = 5;
-			isTorchActive = true;
-		}
-		else if (lastTorchPos.x < 3000 && lastTorchPos != iPoint(0, 0))
-		{
-			lastTorchPos = torch3Pos;
-			levelToLoadIdx = 3;
-			newCameraIdx = 6;
-			isTorchActive = true;
+			if (lastTorchPos.x > 5000 && lastTorchPos != iPoint(0, 0))
+			{
+				lastTorchPos = torch2Pos;
+				levelToLoadIdx = 3;
+				newCameraIdx = 5;
+				isTorchActive = true;
+			}
+			else if (lastTorchPos.x < 3000 && lastTorchPos != iPoint(0, 0))
+			{
+				lastTorchPos = torch3Pos;
+				levelToLoadIdx = 3;
+				newCameraIdx = 6;
+				isTorchActive = true;
+			}
+			else
+			{
+				lastTorchPos = torch1Pos;
+				levelToLoadIdx = 2;
+				newCameraIdx = 3;
+				isTorchActive = true;
+			}
 		}
 		else
 		{
-			lastTorchPos = torch1Pos;
-			levelToLoadIdx = 2;
-			isTorchActive = true;
+			if (lastTorchPos.x > 5000 && lastTorchPos != iPoint(0, 0))
+			{
+				lastTorchPos = torch1Pos;
+				levelToLoadIdx = 2;
+				newCameraIdx = 3;
+				isTorchActive = true;
+			}
+			else if (lastTorchPos.x < 3000 && lastTorchPos != iPoint(0, 0))
+			{
+				lastTorchPos = torch2Pos;
+				levelToLoadIdx = 3;
+				newCameraIdx = 5;
+				isTorchActive = true;
+			}
+			else
+			{
+				lastTorchPos = torch3Pos;
+				levelToLoadIdx = 3;
+				newCameraIdx = 6;
+				isTorchActive = true;
+			}
+			checkPoint = false;
 		}
 	}
 	return true;
@@ -513,8 +543,6 @@ bool Scene::SaveState(pugi::xml_node node)
 
 bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 {
-	// L15: TODO 5: Implement the OnGuiMouseClickEvent method
-	// L15: DONE 5: Implement the OnGuiMouseClickEvent method
 	LOG("Press Gui Control: %d", control->id);
 
 	return true;
@@ -522,6 +550,7 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 
 void Scene::GetTorchPos()
 {
+	// update checkpoint position
 	lastTorchPos = player->position;
 }
 
