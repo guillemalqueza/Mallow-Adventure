@@ -224,7 +224,7 @@ bool Ghost::Update(float dt)
 		}
 	}
 
-	if (summonPosition.x > 5.280 && health <= 0) app->scene->win = true;
+	if (summonPosition.x >= 5280 && health <= 0) app->scene->win = true;
 
 	// draw path
 	if (app->physics->debug)
