@@ -212,6 +212,7 @@
 	<hud>
 		<lifeBarTexture texturepath="Assets/Textures/health_bar.png"/>
 		<deadScreenTexture texturepath="Assets/Textures/Screens/die_screen.png"/>
+		<winScreenTexture texturepath="Assets/Textures/Screens/win_screen.png"/>
 		<keyTexture texturepath="Assets/Textures/key.png"/>
 		<pause texturepath="Assets/Textures/Screens/Pause/pause.png"/>
 		<exitNormal texturepath="Assets/Textures/Screens/More/exit_normal.png"/>

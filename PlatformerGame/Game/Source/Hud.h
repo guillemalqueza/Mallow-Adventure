@@ -103,6 +103,8 @@ private:
 
 	SDL_Texture* settings;
 
+	SDL_Texture* winScreenTexture;
+
 
 	GuiControlButton* exitButton;
 	GuiControlButton* returnButton;

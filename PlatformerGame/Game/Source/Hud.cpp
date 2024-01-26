@@ -82,6 +82,7 @@ bool Hud::Start()
 	settingsBoxNormal = app->tex->Load(configNode3.child("settingsBoxNormal").attribute("texturepath").as_string());
 	settingsBoxHover = app->tex->Load(configNode3.child("settingsBoxHover").attribute("texturepath").as_string());
 	settings = app->tex->Load(configNode3.child("settings").attribute("texturepath").as_string());	
+	winScreenTexture = app->tex->Load(configNode3.child("winScreenTexture").attribute("texturepath").as_string());
 
 
 	//Create Buttons
@@ -142,6 +143,8 @@ bool Hud::Update(float dt)
 	string scoreText = "Score: " + to_string(app->scene->player->score);
 
 	app->render->DrawText(scoreText.c_str(), 400, 25, 100, 25);
+
+	if (app->scene->win) app->render->DrawTexture(winScreenTexture, 0, 0, NULL, SDL_FLIP_NONE, 0);
 
 	//Player dead hud
 	if(playerDeadHud && !spacePressed && !app->scene->player->revived) {

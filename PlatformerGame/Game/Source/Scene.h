@@ -86,6 +86,7 @@ public:
 	bool checkPoint = false;
 	iPoint lastTorchPos = { 0, 0 };
 	bool notUseChechPoint = false;
+	bool win = false;
 
 private:
 	SDL_Texture* backgroundTexture;

@@ -89,7 +89,7 @@ bool Ghost::Update(float dt)
 		position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y);
 	}
 
-	if (abs(app->scene->player->position.x - position.x) < 10)
+	if (abs(app->scene->player->position.x - position.x) < 20)
 	{
 		currentAnim = &ghostAttackAnim;
 	}
@@ -223,6 +223,8 @@ bool Ghost::Update(float dt)
 			currentSummonAnim = &ghostSummonDeathAnim;
 		}
 	}
+
+	if (summonPosition.x > 5.280 && health <= 0) app->scene->win = true;
 
 	// draw path
 	if (app->physics->debug)
