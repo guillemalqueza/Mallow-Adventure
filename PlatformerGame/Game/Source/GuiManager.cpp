@@ -60,6 +60,7 @@ bool GuiManager::Update(float dt)
 		control = control->next;
 	}
 
+	// enable or disable debug gui
 	if (app->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
 	{
 		debugGui = !debugGui;

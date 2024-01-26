@@ -63,6 +63,7 @@ private:
 	const char* lightTexturePath;
 	const char* bigLightTexturePath;
 	PhysBody* pbody;
+	PhysBody* enemyPbody;
 	PhysBody* summonPbody;
 	PhysBody* enemySummonPbody;
 	b2Transform initialTransform, initialSummonTransform;

@@ -422,6 +422,9 @@ void Scene::StartLevel3()
 
 bool Scene::LoadState(pugi::xml_node node)
 {
+	pugi::xml_node status = node.append_child("status");
+	status.attribute("status").as_bool();
+
 	//player
 	pugi::xml_node playerPositionNode = node.child("player").child("playerPosition");
 	player->position.x = playerPositionNode.attribute("x").as_int();
@@ -491,6 +494,9 @@ bool Scene::LoadState(pugi::xml_node node)
 
 bool Scene::SaveState(pugi::xml_node node)
 {
+	pugi::xml_node status = node.append_child("status");
+	status.append_attribute("status").set_value(1);
+
 	//player
 	pugi::xml_node playerPositionNode = node.append_child("player").append_child("playerPosition");
 	playerPositionNode.append_attribute("x").set_value(player->position.x);

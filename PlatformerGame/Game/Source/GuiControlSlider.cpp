@@ -64,6 +64,7 @@ bool GuiControlSlider::Update(float dt)
             app->render->DrawRectangle({ bounds.x - 6, bounds.y - 3, bounds.w + 6, bounds.h + 6 }, 0, 0, 255, 100);
         }
 
+        //draw slider texture
         switch (state)
         {
         case GuiControlState::DISABLED:
