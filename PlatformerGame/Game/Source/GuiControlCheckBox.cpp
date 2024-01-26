@@ -3,6 +3,7 @@
 #include "App.h"
 #include "Audio.h"
 #include "Log.h"
+#include "GuiManager.h"
 
 GuiControlCheckBox::GuiControlCheckBox(uint32 id, SDL_Rect bounds, SDL_Texture* textureDisabled, SDL_Texture* textureNormal, SDL_Texture* textureFocused, SDL_Texture* texturePressed) : GuiControl(GuiControlType::BUTTON, id)
 {
@@ -46,6 +47,11 @@ bool GuiControlCheckBox::Update(float dt)
 		}
 		else {
 			state = GuiControlState::NORMAL;
+		}
+
+		if (app->guiManager->debugGui)
+		{
+			app->render->DrawRectangle({ bounds.x - 3, bounds.y - 3, bounds.w + 6, bounds.h + 6 }, 255, 0, 0, 100);
 		}
 
 		switch (state)

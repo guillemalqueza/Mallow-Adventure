@@ -32,6 +32,7 @@ public:
 
 	List<GuiControl*> guiControlsList;
 	SDL_Texture* texture;
+	bool debugGui = false;
 
 };
 

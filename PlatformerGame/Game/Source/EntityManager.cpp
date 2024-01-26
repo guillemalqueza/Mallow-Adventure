@@ -143,7 +143,7 @@ Entity* EntityManager::CreateEntity(EntityType type)
 	}
 
 	entities.Add(entity);
-	entity->Awake();
+	//entity->Awake();
 
 	return entity;
 }
